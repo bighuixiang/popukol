@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # dropdown
 
 > demo
@@ -19,3 +20,6 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+=======
+# popukol
+>>>>>>> 69a4d95dcb7f0c0c14c0cda9f5d46af3b608277d
