@@ -11,8 +11,6 @@
 <style>
 	@import "./nprogress/qqzxkf.css";
 	
-<<<<<<< HEAD
-=======
 	.el-dialog__close:hover,
 	.el-dialog__close:focus {
 		color: #DE1A20 !important;
@@ -253,7 +251,6 @@
 		}
 	}
 	
->>>>>>> 3875d740ef2f8b6b2b2c8d783d71cd647f161c46
 	body {
 		/*background-color: #324057;*/
 		margin: 0px;
@@ -322,10 +319,7 @@
 	}
 	
 	a:hover {
-<<<<<<< HEAD
-=======
 		color: #DE1A20 !important;
->>>>>>> 3875d740ef2f8b6b2b2c8d783d71cd647f161c46
 		text-decoration: none;
 	}
 	
