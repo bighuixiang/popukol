@@ -1,7 +1,5 @@
 <template>
-	<div id="app">
 		<router-view/>
-	</div>
 </template>
 
 <script>
@@ -12,246 +10,6 @@
 
 <style>
 	@import "./nprogress/qqzxkf.css";
-	
-	.el-dialog__close:hover,
-	.el-dialog__close:focus {
-		color: #FF3B87 !important;
-	}
-	
-	.el-button:focus,
-	.el-button:hover {
-		border-color: #FF3B87 !important;
-		color: #FF3B87 !important;
-	}
-	
-	.task_type_list h1 {
-		color: #FF3B87 !important;
-	}
-	
-	.task_type .cur {
-		border: 1px solid #FF3B87 !important;
-		background: #FFF9FB !important;
-	}
-	
-	.step.stepcur {
-		border-color: #FF3B87 !important;
-	}
-	
-	.thumbnail .same-text {
-		top: 235px !important;
-	}
-	
-	.thumbnail:hover .same-text {
-		top: 160px !important;
-	}
-	
-	.thumbnail {
-		border-radius: initial !important;
-		padding: 0 !important;
-	}
-	
-	.thumbnail:hover {
-		border: 1px solid #FF3B87 !important;
-		overflow: hidden;
-	}
-	
-	.thumbnail .same-text {
-		top: 235px !important;
-	}
-	
-	.thumbnail .same-text h3 {
-		color: #1B1B1B;
-		border-color: #1B1B1B !important;
-	}
-	
-	.thumbnail .same-text p {
-		color: #1B1B1B;
-	}
-	
-	.el-pagination .btn-next:hover {
-		color: #FF3B87 !important;
-	}
-	
-	.el-pagination button.disabled:hover {
-		color: #e4e4e4 !important;
-	}
-	
-	.el-pagination button.disabled {
-		color: #e4e4e4 !important;
-	}
-	
-	.el-pagination .btn-prev:hover {
-		color: #FF3B87 !important;
-	}
-	
-	.el-pager li:hover {
-		color: #FF3B87 !important;
-	}
-	
-	.el-button:hover {
-		border-color: #FF3B87 !important;
-		color: #FF3B87 !important;
-	}
-	
-	.el-pager li.active {
-		color: #FFFFFF !important;
-	}
-	
-	.el-pagination__editor:focus {
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-pager li.active {
-		color: #FFFFFF;
-	}
-	
-	.el-button--primary:hover,
-	.el-button--primary:focus {
-		color: #FFFFFF !important;
-	}
-	
-	.el-input__inner:focus {
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-input__inner:active {
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-pagination__sizes .el-input .el-input__inner:hover {
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-select-dropdown__item.selected.hover,
-	.el-select-dropdown__item.selected {
-		background-color: #FF3B87 !important;
-	}
-	
-	.el-radio-button__orig-radio:checked+.el-radio-button__inner {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
-		-webkit-box-shadow: -1px 0 0 0 #FF3B87 !important;
-		-moz-box-shadow: -1px 0 0 0 #FF3B87 !important;
-		box-shadow: -1px 0 0 0 #FF3B87 !important;
-	}
-	
-	.el-radio-button__inner:hover {
-		border-color: #FF3B87 !important;
-		color: #FF3B87 !important;
-		-webkit-box-shadow: -1px 0 0 0 #FF3B87 !important;
-		-moz-box-shadow: -1px 0 0 0 #FF3B87 !important;
-		box-shadow: -1px 0 0 0 #FF3B87 !important;
-	}
-	
-	.el-radio-button__orig-radio:checked+.el-radio-button__inner:hover {
-		color: #FFFFFF !important;
-	}
-	
-	.el-radio__input.is-checked .el-radio__inner,
-	.el-pager li.active {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-radio__inner:hover {
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-button--warning {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-button--warning:hover {
-		color: #FFFFFF !important;
-	}
-	
-	.el-step__title.is-finish {
-		color: #FF3B87 !important;
-	}
-	
-	.el-step__head.is-finish {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-tabs__item.is-active {
-		color: #FF3B87 !important;
-	}
-	
-	.el-tabs__active-bar {
-		background-color: #FF3B87 !important;
-	}
-	
-	.el-button--primary {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-checkbox__input.is-checked .el-checkbox__inner {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
-	}
-	
-	.el-checkbox__inner {
-		border-color: #bfcbd9 !important;
-	}
-	
-	.el-checkbox__inner:hover {
-		border-color: #FF3B87 !important;
-	}
-	
-	[class^="icon-"],
-	[class*=" icon-"] {
-		/* use !important to prevent issues with browser extensions that change fonts */
-		font-family: 'icomoon' !important;
-		speak: none;
-		font-style: normal;
-		font-weight: normal;
-		font-variant: normal;
-		text-transform: none;
-		line-height: 1;
-		/* Better Font Rendering =========== */
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-	}
-	
-	.mjx-width {
-		width: 1200px;
-		margin: 0 auto;
-	}
-	
-	.bounce-enter-active {
-		animation: bounce-in .5s;
-	}
-	
-	.bounce-leave-active {
-		animation: bounce-out .2s;
-	}
-	
-	@keyframes bounce-in {
-		0% {
-			transform: scale(0);
-		}
-		50% {
-			transform: scale(1.05);
-		}
-		100% {
-			transform: scale(1);
-		}
-	}
-	
-	@keyframes bounce-out {
-		0% {
-			transform: scale(1);
-		}
-		50% {
-			transform: scale(0.95);
-		}
-		100% {
-			transform: scale(0);
-		}
-	}
 	
 	body {
 		/*background-color: #324057;*/
@@ -271,7 +29,7 @@
 		outline: none;
 	}
 	
-	style.css:40 a:visited {
+	 a:visited {
 		/* color: #8d8d8d; */
 		text-decoration: none;
 	}
@@ -321,7 +79,6 @@
 	}
 	
 	a:hover {
-		color: #FF3B87 !important;
 		text-decoration: none;
 	}
 	
