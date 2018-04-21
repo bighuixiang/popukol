@@ -39,7 +39,7 @@
 			<div class="navbar-xh">
 				<ul class="ul">
 					<li v-for="item in getNavList" :class="{active:item.isCur}">
-						<div v-if="item.url!=''" :to="item.url">{{item.name}}</div>
+						<div @click="goToUrl(item)" v-if="item.url!=''" :to="item.url">{{item.name}}</div>
 						<div v-else @click='showAppDown' href="javascript:">{{item.name}}</div>
 					</li>
 				</ul>
@@ -57,7 +57,76 @@
 				</section>
 				<!--</el-col>-->
 			</el-col>
-			<!--<div class="test"></div>-->
+
+			<!-- start 底部信息 -->
+			<div class="footer">
+				<div class="footerinner">
+					<div class="left">
+						<img class="bottomlogo" src="../../static/icon/topandbottomlogo/bottomlogo.png" />
+						<p class="duli">popukol倾力打造网红资源管理、调度平台。</p>
+						<div class="kuai">
+							©POPUKOL, powered by POPUKOL THX.法律声明转载内容 版权归作者及来源网站所有，本站原创内容转载请注明来源，商业 媒体及纸媒请先联系: xiaojiejie@popukol.com
+						</div>
+					</div>
+					<div class="center">
+						<h1 class="lianxi">
+							联系
+						</h1>
+						<div class="info">
+							<p>电话：400-123-0111</p>
+							<p>邮箱：xiaojiejie@popukol.com</p>
+							<p>地址：广东省深圳市福田下梅林</p>
+						</div>
+					</div>
+					<div class="right">
+						<h1 class="wechat">
+							官方微信
+						</h1>
+						<img class="erweima" src="../../static/icon/topandbottomlogo/weixin.png" />
+					</div>
+				</div>
+			</div>
+			<!-- end 底部信息 -->
+
+			<!-- start 侧边栏信息 -->
+			<div class="cebianlan">
+				<div class="yuyuetoufang">
+					<img src="../../static/icon/wangzhan/toufang.png" />
+					<span>预约投放</span>
+				</div>
+				<div class="zimeitiruzhu bottomjuli" @click.stop="showZiMeiTi">
+					<img src="../../static/icon/wangzhan/zimeiti.png" />
+					<span>自媒体入驻</span>
+
+					<div class="info" v-show="isShowZiMeiTi">
+						<div class="item">
+							<div class="ico email"></div>
+							<div class="detail">
+								<p>售前咨询电话</p>
+								<span class="red">400-123-0111</span>
+							</div>
+						</div>
+						<div class="item">
+							<div class="ico email"></div>
+							<div class="detail">
+								<p>售前咨询QQ</p>
+								<span>4001230111</span>
+							</div>
+						</div>
+						<div class="item">
+							<div class="ico email"></div>
+							<div class="detail">
+								<p>售前咨询邮箱</p>
+								<span>4001230111@qq.com</span>
+							</div>
+						</div>
+
+						<div class="close" @click.stop="closeZiMeiTi"></div>
+					</div>
+				</div>
+				<div class="backTop" @click.stop="toTop"></div>
+			</div>
+			<!-- end 侧边栏信息 -->
 		</div>
 	</el-row>
 </template>
@@ -75,6 +144,7 @@
 		data() {
 			return {
 				isShowI18n: false,
+				isShowZiMeiTi: false,
 				isShowAppDown: false,
 				msgTotal: 0,
 				logoUrl: ''
@@ -106,8 +176,22 @@
 				'decrement',
 				'setuserinfo'
 			]),
+			goToUrl(item) {
+				let self = this;
+				if(item.url != '') {
+					self.$router.push({
+						path: item.url,
+					});
+				}
+			},
 			i18nHide() {
 				this.isShowI18n = false;
+			},
+			closeZiMeiTi() {
+				this.isShowZiMeiTi = false;
+			},
+			showZiMeiTi() {
+				this.isShowZiMeiTi = true;
 			},
 			getLogoUrl() {
 				let self = this;
@@ -175,7 +259,21 @@
 					}
 				}, (response) => {});
 
-			}
+			},
+			toTop() {
+				var gotoTop = function() {
+					var currentPosition = document.documentElement.scrollTop || document.body.scrollTop;
+					currentPosition -= 10;
+					if(currentPosition > 0) {
+						window.scrollTo(0, currentPosition);
+					} else {
+						window.scrollTo(0, 0);
+						clearInterval(timer);
+						timer = null;
+					}
+				}
+				var timer = setInterval(gotoTop, 1);
+			},
 		}
 	}
 </script>
@@ -186,25 +284,214 @@
 		transition: opacity .1s
 	}*/
 	
-	.test {
+	.cebianlan {
 		position: fixed;
-		top: 350px;
 		right: 0;
-		width: 80px;
-		height: 80px;
-		background-color: #000000;
+		bottom: 144px;
+	}
+	
+	.backTop {
+		position: relative;
+		right: 12px;
+		/*bottom: 128px;*/
+		width: 44px;
+		height: 44px;
+		background: url(../../static/icon/wangzhan/fanhuidingbu.png) no-repeat center center;
+		background-size: 22px auto;
+		border-radius: 4px;
+		box-shadow: 1px 1px 1px 1px #999999;
+		-webkit-box-shadow: 1px 1px 1px 1px #999999;
+		-ms-box-shadow: 1px 1px 1px 1px #999999;
+		-moz-box-shadow: 1px 1px 1px 1px #999999;
+		margin-top: 186px;
+		background-color: #FFFFFF;
+		cursor: pointer;
+	}
+	
+	.yuyuetoufang,
+	.zimeitiruzhu {
+		position: relative;
+		width: 44px;
+		height: 128px;
+		right: 10px;
+		padding: 5px;
+		background-color: #DD2025;
+		color: #FFFFFF;
+		box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+		cursor: pointer;
+		user-select: none;
+		-moz-user-select: none;
+		font-size: 14px;
+		/*top: 400px;*/
+		.info {
+			position: absolute;
+			right: 54px;
+			top: -25px;
+			background-color: #FFFFFF;
+			z-index: 999;
+			width: 300px;
+			height: 200px;
+			border-radius: 4px;
+			box-shadow: 1px 1px 1px 1px #999999;
+			-webkit-box-shadow: 1px 1px 1px 1px #999999;
+			-ms-box-shadow: 1px 1px 1px 1px #999999;
+			-moz-box-shadow: 1px 1px 1px 1px #999999;
+			font-size: 14px;
+			color: #333333;
+			padding-top: 18px;
+			padding-left: 12px;
+			.close {
+				position: absolute;
+				right: 12px;
+				top: 12px;
+				width: 32px;
+				height: 32px;
+				background: url(../../static/icon/guanggaozhu/clear.png) no-repeat center center;
+				background-size: 22px auto;
+			}
+			.item {
+				clear: both;
+				.ico {
+					width: 32px;
+					height: 32px;
+					border: 1px solid #999999;
+					border-radius: 50%;
+					margin: 12px;
+					float: left;
+				}
+				.email {
+					background: url(../../static/icon/admin/email.png) no-repeat center center;
+					background-size: 16px auto;
+				}
+				.detail {
+					width: 160px;
+					text-align: left;
+					float: left;
+					p {
+						margin-top: 3px;
+					}
+					span {
+						text-align: left;
+						padding: 0;
+						color: #999999;
+					}
+					.red {
+						color: #DE1A20;
+					}
+				}
+			}
+		}
+		img {
+			width: 16px;
+			height: auto;
+			margin: 12px auto 0;
+			display: block;
+		}
+		span {
+			margin: auto;
+			display: block;
+			text-align: center;
+			padding: 12px 0;
+			font-size: 12px;
+			padding: 10px;
+			text-align: center;
+			line-height: 1.2;
+		}
+	}
+	
+	.zimeitiruzhu {
+		height: 142px;
+	}
+	
+	.bottomjuli {
+		/*top: 680px;*/
+		margin-top: 102px;
+	}
+	
+	.footer {
+		clear: both;
+		height: 280px;
+		background-color: #d6d6d6;
+		.footerinner {
+			width: 1200px;
+			display: block;
+			margin: auto;
+			color: #999999;
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			.left {
+				width: 40%;
+				font-size: 14px;
+				float: left;
+				.bottomlogo {
+					margin-top: 21px;
+					display: block;
+				}
+				.duli {
+					margin-top: 41px;
+					text-align: justify;
+				}
+				.kuai {
+					margin-top: 21px;
+					width: 408px;
+					text-align: justify;
+				}
+			}
+			.center {
+				width: 30%;
+				padding-left: 64px;
+				float: left;
+				.lianxi {
+					margin-top: 55px;
+					font-size: 21px;
+					font-weight: normal;
+				}
+				.info {
+					margin-top: 41px;
+				}
+			}
+			.right {
+				width: 30%;
+				padding-left: 84px;
+				float: left;
+				.wechat {
+					margin-top: 55px;
+					font-size: 21px;
+					font-weight: normal;
+				}
+				.erweima {
+					margin-top: 40px;
+					transition: all 0.5s;
+					-webkit-transition: all 0.5s;
+					-ms-transition: all 0.5s;
+					-moz-transition: all 0.5s;
+				}
+				.erweima:hover {
+					cursor: pointer;
+					transform: scale(1.2, 1.2);
+					-webkit-transform: scale(1.2, 1.2);
+					-ms-transform: scale(1.2, 1.2);
+					-moz-transform: scale(1.2, 1.2);
+				}
+			}
+		}
 	}
 	
 	.navbar-xh {
 		position: relative;
+		width: 100%;
 		height: 50px;
+		min-width: 1200px;
 		background-color: #DE1A20;
 		.ul {
 			position: relative;
 			display: table;
 			margin: auto;
 			height: 50px;
-			/*width: 1200px;*/
+			width: 1200px;
+			.active {
+				background-color: #D40E13;
+			}
 			li {
 				height: 50px;
 				line-height: 50px;
@@ -214,6 +501,7 @@
 					font-size: 16px;
 					padding-left: 26px;
 					padding-right: 26px;
+					/*font-weight: bold;*/
 				}
 				div:hover {
 					cursor: pointer;
@@ -232,10 +520,9 @@
 		position: relative;
 		.rightTel {
 			position: absolute;
-			top: 0;
+			top: 20px;
 			right: 0;
-			height: 80px;
-			margin-top: 20px;
+			height: 60px;
 			overflow: hidden;
 			.leftTel {
 				display: block;
@@ -257,6 +544,7 @@
 					color: #DE1A20;
 					font-size: 20px;
 					padding-top: 6px;
+					font-weight: bold;
 				}
 			}
 		}
@@ -301,6 +589,7 @@
 		padding-right: 12px;
 		.info {
 			position: absolute;
+			z-index: 8;
 			/*display: none;*/
 			width: 100px;
 			height: 36px;
@@ -368,10 +657,10 @@
 	}
 	
 	.mjx-header {
-		width: 100%;
+		/*width: 100%;
 		-webkit-box-shadow: 0 0 10px #0CC;
 		-moz-box-shadow: 0 0 10px #0CC;
-		box-shadow: 0 0 10px #0CC;
+		box-shadow: 0 0 10px #0CC;*/
 	}
 	
 	a:hover {

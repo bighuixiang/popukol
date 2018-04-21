@@ -15,7 +15,7 @@ const state = {
 		"isCur": true,
 	}, {
 		"name": "微信",
-		"url": "/releasetask1",
+		"url": "/wechat",
 		"isCur": false,
 	}, {
 		"name": "微博",
