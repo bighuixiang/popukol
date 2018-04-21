@@ -4,87 +4,61 @@
 			<!-- start 顶部用户信息栏 -->
 			<div class="mjx-header-user mjx-clearfix">
 				<div class="mjx-header-user-back mjx-width">
-					<!-- 左侧 -->
-					<div v-show="curIsLogin" class="mjx-header-user-left mjx-left">
-						<span style="color: #FB8DB7;">{{getUserInfo.phone}}，欢迎来到快拍秀</span>
-						<!--<router-link class="mjx-register" to="/personal">[个人中心]</router-link>
-																					<a class="mjx-login" @click="logout" href="javascript:">[退出]</a>-->
+					<div class="i18n" tabindex="-1" @click="isShowI18n=true" @blur="i18nHide">
+						语言: 简体中文<i class="el-icon-arrow-down el-icon--right"></i>
+						<div class="info" v-show="isShowI18n">
+							繁體中文
+							<div class="sanjiao"></div>
+						</div>
 					</div>
-
-					<div v-show="!curIsLogin" class="mjx-header-user-left mjx-left">
-						<span style="color: #FB8DB7;">您好，欢迎来到快拍秀</span>
-						<!--<router-link to="/login" class="mjx-login">[商家登录]</router-link>
-																					<router-link to="/signup" class="mjx-register">[商家注册]</router-link>-->
-					</div>
-
-					<!-- 右侧 -->
-					<ul class="mjx-header-user-right mjx-right mjx-clearfix">
-						<li v-show="!curIsLogin">
-							<router-link to="/login">商家登录</router-link>
-						</li>
-						<li v-show="!curIsLogin">
-							<router-link style="border: none" to="/signup">商家注册</router-link>
-						</li>
-						<li v-show="curIsLogin">
-							<router-link to="/personal">个人中心</router-link>
-						</li>
-						<li v-show="curIsLogin">
-							<a href="#/MessageInfoList" style="border: none">站内信
-								<i class="msginfo-icon" v-show="msgTotal>0"></i>
-							</a>
-						</li>
-						<li @click="logout" v-show="curIsLogin">
-							<a href="javascript:" style="border-left:2px solid red">退出</a>
-						</li>
-						<!--<li >
-																						<a style="padding-right: 0;" href="javascript:">帮助中心</a>
-																					</li>-->
-					</ul>
+					<!-- 右侧  start-->
+					<router-link class="helper" to="/helper">帮助中心</router-link>
+					<!-- 右侧  end-->
 				</div>
 			</div>
 			<!-- end 顶部用户信息栏 -->
 
-			<!-- start 顶部标题信息 -->
-			<div class="mjx-header-bar mjx-clearfix mjx-width" :class="{'border-none':getNavList[0].isCur}">
-				<a class="mjx-header-bar-left mjx-left" href="/">
-					<img :src="logoUrl" alt="">
-				</a>
-				<!-- start 顶部导航 -->
-				<div class="mjx-header-nav">
-					<ul class="mjx-width-nav">
-						<li v-for="item in getNavList" :class="{active:item.isCur}">
-							<router-link v-if="item.url!=''" :to="item.url">{{item.name}}</router-link>
-							<a v-else @click='showAppDown' href="javascript:">{{item.name}}</a>
-						</li>
-					</ul>
+			<!-- start 顶部logo信息 -->
+			<div class="logoinfo">
+				<div class="leftLogo">
+					<img src="../../static/icon/topandbottomlogo/toplogo.png" />
+					<div class="line"></div>
+					<div class="duanshiping">创意短视频营销平台</div>
 				</div>
-				<!-- end 顶部导航 -->
-				<ul class="mjx-header-bar-right mjx-right">
-					<li>
-						<label class="mjx-img">
-							<i class="icon-mjx-select"></i>
-						</label>
-						<span>海量模特任选</span>
+				<div class="rightTel">
+					<img class="leftTel" src="../../static/icon/topandbottomlogo/tel.png" />
+					<div class="rightinfo">
+						<div class="lianxi">联系热线</div>
+						<div class="tel">400-123-0111</div>
+					</div>
+				</div>
+			</div>
+			<!-- end 顶部logo信息 -->
+
+			<!-- start 顶部导航信息 -->
+			<div class="navbar-xh">
+				<ul class="ul">
+					<li v-for="item in getNavList" :class="{active:item.isCur}">
+						<div v-if="item.url!=''" :to="item.url">{{item.name}}</div>
+						<div v-else @click='showAppDown' href="javascript:">{{item.name}}</div>
 					</li>
 				</ul>
 			</div>
-			<!-- end 顶部标题信息 -->
+			<!-- end 顶部导航信息 -->
+			<el-col :span="24" class="panel-center">
+				<section class="panel-c-c">
+					<div class="grid-content bg-purple-light">
+						<el-col :span="24" style="background-color:#fff;box-sizing: border-box;">
+							<transition name="fade">
+								<router-view></router-view>
+							</transition>
+						</el-col>
+					</div>
+				</section>
+				<!--</el-col>-->
+			</el-col>
+			<!--<div class="test"></div>-->
 		</div>
-		<el-col :span="24" class="panel-center">
-			<section class="panel-c-c">
-				<div class="grid-content bg-purple-light">
-					<el-col :span="24" style="background-color:#fff;box-sizing: border-box;">
-						<transition name="fade">
-							<router-view></router-view>
-						</transition>
-					</el-col>
-				</div>
-			</section>
-			<!--</el-col>-->
-		</el-col>
-		<el-dialog title="扫码下载快拍秀APP" v-model="isShowAppDown">
-			<!--<img src="../assets/img/erweima.png" style="margin: auto;display: block;" />-->
-		</el-dialog>
 	</el-row>
 </template>
 
@@ -100,8 +74,7 @@
 	export default {
 		data() {
 			return {
-				currentPathName: '快拍秀',
-				currentPathNameParent: '首页',
+				isShowI18n: false,
 				isShowAppDown: false,
 				msgTotal: 0,
 				logoUrl: ''
@@ -133,6 +106,9 @@
 				'decrement',
 				'setuserinfo'
 			]),
+			i18nHide() {
+				this.isShowI18n = false;
+			},
 			getLogoUrl() {
 				let self = this;
 				self.$http.post(getSellerStationInfo, {}).then((response) => { // 响应成功回调 
@@ -204,11 +180,192 @@
 	}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	/*.fade-enter-active,
 	.fade-leave-active {
 		transition: opacity .1s
 	}*/
+	
+	.test {
+		position: fixed;
+		top: 350px;
+		right: 0;
+		width: 80px;
+		height: 80px;
+		background-color: #000000;
+	}
+	
+	.navbar-xh {
+		position: relative;
+		height: 50px;
+		background-color: #DE1A20;
+		.ul {
+			position: relative;
+			display: table;
+			margin: auto;
+			height: 50px;
+			/*width: 1200px;*/
+			li {
+				height: 50px;
+				line-height: 50px;
+				color: #FFFFFF;
+				float: left;
+				div {
+					font-size: 16px;
+					padding-left: 26px;
+					padding-right: 26px;
+				}
+				div:hover {
+					cursor: pointer;
+					background-color: #D40E13;
+				}
+			}
+		}
+	}
+	
+	.logoinfo {
+		height: 80px;
+		line-height: 80px;
+		width: 1200px;
+		margin: auto;
+		overflow: hidden;
+		position: relative;
+		.rightTel {
+			position: absolute;
+			top: 0;
+			right: 0;
+			height: 80px;
+			margin-top: 20px;
+			overflow: hidden;
+			.leftTel {
+				display: block;
+				vertical-align: middle;
+				margin-right: 12px;
+				padding-top: 6px;
+				float: left;
+			}
+			.rightinfo {
+				height: 40px;
+				float: right;
+				.lianxi {
+					line-height: 1;
+					color: #999999;
+					font-size: 14px;
+				}
+				.tel {
+					line-height: 1;
+					color: #DE1A20;
+					font-size: 20px;
+					padding-top: 6px;
+				}
+			}
+		}
+		.leftLogo {
+			height: 80px;
+			line-height: 80px;
+			img {
+				width: 240px;
+				height: 48px;
+				margin-top: 16px;
+				margin-left: 12px;
+				vertical-align: middle;
+				float: left;
+			}
+			.line {
+				width: 2px;
+				height: 24px;
+				background: #e8e8e8;
+				margin-left: 12px;
+				margin-right: 12px;
+				margin-top: 28px;
+				float: left;
+			}
+			.duanshiping {
+				font-size: 16px;
+				color: #999999;
+				height: 80px;
+				line-height: 80px;
+				font-weight: bold;
+				float: left;
+			}
+		}
+	}
+	
+	.i18n {
+		height: 32px;
+		line-height: 32px;
+		color: #999999;
+		float: left;
+		font-size: 12px;
+		padding-left: 12px;
+		padding-right: 12px;
+		.info {
+			position: absolute;
+			/*display: none;*/
+			width: 100px;
+			height: 36px;
+			line-height: 36px;
+			text-align: center;
+			border-radius: 2px;
+			background-color: #f8f8f8;
+			box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.29);
+			-webkit-box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.29);
+			-moz-box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.29);
+			-ms-box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.29);
+			top: 42px;
+			margin-left: -3px;
+			.sanjiao {
+				position: absolute;
+				top: -20px;
+				width: 0px;
+				height: 0px;
+				border-top: 12px solid transparent;
+				border-right: 12px solid transparent;
+				border-bottom: 12px solid #f8f8f8;
+				border-left: 12px solid transparent;
+				left: 50%;
+				margin-left: -12px;
+			}
+		}
+		.info:hover {
+			background-color: #ECECEC;
+			cursor: pointer;
+			.sanjiao {
+				border-bottom: 12px solid #ECECEC;
+			}
+		}
+	}
+	
+	.i18n:hover {
+		background-color: #ECECEC;
+		cursor: pointer;
+	}
+	
+	.el-button--primary {
+		background-color: #ECECEC !important;
+		height: 32px;
+		line-height: 32px;
+		color: #999999;
+		border-color: #ECECEC !important;
+		border-radius: 0 !important;
+		font-size: 12px;
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+		padding-left: 12px !important;
+		padding-right: 12px !important;
+	}
+	
+	.el-button--primary:hover,
+	.el-button--primary:active {
+		color: #999999 !important;
+	}
+	
+	.helper {
+		color: #999999;
+		line-height: 32px;
+		font-size: 12px;
+		float: right;
+	}
 	
 	.mjx-header {
 		width: 100%;
@@ -223,7 +380,7 @@
 	}
 	
 	.mjx-header .mjx-header-nav ul li:hover {
-		background-color: #FF3B87;
+		background-color: #DE1A20;
 	}
 	
 	.mjx-header .mjx-header-nav ul li:hover a {
@@ -338,12 +495,12 @@
 	}
 	
 	.mjx-header .mjx-header-user .mjx-header-user-left a.mjx-register {
-		color: #fb4b60;
+		color: #999999;
 	}
 	
 	.mjx-header .mjx-header-user .mjx-header-user-left a {
 		font-size: 14px;
-		color: #8d8d8d;
+		color: #999999;
 		display: inline-block;
 		margin-left: 20px;
 	}
@@ -354,7 +511,7 @@
 		text-align: center;
 		padding-left: 12px;
 		padding-right: 12px;
-		border-right: 2px solid #FF3B87;
+		/*border-right: 2px solid #DE1A20;*/
 		display: inline;
 		position: relative;
 	}
@@ -399,7 +556,7 @@
 		height: 32px;
 		line-height: 32px;
 		background: #f5f5f5;
-		color: #8d8d8d;
+		color: #999999;
 	}
 	
 	.panel-center {
@@ -470,7 +627,7 @@
 	}
 	
 	.mjx-header .mjx-header-nav ul li.active {
-		background-color: #FF3B87;
+		background-color: #DE1A20;
 		color: #FFFFFF;
 	}
 	
