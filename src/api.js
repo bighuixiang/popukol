@@ -1,5 +1,5 @@
 //http://myshowbusiness.nullwei.com
-const IP = '/web/'
+const IP = '/web'
 
 //GET   ===> 账号分类列表
 export const recordList = `${IP}/platform/category/record/list`

@@ -41,6 +41,7 @@
 		mounted() {
 			let self = this
 			self.increment(1)
+			self.test();
 		},
 		computed: {
 			// 使用对象展开运算符将 getters 混入 computed 对象中
@@ -65,6 +66,20 @@
 					}
 				}, (response) => {});
 
+			},
+			test() {
+				let self = this;
+				self.$http.post(self.API.recordList, {
+					params: {
+						platformId: 1,
+					}
+				}).then((response) => { // 响应成功回调
+					if(response.data.code == 0) {
+						console.log(response.data)
+					}
+				}, (response) => {
+
+				});
 			}
 		}
 	}
@@ -91,7 +106,7 @@
 					bottom: 0;
 					padding-top: 12px;
 					cursor: pointer;
-					span{
+					span {
 						padding: 3px 12px 6px;
 					}
 				}
@@ -122,7 +137,7 @@
 						cursor: pointer;
 						display: inline-block;
 						padding-right: 34px;
-						span{
+						span {
 							padding: 3px 12px 6px;
 						}
 					}
