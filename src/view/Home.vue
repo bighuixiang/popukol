@@ -134,12 +134,6 @@
 <script>
 	import { mapGetters } from 'vuex'
 	import { mapActions } from 'vuex'
-	import {
-		checkLogined,
-		logout,
-		pushMessageInfoList,
-		getSellerStationInfo
-	} from '../api'
 	export default {
 		data() {
 			return {
@@ -195,11 +189,11 @@
 			},
 			getLogoUrl() {
 				let self = this;
-				self.$http.post(getSellerStationInfo, {}).then((response) => { // 响应成功回调 
-					self.logoUrl = response.data.data.logo;
-				}, (response) => {
-					// 响应错误回调
-				});
+//				self.$http.post(getSellerStationInfo, {}).then((response) => { // 响应成功回调 
+//					self.logoUrl = response.data.data.logo;
+//				}, (response) => {
+//					// 响应错误回调
+//				});
 			},
 			showAppDown() {
 				let self = this
@@ -216,16 +210,16 @@
 			},
 			checkLogined() {
 				let self = this
-				self.$http.post(checkLogined).then((response) => { // 响应成功回调 
-					if(response.data.code == 0) {
-						self.setuserinfo(response.data.data)
-						window.localStorage.setItem('userInfo', response.data.data)
-					} else {
-						window.localStorage.removeItem('userInfo')
-					}
-				}, (response) => {
-					window.localStorage.removeItem('userInfo')
-				});
+//				self.$http.post(checkLogined).then((response) => { // 响应成功回调 
+//					if(response.data.code == 0) {
+//						self.setuserinfo(response.data.data)
+//						window.localStorage.setItem('userInfo', response.data.data)
+//					} else {
+//						window.localStorage.removeItem('userInfo')
+//					}
+//				}, (response) => {
+//					window.localStorage.removeItem('userInfo')
+//				});
 			},
 			handleselect: function(a, b) {},
 			//退出登录
@@ -234,18 +228,18 @@
 				self.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
-					self.$http.post(logout).then((response) => { // 响应成功回调 
-						if(response.data.code == 0) {
-							window.localStorage.removeItem('userInfo')
-							self.setuserinfo({})
-							self.$router.replace('/');
-						} else {
-							self.$message({
-								message: response.data.msg,
-								type: 'warning'
-							})
-						}
-					}, (response) => {});
+//					self.$http.post(logout).then((response) => { // 响应成功回调 
+//						if(response.data.code == 0) {
+//							window.localStorage.removeItem('userInfo')
+//							self.setuserinfo({})
+//							self.$router.replace('/');
+//						} else {
+//							self.$message({
+//								message: response.data.msg,
+//								type: 'warning'
+//							})
+//						}
+//					}, (response) => {});
 				}).catch(() => {
 
 				});
@@ -253,11 +247,11 @@
 			},
 			getMessageInfoList() {
 				let self = this;
-				self.$http.post(pushMessageInfoList).then((response) => { // 响应成功回调 
-					if(response.data.code == 0) {
-						self.msgTotal = response.data.data.total;
-					}
-				}, (response) => {});
+//				self.$http.post(pushMessageInfoList).then((response) => { // 响应成功回调 
+//					if(response.data.code == 0) {
+//						self.msgTotal = response.data.data.total;
+//					}
+//				}, (response) => {});
 
 			},
 			toTop() {
@@ -288,6 +282,7 @@
 		position: fixed;
 		right: 0;
 		bottom: 144px;
+		z-index: 999;
 	}
 	
 	.backTop {
@@ -499,8 +494,8 @@
 				float: left;
 				div {
 					font-size: 16px;
-					padding-left: 26px;
-					padding-right: 26px;
+					padding-left: 25px;
+					padding-right: 25px;
 					/*font-weight: bold;*/
 				}
 				div:hover {
