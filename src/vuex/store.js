@@ -14,16 +14,40 @@ const state = {
 		"url": "/",
 		"isCur": true,
 	}, {
-		"name": "发布任务",
+		"name": "微信",
 		"url": "/releasetask1",
 		"isCur": false,
 	}, {
-		"name": "我的模特",
+		"name": "微博",
 		"url": "/mmgroup",
 		"isCur": false,
 	}, {
-		"name": "APP下载",
-		"url": "",
+		"name": "小红书",
+		"url": "/mmgroup",
+		"isCur": false,
+	}, {
+		"name": "淘宝/京东达人",
+		"url": "/mmgroup",
+		"isCur": false,
+	}, {
+		"name": "直播/短视频",
+		"url": "/mmgroup",
+		"isCur": false,
+	}, {
+		"name": "头条/知乎/豆瓣",
+		"url": "/mmgroup",
+		"isCur": false,
+	}, {
+		"name": "Facebook/Twitter",
+		"url": "/mmgroup",
+		"isCur": false,
+	}, {
+		"name": "新媒体全案",
+		"url": "/mmgroup",
+		"isCur": false,
+	}, {
+		"name": "更多",
+		"url": "/mmgroup",
 		"isCur": false,
 	}],
 }

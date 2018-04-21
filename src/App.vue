@@ -15,26 +15,26 @@
 	
 	.el-dialog__close:hover,
 	.el-dialog__close:focus {
-		color: #FF3B87 !important;
+		color: #DE1A20 !important;
 	}
 	
 	.el-button:focus,
 	.el-button:hover {
-		border-color: #FF3B87 !important;
-		color: #FF3B87 !important;
+		border-color: #DE1A20 !important;
+		color: #DE1A20 !important;
 	}
 	
 	.task_type_list h1 {
-		color: #FF3B87 !important;
+		color: #DE1A20 !important;
 	}
 	
 	.task_type .cur {
-		border: 1px solid #FF3B87 !important;
+		border: 1px solid #DE1A20 !important;
 		background: #FFF9FB !important;
 	}
 	
 	.step.stepcur {
-		border-color: #FF3B87 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.thumbnail .same-text {
@@ -51,7 +51,7 @@
 	}
 	
 	.thumbnail:hover {
-		border: 1px solid #FF3B87 !important;
+		border: 1px solid #DE1A20 !important;
 		overflow: hidden;
 	}
 	
@@ -69,7 +69,7 @@
 	}
 	
 	.el-pagination .btn-next:hover {
-		color: #FF3B87 !important;
+		color: #DE1A20 !important;
 	}
 	
 	.el-pagination button.disabled:hover {
@@ -81,16 +81,16 @@
 	}
 	
 	.el-pagination .btn-prev:hover {
-		color: #FF3B87 !important;
+		color: #DE1A20 !important;
 	}
 	
 	.el-pager li:hover {
-		color: #FF3B87 !important;
+		color: #DE1A20 !important;
 	}
 	
 	.el-button:hover {
-		border-color: #FF3B87 !important;
-		color: #FF3B87 !important;
+		border-color: #DE1A20 !important;
+		color: #DE1A20 !important;
 	}
 	
 	.el-pager li.active {
@@ -98,7 +98,7 @@
 	}
 	
 	.el-pagination__editor:focus {
-		border-color: #FF3B87 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-pager li.active {
@@ -111,36 +111,36 @@
 	}
 	
 	.el-input__inner:focus {
-		border-color: #FF3B87 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-input__inner:active {
-		border-color: #FF3B87 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-pagination__sizes .el-input .el-input__inner:hover {
-		border-color: #FF3B87 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-select-dropdown__item.selected.hover,
 	.el-select-dropdown__item.selected {
-		background-color: #FF3B87 !important;
+		background-color: #DE1A20 !important;
 	}
 	
 	.el-radio-button__orig-radio:checked+.el-radio-button__inner {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
-		-webkit-box-shadow: -1px 0 0 0 #FF3B87 !important;
-		-moz-box-shadow: -1px 0 0 0 #FF3B87 !important;
-		box-shadow: -1px 0 0 0 #FF3B87 !important;
+		background-color: #DE1A20 !important;
+		border-color: #DE1A20 !important;
+		-webkit-box-shadow: -1px 0 0 0 #DE1A20 !important;
+		-moz-box-shadow: -1px 0 0 0 #DE1A20 !important;
+		box-shadow: -1px 0 0 0 #DE1A20 !important;
 	}
 	
 	.el-radio-button__inner:hover {
-		border-color: #FF3B87 !important;
-		color: #FF3B87 !important;
-		-webkit-box-shadow: -1px 0 0 0 #FF3B87 !important;
-		-moz-box-shadow: -1px 0 0 0 #FF3B87 !important;
-		box-shadow: -1px 0 0 0 #FF3B87 !important;
+		border-color: #DE1A20 !important;
+		color: #DE1A20 !important;
+		-webkit-box-shadow: -1px 0 0 0 #DE1A20 !important;
+		-moz-box-shadow: -1px 0 0 0 #DE1A20 !important;
+		box-shadow: -1px 0 0 0 #DE1A20 !important;
 	}
 	
 	.el-radio-button__orig-radio:checked+.el-radio-button__inner:hover {
@@ -149,17 +149,17 @@
 	
 	.el-radio__input.is-checked .el-radio__inner,
 	.el-pager li.active {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
+		background-color: #DE1A20 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-radio__inner:hover {
-		border-color: #FF3B87 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-button--warning {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
+		background-color: #DE1A20 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-button--warning:hover {
@@ -167,30 +167,30 @@
 	}
 	
 	.el-step__title.is-finish {
-		color: #FF3B87 !important;
+		color: #DE1A20 !important;
 	}
 	
 	.el-step__head.is-finish {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
+		background-color: #DE1A20 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-tabs__item.is-active {
-		color: #FF3B87 !important;
+		color: #DE1A20 !important;
 	}
 	
 	.el-tabs__active-bar {
-		background-color: #FF3B87 !important;
+		background-color: #DE1A20 !important;
 	}
 	
 	.el-button--primary {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
+		background-color: #DE1A20 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-checkbox__input.is-checked .el-checkbox__inner {
-		background-color: #FF3B87 !important;
-		border-color: #FF3B87 !important;
+		background-color: #DE1A20 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	.el-checkbox__inner {
@@ -198,7 +198,7 @@
 	}
 	
 	.el-checkbox__inner:hover {
-		border-color: #FF3B87 !important;
+		border-color: #DE1A20 !important;
 	}
 	
 	[class^="icon-"],
@@ -321,7 +321,7 @@
 	}
 	
 	a:hover {
-		color: #FF3B87 !important;
+		color: #DE1A20 !important;
 		text-decoration: none;
 	}
 	
