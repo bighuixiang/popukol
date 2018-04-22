@@ -12,11 +12,15 @@ export default new Router({
 			path: '/',
 			component: resolve => require(['../view/Home/Index.vue'], resolve),
 			name: '首页'
-		}, {
+		},{
 			path: '/wechat',
 			component: resolve => require(['../view/Home/WeChat.vue'], resolve),
 			name: '微信'
 		}]
+	}, {
+		path: '/Login',
+		name: 'Login',
+		component: resolve => require(['../view/Home/Login.vue'], resolve)
 	}, {
 		path: '*',
 		name: 'Home',
