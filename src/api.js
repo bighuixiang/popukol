@@ -1,7 +1,6 @@
 //http://myshowbusiness.nullwei.com
 const IP = '/web'
 
-
 //GET   ===> 首页轮播图片
 export const sliderList = `${IP}/slider/pic/list`
 //GET   ===> 首页优质资源分类列表
@@ -21,3 +20,9 @@ export const homePartnerList = `${IP}/partner/record/list`
 export const recordList = `${IP}/platform/category/record/list`
 //GET   ===> 账号分类-（2）通过子分类请求
 export const subRecordList = `${IP}/platform/sub/category/record/list`
+//GET   ===> 区域-省
+export const provinceList = `${IP}/region/province/list`
+//GET   ===> 区域-市
+export const cityList = `${IP}/region/city/list`
+//GET   ===> 分页-微信
+export const wechatAccountListAPI = `${IP}/wechat/account/`

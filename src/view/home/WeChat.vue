@@ -2,8 +2,8 @@
 	<div class="content">
 		<!-- start 搜索 -->
 		<div class="search">
-			<el-input class="input" placeholder="请输入搜索关键字" prefix-icon="el-icon-search" v-model="keywords"></el-input>
-			<el-button class="btn" type="primary">搜索</el-button>
+			<el-input class="input" placeholder="请输入搜索关键字" prefix-icon="el-icon-search" v-model="params.keywords"></el-input>
+			<el-button @click="search" class="btn" type="primary">搜索</el-button>
 		</div>
 		<!-- end 搜索 -->
 		<!-- start 账号分类 -->
@@ -11,71 +11,81 @@
 			<div class="item kuozhan">
 				<div class="title">账号分类</div>
 				<div class="right">
-					<div class="buxian cur">
+					<div class="buxian" :class="{'cur':recordIndex==0}" @click="setRecord(0,0)">
 						<span>不限</span>
 					</div>
 					<div class="list">
-						<!--<div class="cur"><span>母婴</span></div>-->
-						<div v-for="item in recordTypeList"><span>{{item.name}}</span></div>
+						<div v-for="(item,index) in recordTypeList" @click="setRecord(index+1,item.id)" :class="{'cur':recordIndex==index+1}"><span>{{item.name}}</span></div>
 					</div>
 				</div>
 			</div>
 			<div class="item">
 				<div class="title">粉 丝 数</div>
 				<div class="right">
-					<div class="buxian cur">
+					<div class="buxian" :class="{'cur':fansIndex==0}" @click="setFans(0)">
 						<span>不限</span>
 					</div>
 					<div class="list">
-						<!--<div class="cur"><span>母婴</span></div>-->
-						<div><span>1万以下</span></div>
-						<div><span>1万-5万</span></div>
-						<div><span>5万-10万</span></div>
-						<div><span>10万-20万</span></div>
-						<div><span>20万-50万</span></div>
-						<div><span>50万-100万</span></div>
-						<div><span>100万以上</span></div>
+						<div @click="setFans(index+1,item.id)" :class="{'cur':fansIndex==index+1}" v-for="(item,index) in ['1万以下','1万-5万','5万-10万','10万-20万','20万-50万','50万-100万','100万以上']"><span>{{item}}</span></div>
 					</div>
 					<div class="filter">
-						<el-input class="inputwidth" size="mini" v-model="input" placeholder="万"></el-input>
+						<el-input class="inputwidth" size="mini" v-model="params.fanss.min" placeholder="万"></el-input>
 						<div class="hengxian"></div>
-						<el-input class="inputwidth" size="mini" v-model="input" placeholder="万"></el-input>
-						<el-button class="btn" type="primary" size="mini">确定</el-button>
-						<span class="canlen">取消</span>
+						<el-input class="inputwidth" size="mini" v-model="params.fanss.max" placeholder="万"></el-input>
+						<el-button @click="searchFans" class="btn" type="primary" size="mini">确定</el-button>
+						<span class="canlen" @click="setFans(0)">取消</span>
 					</div>
 				</div>
 			</div>
 			<div class="item">
 				<div class="title">参考报价</div>
 				<div class="right">
-					<div class="buxian cur">
+					<div class="buxian" :class="{'cur':priceIndex==0}" @click="setPrice(0)">
 						<span>不限</span>
 					</div>
 					<div class="list">
-						<!--<div class="cur"><span>母婴</span></div>-->
-						<div><span>美食</span></div>
-						<div><span>健康养生</span></div>
-						<div><span>幽默搞笑</span></div>
-						<div><span>母婴</span></div>
-						<div><span>美食</span></div>
-						<div><span>幽默搞笑</span></div>
+						<div @click="setPrice(index+1,item.id)" :class="{'cur':priceIndex==index+1}" v-for="(item,index) in ['1000元以下','1000-3000元','3000-5000元','5000-10000元','10000元以上']"><span>{{item}}</span></div>
+					</div>
+					<div class="filter">
+						<el-dropdown @command="bjtype" trigger="click" class="xiala">
+							<span class="el-dropdown-link type">
+   								 {{bjtypeobj.name}}
+   								 <i class="el-icon-arrow-down el-icon--right"></i>
+  							</span>
+							<el-dropdown-menu slot="dropdown">
+								<el-dropdown-item command="{'id':'0','name':'头条'}">头条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'1','name':'次条'}">次条</el-dropdown-item>
+							</el-dropdown-menu>
+						</el-dropdown>
+						<el-input class="inputwidth" size="mini" v-model="params.prices.min" placeholder="元"></el-input>
+						<div class="hengxian"></div>
+						<el-input class="inputwidth" size="mini" v-model="params.prices.max" placeholder="元"></el-input>
+						<el-button @click="searchPrice" class="btn" type="primary" size="mini">确定</el-button>
+						<span @click="setPrice(0)" class="canlen">取消</span>
 					</div>
 				</div>
 			</div>
 			<div class="item">
 				<div class="title"><span style="margin-right: 26px;">区</span>域</div>
 				<div class="right">
-					<div class="buxian cur">
+					<div class="buxian" :class="{'cur':regionIndex==0}" @click="setRegion(0,0)">
 						<span>不限</span>
 					</div>
 					<div class="list">
-						<!--<div class="cur"><span>母婴</span></div>-->
-						<div><span>美食</span></div>
-						<div><span>健康养生</span></div>
-						<div><span>幽默搞笑</span></div>
-						<div><span>母婴</span></div>
-						<div><span>美食</span></div>
-						<div><span>幽默搞笑</span></div>
+						<div @click="setRegion(index+1,item.id)" :class="{'cur':regionIndex==index+1}" v-for="(item,index) in areaList"><span>{{item.name}}</span></div>
+					</div>
+					<div class="filter">
+						<el-select @change="provinveChange" v-model="provinveId" size="mini" placeholder="请选择" class="select">
+							<el-option v-for="item in provinveDataList" :key="item.name" :label="item.name" :value="item.id">
+							</el-option>
+						</el-select>
+						<div class="hengxian"></div>
+						<el-select @change="cityChange" v-model="cityId" size="mini" placeholder="请选择" class="select">
+							<el-option v-for="item in cityDataList" :key="item.name" :label="item.name" :value="item.id">
+							</el-option>
+						</el-select>
+						<el-button @click="searchRegion" class="btn" type="primary" size="mini">确定</el-button>
+						<span @click="setRegion(0,0)" class="canlen">取消</span>
 					</div>
 				</div>
 			</div>
@@ -86,13 +96,9 @@
 						<span>不限</span>
 					</div>
 					<div class="list">
-						<!--<div class="cur"><span>母婴</span></div>-->
-						<div><span>美食</span></div>
-						<div><span>健康养生</span></div>
-						<div><span>幽默搞笑</span></div>
-						<div><span>母婴</span></div>
-						<div><span>美食</span></div>
-						<div><span>幽默搞笑</span></div>
+						<el-checkbox-group @change="officalChange" class="checkList" v-model="checkList">
+							<el-checkbox label="官方认证"></el-checkbox>
+						</el-checkbox-group>
 					</div>
 				</div>
 			</div>
@@ -128,24 +134,72 @@
 		<!-- end 排序 -->
 		<!-- start 列表 -->
 		<div class="biaoge">
-			<el-table ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+			<el-table ref="multipleTable" :data="dataList" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
 				<el-table-column type="selection" width="55">
 				</el-table-column>
-				<el-table-column label="日期" width="120">
-					<template slot-scope="scope">{{ scope.row.date }}</template>
+				<el-table-column label="账号信息" width="286">
+					<template slot-scope="scope">
+						<el-row>
+							<el-col :span="6" class="tableZh">
+								<div class="left">
+									<img class="userImg" :src="scope.row.headImg" />
+									<img class="ico" :src="scope.row.headImg" />
+								</div>
+							</el-col>
+							<el-col :span="18" class="tableZh">
+								<div class="right">
+									<div class="name">{{scope.row.name}}
+										<div class="erweima">
+											<img class="erweimamin" src="../../../static/icon/meitirenzhen/erweima.png" />
+											<img class="erweimaMax" :src="scope.row.headImg" />
+										</div>
+									</div>
+									<span class="tag">原创</span>
+								</div>
+							</el-col>
+						</el-row>
+					</template>
 				</el-table-column>
-				<el-table-column prop="name" label="姓名" width="120">
+				<el-table-column prop="fans" label="粉丝数">
 				</el-table-column>
-				<el-table-column prop="address" label="地址" show-overflow-tooltip>
+				<el-table-column label="阅读数">
+					<template slot-scope="scope">
+						<div>
+							<p>头条:{{ scope.row.extra.viewCount }}+</p>
+							<p>头条:{{ scope.row.extra.subViewCount}}+</p>
+						</div>
+					</template>
 				</el-table-column>
+				<el-table-column label="报价">
+					<template slot-scope="scope">
+						<div>
+							<p>头条:￥ {{scope.row.mainPrice}}</p>
+							<p>头条:￥ {{scope.row.subPrice}}</p>
+						</div>
+					</template>
+				</el-table-column>
+				<el-table-column prop="categoryModel" label="账号分类">
+				</el-table-column>
+				<el-table-column label="操作">
+					<template slot-scope="scope">
+						<div>
+							<el-button class="btnred" plain size="mini">预约投放</el-button>
+							<p class="zhDetail">账号详情</p>
+							<p class="addCar">加入选号车</p>
+						</div>
+					</template>
+				</el-table-column>
+				<!--<el-table-column prop="address" label="地址" show-overflow-tooltip   此属性表示内容超出隐藏  tip提示>
+				</el-table-column>-->
 			</el-table>
 
 			<div class="pagination">
-				<el-pagination background layout="total, prev, pager, next, jumper" :total="1000">
+				<el-pagination @current-change="currentChange" background layout="total, prev, pager, next, jumper" :current-page="params.page" :total="total">
 				</el-pagination>
 			</div>
 		</div>
 		<!-- end 列表 -->
+
 	</div>
 </template>
 
@@ -156,45 +210,73 @@
 	export default {
 		data() {
 			return {
-				keywords: "", //搜索关键字
-				sortIndex: "0",
+				params: {
+					//入参	
+					page: 1,
+					keywords: "", //搜索关键字
+					regionId: 0, //地区
+					categoryId: 0, //账号分类
+					fanss: { //粉丝数区间	
+						min: "",
+						max: ""
+					},
+					prices: { //价格区间
+						type: 0,
+						min: "",
+						max: ""
+					},
+					offical: 0, //官方   0 未选中   1 已选择
+				},
+				provinveId: "", //省ID
+				cityId: "", //区ID
+				recordIndex: 0, //账号分类   当前索引
+				fansIndex: 0, //粉丝数   当前索引
+				priceIndex: 0, //价格   当前索引
+				sortIndex: 0, //排序   当前索引
+				regionIndex: 0, //地区   当前索引
+
+				total: 0, //当前分页总数
+
 				recordTypeList: [], //账号分类列表
-				tableData3: [{
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
+				checkList: [], //官方认证
+				provinveDataList: [], //省
+				cityDataList: [], //市区
+				bjtypeobj: {
+					id: "0",
+					name: "头条"
+				},
+				areaList: [{
+					id: 1,
+					name: "北京"
 				}, {
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
+					id: 8,
+					name: "上海"
 				}, {
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
+					id: 205,
+					name: "广州"
 				}, {
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
+					id: 207,
+					name: "深圳"
 				}, {
-					date: '2016-05-08',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
+					id: 237,
+					name: "成都"
 				}, {
-					date: '2016-05-06',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
+					id: 87,
+					name: "杭州"
 				}, {
-					date: '2016-05-07',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
+					id: 175,
+					name: "武汉"
 				}],
+				dataList: [],
 				multipleSelection: []
 			}
 		},
-		mounted() {
+		async mounted() {
 			let self = this
 			self.increment(1)
-			self.addRecordType();
+			await self.addRecordType();
+			await self.addProvinceAndCity();
+			await self.addWechatList();
 		},
 		computed: {
 			// 使用对象展开运算符将 getters 混入 computed 对象中
@@ -210,8 +292,228 @@
 				'decrement',
 				'setuserinfo'
 			]),
+			addWechatList() {
+				let self = this;
+				let fansSort = 0,
+					viewSort = 0,
+					priceSort = 0;
+				switch(self.sortIndex) {
+					case 1:
+						fansSort = 1;
+						break;
+					case 3:
+						viewSort = 1;
+						break;
+					case 5:
+						priceSort = 1;
+						break;
+					default:
+						break;
+				}
+				let fansMin = 0,
+					fansMax = 0;
+				switch(self.fansIndex) {
+					case -1:
+						if(self.params.fanss.min.trim() == "")
+							self.params.fanss.min = 0;
+
+						if(self.params.fanss.max.trim() == "")
+							self.params.fanss.max = 0;
+
+						fansMin = self.params.fanss.min;
+						fansMax = self.params.fanss.max;
+						break;
+					case 1:
+						fansMin = 0;
+						fansMax = 10000;
+						break;
+					case 2:
+						fansMin = 10000;
+						fansMax = 50000;
+						break;
+					case 3:
+						fansMin = 50000;
+						fansMax = 100000;
+						break;
+					case 4:
+						fansMin = 100000;
+						fansMax = 200000;
+						break;
+					case 5:
+						fansMin = 200000;
+						fansMax = 500000;
+						break;
+					case 6:
+						fansMin = 500000;
+						fansMax = 1000000;
+						break;
+					case 7:
+						fansMin = 1000000;
+						fansMax = 0;
+						break;
+					default:
+						break;
+				}
+
+				let priceMin = 0,
+					priceMax = 0;
+				switch(self.priceIndex) {
+					case -1:
+						if(self.params.prices.min.trim() == "")
+							self.params.prices.min = 0;
+
+						if(self.params.prices.max.trim() == "")
+							self.params.prices.max = 0;
+
+						priceMin = self.params.prices.min;
+						priceMax = self.params.prices.max;
+						break;
+					case 1:
+						priceMin = 0;
+						priceMax = 1000;
+						break;
+					case 2:
+						priceMin = 1000;
+						priceMax = 3000;
+						break;
+					case 3:
+						priceMin = 3000;
+						priceMax = 5000;
+						break;
+					case 4:
+						priceMin = 5000;
+						priceMax = 10000;
+						break;
+					case 5:
+						priceMin = 10000;
+						priceMax = 0;
+						break;
+					default:
+						break;
+				}
+				if(self.regionIndex == -1) {
+					self.params.regionId = self.cityId;
+				}
+				let str = [];
+				str.push(self.params.categoryId + "/")
+				str.push(fansMin + "-" + fansMax + "/")
+				str.push(priceMin + "-" + priceMax + "/")
+				str.push(self.params.regionId + "/")
+				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
+				str.push(self.params.offical)
+				self.$http.get(self.API.wechatAccountListAPI + str.join(''), {
+					params: {
+						page: self.params.page,
+						limit: 10,
+						query: encodeURIComponent(self.params.keywords)
+					}
+				}).then((response) => { // 响应成功回调
+					if(response.data.status == 0) {
+						self.dataList = response.data.data;
+						self.total = response.data.count;
+					}
+				}, (response) => {});
+			},
+			async addProvinceAndCity() {
+				let self = this;
+				await self.$http.get(self.API.provinceList).then((response) => { // 响应成功回调 
+					if(response.data.status == 0) {
+						self.provinveDataList = response.data.data;
+					}
+				}, (response) => {});
+
+				await self.$http.get(self.API.cityList, {
+					params: {
+						pid: self.provinveDataList[0].id
+					}
+				}).then((response) => { // 响应成功回调
+					if(response.data.status == 0) {
+						self.cityDataList = response.data.data;
+					}
+				}, (response) => {});
+			},
+			currentChange(index) {
+				this.params.page = index;
+				this.addWechatList();
+			},
+			setRecord(val, id) {
+				this.recordIndex = val - 0;
+				this.params.categoryId = id;
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			setFans(val) {
+				this.fansIndex = val - 0;
+				this.params.fanss.min = "";
+				this.params.fanss.max = "";
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			searchFans() {
+				this.fansIndex = -1;
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			setPrice(val) {
+				this.priceIndex = val - 0;
+				this.params.prices.min = "";
+				this.params.prices.max = "";
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			searchPrice() {
+				this.priceIndex = -1;
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			setRegion(val, id) {
+				this.regionIndex = val - 0;
+				this.params.regionId = id;
+				this.cityId = "";
+				this.provinveId = "";
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			searchRegion() {
+				this.regionIndex = -1;
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			search() {
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			provinveChange(val) {
+				let self = this;
+				console.log("provinveChange")
+				this.cityId = "";
+				this.provinveId = val;
+				self.$http.get(self.API.cityList, {
+					params: {
+						pid: val
+					}
+				}).then((response) => { // 响应成功回调
+					if(response.data.status == 0) {
+						self.cityDataList = response.data.data;
+					}
+				}, (response) => {});
+			},
+			cityChange(val) {
+				this.cityId = val;
+			},
+			officalChange(val) {
+				this.params.offical = val.length === 0 ? 0 : 1;
+				this.params.page = 1;
+				this.addWechatList();
+			},
 			dropdownchanage(val) {
-				this.sortIndex = val;
+				this.sortIndex = val - 0;
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			bjtype(val) { //				参考报价类型
+				val = val.replace(/'/g, '"');
+				this.bjtypeobj = JSON.parse(val);
 			},
 			handleSelectionChange(val) {
 				this.multipleSelection = val;
@@ -244,6 +546,102 @@
 	}
 </script>
 <style lang="scss" scoped>
+	.addCar {
+		margin-top: 6px;
+		padding-left: 22px;
+		background: url(../../../static/icon/guanggaozhu/buycar.png) no-repeat center left;
+		background-size: 16px;
+		cursor: pointer;
+	}
+	
+	.addCar:hover {
+		color: #DE1A20;
+	}
+	
+	.zhDetail {
+		margin-top: 6px;
+		padding-left: 22px;
+		background: url(../../../static/icon/guanggaozhu/zhxq.png) no-repeat center left;
+		background-size: 12px;
+		cursor: pointer;
+	}
+	
+	.btnred {
+		color: #DE1A20;
+		border-color: #DE1A20;
+	}
+	
+	.btnred:hover {
+		color: #C60009 !important;
+		border-color: #C60009 !important;
+	}
+	
+	.zhDetail:hover {
+		color: #DE1A20;
+	}
+	
+	.tableZh {
+		.right {
+			position: relative;
+			.name {
+				font-size: 14px;
+				color: #333333;
+				display: inline-block;
+				.erweima {
+					position: relative;
+					display: inline-block;
+					.erweimamin {
+						width: 16px;
+						height: 16px;
+						display: inline-block;
+						margin-left: 6px;
+						vertical-align: middle;
+					}
+					.erweimaMax {
+						position: absolute;
+						right: -112px;
+						top: -25px;
+						width: 100px;
+						height: 100px;
+						z-index: 9999;
+						display: none;
+					}
+				}
+				.erweima:hover {
+					.erweimaMax {
+						display: block;
+					}
+				}
+			}
+			.tag {
+				display: table;
+				color: #FFFFFF;
+				background-color: #DE1A20;
+				padding: 0 6px;
+				border-radius: 4px;
+				font-size: 12px;
+			}
+		}
+		.left {
+			width: 44px;
+			position: relative;
+			.userImg {
+				width: 44px;
+				height: 44px;
+				border-radius: 50%;
+				display: block;
+			}
+			.ico {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				width: 18px;
+				height: auto;
+				display: block;
+			}
+		}
+	}
+	
 	.content {
 		width: 1200px;
 		margin: auto;
@@ -257,6 +655,41 @@
 				height: 45px;
 				line-height: 45px;
 				/*border: 1px solid #000000;*/
+				.select {
+					width: 86px;
+					float: left;
+					.el-input {
+						.el-input__inner {
+							border-radius: 2px !important;
+							border: solid 1px #e8e8e8 !important;
+						}
+					}
+				}
+				.xiala {
+					float: left;
+					padding-right: 12px;
+					.type {
+						position: relative;
+						border: solid 1px #e8e8e8;
+						color: #888888;
+						height: 24px;
+						border-radius: 2px;
+						font-size: 12px;
+						padding: 5px 6px 5px 8px;
+					}
+					.type:before {
+						content: '';
+						position: absolute;
+						top: 0;
+						right: 0;
+						bottom: 0;
+						width: 0;
+						background-color: #e8e8e8;
+					}
+				}
+				.xiala:hover {
+					cursor: pointer;
+				}
 				.hengxian {
 					width: 10px;
 					height: 1px;
@@ -268,22 +701,22 @@
 					float: left;
 				}
 				.inputwidth {
-					width: 68px;
+					width: 66px;
 					height: 24px;
 					border-radius: 2px;
 					display: inline-block;
 					padding: 0;
 					float: left;
 				}
-				.btn{
+				.btn {
 					margin-left: 12px;
 				}
-				.canlen{
+				.canlen {
 					margin-left: 6px;
 				}
-				.canlen:hover{
+				.canlen:hover {
 					color: #DE1A20;
-					cursor:pointer;
+					cursor: pointer;
 				}
 			}
 			.right {
@@ -302,14 +735,14 @@
 					padding-top: 12px;
 					cursor: pointer;
 					span {
-						padding: 3px 12px 6px;
+						padding: 3px 6px 4px;
 					}
 				}
 				.buxian:hover {
 					span {
 						color: #FFFFFF;
 						background-color: #DE1A20;
-						padding: 3px 12px 6px;
+						padding: 3px 6px 4px;
 						border-radius: 4px;
 						line-height: 0;
 					}
@@ -320,27 +753,30 @@
 						background-color: #DE1A20;
 						border-radius: 4px;
 						line-height: 0;
-						padding: 3px 12px 6px;
+						padding: 3px 6px 4px;
 					}
 				}
 				.list {
 					float: left;
 					padding-left: 86px;
 					padding-bottom: 12px;
+					.checkList {
+						padding-left: 12px;
+					}
 					div {
 						padding-top: 12px;
 						cursor: pointer;
 						display: inline-block;
-						/*padding-right: 34px;*/
+						padding-right: 6px;
 						span {
-							padding: 3px 12px 6px;
+							padding: 3px 6px 4px;
 						}
 					}
 					div:hover {
 						span {
 							color: #FFFFFF;
 							background-color: #DE1A20;
-							padding: 3px 12px 6px;
+							padding: 3px 6px 4px;
 							border-radius: 4px;
 							line-height: 0;
 						}
@@ -357,6 +793,7 @@
 				border-bottom: 1px solid #e8e8e8;
 				font-size: 14px;
 				padding-left: 100px;
+				min-height: 45px;
 				.title {
 					width: 100px;
 					background-color: #F2F2F2;

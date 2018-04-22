@@ -1,5 +1,5 @@
 <template>
-		<router-view/>
+	<router-view/>
 </template>
 
 <script>
@@ -10,6 +10,10 @@
 
 <style>
 	@import "./nprogress/qqzxkf.css";
+	.el-table .cell,
+	.el-table th div {
+		overflow: visible !important;
+	}
 	
 	.el-dialog__close:hover,
 	.el-dialog__close:focus {
@@ -269,7 +273,7 @@
 		outline: none;
 	}
 	
-	 a:visited {
+	a:visited {
 		/* color: #8d8d8d; */
 		text-decoration: none;
 	}
@@ -400,5 +404,17 @@
 	.el-checkbox__input.is-checked .el-checkbox__inner,
 	.el-checkbox__input.is-indeterminate .el-checkbox__inner {
 		background-color: #DE1A20 !important;
+	}
+	
+	.el-checkbox__input.is-checked+.el-checkbox__label {
+		color: #DE1A20 !important;
+	}
+	
+	.el-select .el-input.is-focus .el-input__inner {
+		border-color: #DE1A20 !important;
+	}
+	
+	.el-select-dropdown__item.selected {
+		color: #FFFFFF !important;
 	}
 </style>
