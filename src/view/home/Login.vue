@@ -10,7 +10,7 @@
 				<div class="title">账号分类</div>
 				<div class="right">
 					<div class="buxian cur">
-						<span>不限</span>
+						<span>不限11111111111111</span>
 					</div>
 					<div class="list">
 						<!--<div class="cur"><span>母婴</span></div>-->
