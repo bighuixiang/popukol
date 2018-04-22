@@ -18,6 +18,10 @@ export default new Router({
 			name: '微信'
 		}]
 	}, {
+		path: '/signUp',
+		name: 'signUp',
+		component: resolve => require(['../view/Home/signUp.vue'], resolve)
+	}, {
 		path: '/Login',
 		name: 'Login',
 		component: resolve => require(['../view/Home/Login.vue'], resolve)
