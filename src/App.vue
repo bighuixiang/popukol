@@ -396,4 +396,9 @@
 		display: table;
 		content: " ";
 	}
+	
+	.el-checkbox__input.is-checked .el-checkbox__inner,
+	.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+		background-color: #DE1A20 !important;
+	}
 </style>

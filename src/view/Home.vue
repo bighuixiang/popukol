@@ -189,11 +189,11 @@
 			},
 			getLogoUrl() {
 				let self = this;
-//				self.$http.post(getSellerStationInfo, {}).then((response) => { // 响应成功回调 
-//					self.logoUrl = response.data.data.logo;
-//				}, (response) => {
-//					// 响应错误回调
-//				});
+				//				self.$http.post(getSellerStationInfo, {}).then((response) => { // 响应成功回调 
+				//					self.logoUrl = response.data.data.logo;
+				//				}, (response) => {
+				//					// 响应错误回调
+				//				});
 			},
 			showAppDown() {
 				let self = this
@@ -210,16 +210,16 @@
 			},
 			checkLogined() {
 				let self = this
-//				self.$http.post(checkLogined).then((response) => { // 响应成功回调 
-//					if(response.data.code == 0) {
-//						self.setuserinfo(response.data.data)
-//						window.localStorage.setItem('userInfo', response.data.data)
-//					} else {
-//						window.localStorage.removeItem('userInfo')
-//					}
-//				}, (response) => {
-//					window.localStorage.removeItem('userInfo')
-//				});
+				//				self.$http.post(checkLogined).then((response) => { // 响应成功回调 
+				//					if(response.data.code == 0) {
+				//						self.setuserinfo(response.data.data)
+				//						window.localStorage.setItem('userInfo', response.data.data)
+				//					} else {
+				//						window.localStorage.removeItem('userInfo')
+				//					}
+				//				}, (response) => {
+				//					window.localStorage.removeItem('userInfo')
+				//				});
 			},
 			handleselect: function(a, b) {},
 			//退出登录
@@ -228,18 +228,18 @@
 				self.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
-//					self.$http.post(logout).then((response) => { // 响应成功回调 
-//						if(response.data.code == 0) {
-//							window.localStorage.removeItem('userInfo')
-//							self.setuserinfo({})
-//							self.$router.replace('/');
-//						} else {
-//							self.$message({
-//								message: response.data.msg,
-//								type: 'warning'
-//							})
-//						}
-//					}, (response) => {});
+					//					self.$http.post(logout).then((response) => { // 响应成功回调 
+					//						if(response.data.code == 0) {
+					//							window.localStorage.removeItem('userInfo')
+					//							self.setuserinfo({})
+					//							self.$router.replace('/');
+					//						} else {
+					//							self.$message({
+					//								message: response.data.msg,
+					//								type: 'warning'
+					//							})
+					//						}
+					//					}, (response) => {});
 				}).catch(() => {
 
 				});
@@ -247,11 +247,11 @@
 			},
 			getMessageInfoList() {
 				let self = this;
-//				self.$http.post(pushMessageInfoList).then((response) => { // 响应成功回调 
-//					if(response.data.code == 0) {
-//						self.msgTotal = response.data.data.total;
-//					}
-//				}, (response) => {});
+				//				self.$http.post(pushMessageInfoList).then((response) => { // 响应成功回调 
+				//					if(response.data.code == 0) {
+				//						self.msgTotal = response.data.data.total;
+				//					}
+				//				}, (response) => {});
 
 			},
 			toTop() {
@@ -280,19 +280,19 @@
 	
 	.cebianlan {
 		position: fixed;
-		right: 0;
+		right:12px;
 		bottom: 144px;
 		z-index: 999;
 	}
 	
 	.backTop {
 		position: relative;
-		right: 12px;
+		right: 0;
 		/*bottom: 128px;*/
-		width: 44px;
-		height: 44px;
+		width: 36px;
+		height: 36px;
 		background: url(../../static/icon/wangzhan/fanhuidingbu.png) no-repeat center center;
-		background-size: 22px auto;
+		background-size: 18px auto;
 		border-radius: 4px;
 		box-shadow: 1px 1px 1px 1px #999999;
 		-webkit-box-shadow: 1px 1px 1px 1px #999999;
@@ -306,9 +306,9 @@
 	.yuyuetoufang,
 	.zimeitiruzhu {
 		position: relative;
-		width: 44px;
-		height: 128px;
-		right: 10px;
+		width: 36px;
+		height: 116px;
+		right: 0;
 		padding: 5px;
 		background-color: #DD2025;
 		color: #FFFFFF;
@@ -388,14 +388,14 @@
 			text-align: center;
 			padding: 12px 0;
 			font-size: 12px;
-			padding: 10px;
+			padding: 12px 6px;
 			text-align: center;
 			line-height: 1.2;
 		}
 	}
 	
 	.zimeitiruzhu {
-		height: 142px;
+		height: 132px;
 	}
 	
 	.bottomjuli {
