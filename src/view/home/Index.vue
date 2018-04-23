@@ -112,6 +112,25 @@
 </template>
 
 <script>
+function setCookie(name, value, Days){  
+    if(Days == null || Days == ''){  
+        Days = 300;  
+    }  
+    var exp  = new Date();  
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);  
+    document.cookie = name + "="+ escape (value) + "; path=/;expires=" + exp.toGMTString();  
+    //document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();  
+}  
+  
+/*get cookie*/  
+function getCookie(name) {  
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");  
+    if(arr=document.cookie.match(reg))  
+        return unescape(arr[2]);   
+    else   
+        return null;   
+}  
+  
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 export default {
@@ -131,8 +150,8 @@ export default {
       homePartnerList: {},
       bgImage:"",
       form:{
-        email: "360485406@qq.com",
-        pwd: "as8717358",
+        email: "",
+        pwd: "",
         code: "",
       },
       isCanClick:false,
@@ -152,16 +171,25 @@ export default {
   mounted() {
     //页面加载完成回调
     this.bgImage = this.API.captchaApi
+    this.autoLogin();
     this.increment(0);
     this.getSliderList(); //轮播图
     this.getHomeCategoryList(); //分类
     this.getHomeClassicList(); //案例
     this.getHomePartnerList(); //合作商
+    console.log('getLoginFlag',this.getLoginFlag)
+    
+    if(this.getLoginFlag){
+      console.log('getLoginFlag',this.getLoginFlag)
+      this.isLogin = true;
+      this.userInfo = this.getUserInfo
+    }
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
     ...mapGetters([
       'getNavList',
+      "getLoginFlag",
       'getUserInfo',
       // ...
     ])
@@ -169,7 +197,8 @@ export default {
   methods: {
     ...mapActions([
 				'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
-				'decrement',
+        'decrement',
+				"setloginflag",
 				'setuserinfo'
       ]),
       goToUrl(url) {
@@ -232,6 +261,7 @@ export default {
       this.postFromFn();
     },
     postFromFn(){
+        //登录
       let self = this;
       self.$http
         .post(self.API.loginApi, {
@@ -246,6 +276,7 @@ export default {
                 message: `登录成功`
               });
               self.getUserInfoFn();
+              self.setloginflag(true);
               self.autoLogin();
             }else{
               self.$message({
@@ -261,6 +292,7 @@ export default {
         // 从cookie 中读取 账号密码
       var self = this;
       if(self.checked){
+        console.log(1)
         setCookie('user',self.form.email,14);
         setCookie('pass',self.form.pwd,14);
       }
@@ -278,6 +310,7 @@ export default {
             // 响应成功回调
             if (response.data.status == 0) {
               self.userInfo = response.data
+              self.setuserinfo(response.data);
             }else{
               self.$message({
                 type: "error",
