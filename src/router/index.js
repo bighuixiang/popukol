@@ -16,6 +16,10 @@ export default new Router({
 			path: '/wechat',
 			component: resolve => require(['../view/Home/WeChat.vue'], resolve),
 			name: '微信'
+		},{
+			path: '/weibo',
+			component: resolve => require(['../view/Home/Weibo.vue'], resolve),
+			name: '微博'
 		}]
 	}, {
 		path: '/signUp',

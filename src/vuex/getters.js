@@ -10,3 +10,7 @@ export const getPcMainIndex = state => {
 export const getUserInfo = state => {
     return state.userInfo
 }
+
+export const getLoginFlag = state => {
+    return state.loginFlag
+}

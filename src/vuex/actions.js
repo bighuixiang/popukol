@@ -10,3 +10,6 @@ export const setuserinfo = ({commit},userInfo) => {
     commit('SETUSERINFO',userInfo)
 }
 
+export const setloginflag = ({commit},loginFlag) => {
+    commit('SETLOGINFLAG',loginFlag)
+}
