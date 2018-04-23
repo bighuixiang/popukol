@@ -9,7 +9,7 @@
 					</el-carousel-item>
 				</el-carousel>
 					<div class="user-login-box">
-						<div class="login-box" v-show="isLogin">
+						<div class="login-box" v-show="!isLogin">
 							<el-tabs v-model="activeName">
 								<el-tab-pane label="登录" name="first"></el-tab-pane>
 							</el-tabs>
@@ -27,6 +27,11 @@
 							 <button class="login-btn" v-bind:class="{'canClick': isCanClick}" @click="submitForm()">登录</button>
 						</div>
 						<div class="user-box"  v-show="isLogin">
+              <span class="user-box-title">您好，欢迎来到POPUKOL平台</span>
+              <img class="user-box-img" :src="userInfo.headImg" alt="">
+              <span class="user-box-span">{{userInfo.username}}</span>
+							 <button class="login-btn canClick"  @click="goToUrl('/index')">进入广告主中心</button>
+              
 						</div>
 					</div>
 			</div>
@@ -126,11 +131,13 @@ export default {
       homePartnerList: {},
       bgImage:"",
       form:{
-        email: "1",
-        pwd: "",
+        email: "360485406@qq.com",
+        pwd: "as8717358",
         code: "",
       },
       isCanClick:false,
+      isLogin:false,
+      userInfo:"",
     };
   },
   beforeCreate() {
@@ -164,7 +171,13 @@ export default {
 				'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
 				'decrement',
 				'setuserinfo'
-			]),
+      ]),
+      goToUrl(url) {
+      let self = this;
+      self.$router.push({
+        path: url
+      });
+    },
     getSliderList() {
       //获取轮播数据
       let self = this;
@@ -227,12 +240,44 @@ export default {
         .then(
           response => {
             // 响应成功回调
-            if (response.data.code == 0) {
+            if (response.data.status == 0) {
               self.$message({
                 type: "success",
                 message: `登录成功`
               });
-             
+              self.getUserInfoFn();
+              self.autoLogin();
+            }else{
+              self.$message({
+                type: "error",
+                message: response.data.msg
+              });
+            }
+          },
+          response => {}
+        );
+    },
+    autoLogin(){
+        // 从cookie 中读取 账号密码
+      var self = this;
+      if(self.checked){
+        setCookie('user',self.form.email,14);
+        setCookie('pass',self.form.pwd,14);
+      }
+      self.form.email = getCookie('user');
+      self.form.pwd = getCookie('pass');
+    },
+    getUserInfoFn(){
+      let self = this;
+      self.isLogin = true;
+      self.$http
+        .get(self.API.userInfoApi, {
+        })
+        .then(
+          response => {
+            // 响应成功回调
+            if (response.data.status == 0) {
+              self.userInfo = response.data
             }else{
               self.$message({
                 type: "error",
@@ -744,6 +789,30 @@ export default {
   opacity: 0.75;
   line-height: 150px;
   margin: 0;
+}
+
+.user-box-title{
+  font-size:16px;
+  line-height:30px;
+  margin-top:25px;
+  display: block;
+}
+
+.user-box-img{
+  width:100px;
+  height: 100px;
+  display: block;
+  border-radius:50%;
+  background-color:#ccc;
+  margin:60px auto 40px;
+}
+
+.user-box-span{
+  font-size:16px;
+  line-height:30px;
+  margin:25px 0px;
+  text-align:center;
+  display: block;
 }
 
 .el-carousel__item:nth-child(2n) {

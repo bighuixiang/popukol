@@ -113,7 +113,7 @@ export default {
         });
       } else {
         self.$http
-          .get(self.API.emailApi, {
+          .get(self.API.reSetEmailApi, {
             params: {
               email: self.form.email
             }
@@ -121,7 +121,7 @@ export default {
           .then(
             response => {
               // 响应成功回调
-              if (response.data.code == 0) {
+              if (response.data.status == 0) {
                 self.$message({
                   type: "success",
                   message: `验证码成功发送至>>>${self.form.email}`
@@ -192,21 +192,23 @@ export default {
     postFromFn() {
       let self = this;
       self.$http
-        .post(self.API.signUpApi, {
+        .post(self.API.reSetApi, {
           ...self.form
         })
         .then(
           response => {
             // 响应成功回调
-            if (response.data.code == 0) {
+            if (response.data.status == 0) {
               self.$message({
                   type: "success",
-                  message: `注册成功`
+                  message: `重置成功`
                 });
-                setTimeout(() => {
-                  self.goToUrl('/home')
-                }, 2000);
+              self.isReSetOk = true;
+              setTimeout(() => {
+                self.goToUrl('/home')
+              }, 1000);
               console.log(response.data);
+              console.log(11111);
             }
           },
           response => {}
@@ -307,7 +309,9 @@ export default {
   height: 100%;
   position: relative;
 }
-
+.from-bottom{
+  margin-top:50px;
+}
 .margin-auto-1200-box {
   width: 1200px;
   margin: 0 auto;
@@ -330,6 +334,7 @@ export default {
   .login-bar {
     display: block;
     text-align: center;
+    visibility: hidden;
     .el-breadcrumb {
       display: inline-block;
       margin: 21px auto 42px;
