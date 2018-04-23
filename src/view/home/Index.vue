@@ -9,13 +9,13 @@
 					</el-carousel-item>
 				</el-carousel>
 					<div class="user-login-box">
-						<div class="login-box">
+						<div class="login-box" v-show="isLogin">
 							<el-tabs v-model="activeName">
 								<el-tab-pane label="登录" name="first"></el-tab-pane>
 							</el-tabs>
-							<input class="login-input" type="text" placeholder="手机号/邮箱">
-							<input class="login-input" type="password" placeholder="密码">
-							<input class="login-btn-input" type="text" placeholder="验证码">
+							<input class="login-input" type="text"  v-model="form.email" placeholder="手机号/邮箱" v-on:keyup="isCanClickFn()">
+							<input class="login-input" type="password" v-model="form.pwd" placeholder="密码" v-on:keyup="isCanClickFn()">
+							<input class="login-btn-input" type="text" v-model="form.code" placeholder="验证码" v-on:keyup="isCanClickFn()">
               <el-button type="primary"  v-bind:style="{ 'background-image': 'url(' + bgImage + ')'}" class="send-code-btn-login" @click="sendImageCode()"></el-button>
 							<div class="login-text-btn">
 								<el-checkbox v-model="checked">下次自动登录</el-checkbox>
@@ -24,9 +24,9 @@
 									<el-breadcrumb-item :to="{ path: '/' }">注册</el-breadcrumb-item>
 								</el-breadcrumb>
 							</div>
-							 <button class="login-btn" @click="submitForm()">登录</button>
+							 <button class="login-btn" v-bind:class="{'canClick': isCanClick}" @click="submitForm()">登录</button>
 						</div>
-						<div class="user-box">
+						<div class="user-box"  v-show="isLogin">
 						</div>
 					</div>
 			</div>
@@ -126,10 +126,11 @@ export default {
       homePartnerList: {},
       bgImage:"",
       form:{
-        email: "",
+        email: "1",
         pwd: "",
         code: "",
-      }
+      },
+      isCanClick:false,
     };
   },
   beforeCreate() {
@@ -183,9 +184,64 @@ export default {
 	  let self = this;
 	  self.bgImage = self.API.captchaApi+"?index="+Math.random();
     },
+    isCanClickFn(){
+      var self = this;
+      for(let key in this.form){
+        if(this.form[key]==""){
+          self.isCanClick = false;
+          return
+        }
+      }
+      self.isCanClick = true;
+    },
     submitForm(formName) {
       //提交按钮
-      
+      let self = this;
+      let reg = new RegExp(
+        "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
+      );
+      for(let key in this.form){
+        if(this.form[key]==""){
+          self.$message({
+            type: "error",
+            message: `请将登陆信息填写完整`
+          });
+          return false;
+        }
+      }
+      if (!reg.test(self.form.email)) {
+        this.$alert("请填写正确邮箱", "邮箱格式错误", {
+          confirmButtonText: "确定",
+          closeOnClickModal:true
+        });
+          return false;
+      }
+      this.postFromFn();
+    },
+    postFromFn(){
+      let self = this;
+      self.$http
+        .post(self.API.loginApi, {
+          ...self.form
+        })
+        .then(
+          response => {
+            // 响应成功回调
+            if (response.data.code == 0) {
+              self.$message({
+                type: "success",
+                message: `登录成功`
+              });
+             
+            }else{
+              self.$message({
+                type: "error",
+                message: response.data.msg
+              });
+            }
+          },
+          response => {}
+        );
     },
     getHomeCategoryList() {
       //获取优质分类
@@ -335,6 +391,11 @@ export default {
     ); /* IE6~IE9 */
 }
 .slider-box {
+  .canClick{
+    transition: all 0.2s;
+    background:red!important;
+    color:#fff!important;
+  }
   .el-carousel__indicators {
     left: 290px;
     transform: translateX(0);
@@ -581,7 +642,6 @@ export default {
     font-weight: 700;
   }
   .user-home-icon {
-    display: inline-block;
     width: 30px;
     height: 30px;
     float: right;

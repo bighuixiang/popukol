@@ -163,7 +163,7 @@ export default {
             }else{
               self.$message({
                 type: "error",
-                message: `验证码不正确`
+                message: response.data.msg
               });
             }
           },
@@ -212,7 +212,6 @@ export default {
 .from-bottom {
   text-align: center;
   .el-button--primary {
-    display: inline;
     width: 300px;
     height: 36px;
     margin-left: 62px;

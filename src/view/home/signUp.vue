@@ -294,7 +294,6 @@ export default {
 .from-bottom {
   text-align: center;
   .el-button--primary {
-    display: inline;
     width: 300px;
     height: 36px;
     margin-left: 62px;
