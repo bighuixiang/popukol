@@ -29,6 +29,10 @@ export default new Router({
 		path: '/Login',
 		name: 'Login',
 		component: resolve => require(['../view/Home/Login.vue'], resolve)
+	},{
+		path: '/reSetPwd',
+		name: 'reSetPwd',
+		component: resolve => require(['../view/Home/reSetPwd.vue'], resolve)
 	}, {
 		path: '*',
 		name: 'Home',

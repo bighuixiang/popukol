@@ -10,37 +10,39 @@
 					</el-breadcrumb>
 				</div>
 			</div>
-
 		</div>
 
 		<div class="margin-auto-1200-box login-from">
 			<div class="page-title">
-				广告主登录
-			</div>
-			<el-row :gutter="24">
-				<el-col :span="9" :offset="7">
-					<el-form ref="form" :rules="rules" :model="form" label-width="80px">
-						<el-form-item label="邮箱账号" prop="email">
-							<el-input v-model="form.email"></el-input>
-						</el-form-item>
-						<el-form-item label="登录密码" prop="pwd">
-							<el-input type="password" v-model="form.pwd"></el-input>
-						</el-form-item>
-						<el-form-item label="验证码" prop="code">
-							<el-input v-model="form.code" ref="code" class="send-code-input"></el-input>
-							<el-button type="primary" v-bind:style="{ 'background-image': 'url(' + bgImage + ')'}" class="send-code-btn-login" @click="sendImageCode()"></el-button>
-						</el-form-item>
-						<div class="from-bottom">
-							<el-button type="primary" @click="submitForm('form')">确定</el-button>
-						</div>
-					</el-form>
-				</el-col>
-			</el-row>
-			<div class="bottom-text" @click="goToUrl('/signUp')">
-				还没有账号,<i>去注册</i>
+				<div class="margin-auto-1200-box login-from">
+					<div class="page-title">
+						广告主登录
+					</div>
+					<el-row :gutter="24">
+						<el-col :span="9" :offset="7">
+							<el-form ref="form" :rules="rules" :model="form" label-width="80px">
+								<el-form-item label="邮箱账号" prop="email">
+									<el-input v-model="form.email" placeholder="请输入您的邮箱账号"></el-input>
+								</el-form-item>
+								<el-form-item label="登录密码" prop="pwd">
+									<el-input type="password" v-model="form.pwd" placeholder="请输入密码"></el-input>
+								</el-form-item>
+								<el-form-item label="验证码" prop="code">
+									<el-input v-model="form.code" placeholder="请输入验证码" ref="code" class="send-code-input"></el-input>
+									<el-button type="primary" v-bind:style="{ 'background-image': 'url(' + bgImage + ')'}" class="send-code-btn-login" @click="sendImageCode()"></el-button>
+								</el-form-item>
+								<div class="from-bottom">
+									<el-button type="primary" @click="submitForm('form')">确定</el-button>
+								</div>
+							</el-form>
+						</el-col>
+					</el-row>
+					<div class="bottom-text" @click="goToUrl('/signUp')">
+						还没有账号,<i>去注册</i>
+					</div>
+				</div>
 			</div>
 		</div>
-
 	</div>
 </template>
 
@@ -83,8 +85,8 @@
 						},
 						{
 							min: 6,
-							max: 12,
-							message: "长度在 6 到 12 个字符",
+							max: 20,
+							message: "长度在 6 到 20 个字符",
 							trigger: "blur"
 						}
 					]
@@ -101,21 +103,18 @@
 				"getLoginFlag",
 				"getNavList",
 				"getUserInfo"
-
 				// ...
 			])
 		},
 		methods: {
 			...mapActions([
 				"increment", // 映射 this.increment() 为 this.$store.dispatch('increment')
+				"decrement",
 				"setloginflag",
 				"setuserinfo"
 			]),
 			sendImageCode() {
 				let self = this;
-				console.log(1)
-				self.bgImage = ""
-
 				self.bgImage = self.API.captchaApi + "?index=" + Math.random();
 			},
 			submitForm(formName) {
@@ -178,7 +177,7 @@
 							} else {
 								self.$message({
 									type: "error",
-									message: `验证码不正确`
+									message: response.data.msg
 								});
 							}
 						},
@@ -210,6 +209,7 @@
 	}
 	
 	.send-code-input .el-input__inner {
+		float:left;
 		width: 232px;
 	}
 	

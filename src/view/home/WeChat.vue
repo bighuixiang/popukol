@@ -712,7 +712,6 @@
 					width: 10px;
 					height: 1px;
 					background-color: #aaaaaa;
-					display: inline-block;
 					margin-left: 6px;
 					margin-right: 6px;
 					margin-top: 22px;
@@ -722,7 +721,6 @@
 					width: 66px;
 					height: 24px;
 					border-radius: 2px;
-					display: inline-block;
 					padding: 0;
 					float: left;
 				}
@@ -840,7 +838,6 @@
 			border: 1px solid #e8e8e8;
 			.defult {
 				background-color: #FFFFFF;
-				display: inline-block;
 				padding: 0px 16px;
 				border: 1px solid #e8e8e8;
 				border-left: none;
