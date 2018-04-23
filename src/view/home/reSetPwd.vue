@@ -5,8 +5,8 @@
 					<img class="login-logo" src="../../../static/icon/topandbottomlogo/toplogo.png" alt="">
 					<div class="login-bar">
 						<el-breadcrumb separator="|">
-							<el-breadcrumb-item><span class="text-btn isActive-red" @click="goToUrl('/login')">登录</span></el-breadcrumb-item>
-							<el-breadcrumb-item><span class="text-btn" @click="goToUrl('/signup')">注册</span></el-breadcrumb-item>
+							<el-breadcrumb-item><span class="text-btn" @click="goToUrl('/login')">登录</span></el-breadcrumb-item>
+							<el-breadcrumb-item><span class="text-btn isActive-red" @click="goToUrl('/signup')">注册</span></el-breadcrumb-item>
 						</el-breadcrumb>
 					</div>
 				</div>
@@ -16,30 +16,33 @@
 			
 			<div class="margin-auto-1200-box login-from">
 				<div class="page-title">
-					广告主登录
+					忘记密码
 				</div>
 				<el-row :gutter="24">
 					<el-col :span="9" :offset="7">
 						<el-form ref="form" :rules="rules" :model="form" label-width="80px">
-							<el-form-item label="邮箱账号" prop="email">
-								<el-input v-model="form.email" placeholder="请输入您的邮箱账号"></el-input>
+							<el-form-item label="注册邮箱" prop="email">
+								<el-input v-model="form.email" placeholder="请输入邮箱地址"></el-input>
 							</el-form-item>
-							<el-form-item  label="登录密码" prop="pwd" >
-								<el-input type="password" v-model="form.pwd" placeholder="请输入密码"></el-input>
+              <el-form-item label="验证码" prop="code">
+                  <el-input v-model="form.code" placeholder="请输入验证码" ref="code" class="send-code-input"></el-input>
+                <el-button type="primary" class="send-code-btn" @click="sendEmailCode()">发送验证码</el-button>
 							</el-form-item>
-							<el-form-item label="验证码" prop="code">
-								<el-input v-model="form.code" placeholder="请输入验证码" ref="code" class="send-code-input"></el-input>
-								<el-button type="primary"  v-bind:style="{ 'background-image': 'url(' + bgImage + ')'}" class="send-code-btn-login" @click="sendImageCode()"></el-button>
+							<el-form-item label="创建密码" prop="pwd">
+								<el-input type="password" placeholder="请输入新的密码" v-model="form.pwd"></el-input>
 							</el-form-item>
+							<el-form-item label="确认密码" prop="confirmPwd">
+								<el-input type="password" placeholder="请再次输入密码" v-model="form.confirmPwd">
+								</el-input>
+							</el-form-item>
+
 							<div class="from-bottom">
 								<el-button type="primary"  @click="submitForm('form')">确定</el-button>
 							</div>
 						</el-form>
 					</el-col>
 				</el-row>
-				<div class="bottom-text" @click="goToUrl('/signUp')">
-					还没有账号,<i>去注册</i>
-				</div>
+
 			</div>
 			
 				
@@ -60,17 +63,13 @@ export default {
       form: {
         email: "",
         pwd: "",
+        confirmPwd: "",
         code: "",
-	  },
-	  bgImage:"",
+      },
       rules: {
         email: [
-          { required: true, message: "请输入邮箱地址", trigger: "blur" },
-          {
-            type: "email",
-            message: "请输入正确的邮箱地址",
-            trigger: ["blur", "change"]
-          }
+         { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+         { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ],
         code: [
           { required: true, validator: this.emailIsTrue, trigger: "blur" }
@@ -78,13 +77,15 @@ export default {
         pwd: [
           { required: true, validator: this.validatePass, trigger: "blur" },
           { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
-        ]
+        ],
+        confirmPwd: [
+          { required: true, validator: this.validatePass2, trigger: "blur" }
+        ],
       }
     };
   },
   mounted() {
     let self = this;
-    self.bgImage = self.API.captchaApi
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
@@ -100,9 +101,42 @@ export default {
       "decrement",
       "setuserinfo"
     ]),
-    sendImageCode() {
-	  let self = this;
-	  self.bgImage = self.API.captchaApi+"?index="+Math.random();
+    sendEmailCode() {
+      let self = this;
+      var reg = new RegExp(
+        "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
+      );
+      if (!reg.test(self.form.email)) {
+        this.$alert("请填写正确邮箱", "未发送成功", {
+          confirmButtonText: "确定",
+          closeOnClickModal:true
+        });
+      } else {
+        self.$http
+          .get(self.API.emailApi, {
+            params: {
+              email: self.form.email
+            }
+          })
+          .then(
+            response => {
+              // 响应成功回调
+              if (response.data.code == 0) {
+                self.$message({
+                  type: "success",
+                  message: `验证码成功发送至>>>${self.form.email}`
+                });
+                console.log(response.data);
+              }else{
+                this.$alert(response.data.msg, "未发送成功", {
+                  confirmButtonText: "确定",
+                  closeOnClickModal:true
+                });
+              }
+            },
+            response => {}
+          );
+      }
     },
     submitForm(formName) {
       //提交按钮
@@ -116,7 +150,7 @@ export default {
       });
     },
     emailIsTrue(rule, value, callback) {
-      var self = this;
+      var self =this;
       if (value === "") {
         callback(new Error("请输入验证码"));
       } else {
@@ -130,6 +164,18 @@ export default {
     validatePass(rule, value, callback) {
       if (value === "") {
         callback(new Error("请输入密码"));
+      } else {
+        if (this.rules.confirmPwd !== "") {
+          this.$refs.form.validateField("confirmPwd");
+        }
+        callback();
+      }
+    },
+    validatePass2(rule, value, callback) {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.form.pwd) {
+        callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
       }
@@ -146,7 +192,7 @@ export default {
     postFromFn() {
       let self = this;
       self.$http
-        .post(self.API.loginApi, {
+        .post(self.API.signUpApi, {
           ...self.form
         })
         .then(
@@ -154,17 +200,13 @@ export default {
             // 响应成功回调
             if (response.data.code == 0) {
               self.$message({
-                type: "success",
-                message: `登录成功`
-              });
-              setTimeout(() => {
-                self.goToUrl("/home");
-              }, 1000);
-            }else{
-              self.$message({
-                type: "error",
-                message: `验证码不正确`
-              });
+                  type: "success",
+                  message: `注册成功`
+                });
+                setTimeout(() => {
+                  self.goToUrl('/home')
+                }, 2000);
+              console.log(response.data);
             }
           },
           response => {}
@@ -192,7 +234,11 @@ export default {
 .isActive-red {
   color: red !important;
 }
-
+.send-code-btn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
 .send-code-input .el-input__inner {
   width: 232px;
 }
@@ -203,7 +249,6 @@ export default {
   margin: 54px 0px 120px;
   cursor: pointer;
   text-align: center;
-
   i {
     font-style: normal;
     color: red;
@@ -254,27 +299,10 @@ export default {
     border-right: 16px solid red;
     border-bottom: 8px solid transparent;
   }
-
 }
-
 </style>
 
 <style lang="scss" scoped>
-.send-code-btn-login {
-  position: absolute;
-  border:0px;
-  background-color:#ccc!important;
-  top: 0px;
-  right: 0px;
-  width: 110px;
-  height: 40px;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-.send-code-btn-login:hover,.send-code-btn-login:active,.send-code-btn-login:focus{
-  background-repeat: no-repeat!important;
-  background-size: 100% 100%!important;
-}
 .content {
   width: 100%;
   height: 100%;

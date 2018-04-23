@@ -15,6 +15,8 @@
 							</el-tabs>
 							<input class="login-input" type="text" placeholder="手机号/邮箱">
 							<input class="login-input" type="password" placeholder="密码">
+							<input class="login-btn-input" type="text" placeholder="验证码">
+              <el-button type="primary"  v-bind:style="{ 'background-image': 'url(' + bgImage + ')'}" class="send-code-btn-login" @click="sendImageCode()"></el-button>
 							<div class="login-text-btn">
 								<el-checkbox v-model="checked">下次自动登录</el-checkbox>
 								<el-breadcrumb separator="|">
@@ -22,7 +24,7 @@
 									<el-breadcrumb-item :to="{ path: '/' }">注册</el-breadcrumb-item>
 								</el-breadcrumb>
 							</div>
-							 <button class="login-btn">登录</button>
+							 <button class="login-btn" @click="submitForm()">登录</button>
 						</div>
 						<div class="user-box">
 						</div>
@@ -105,6 +107,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   components: {},
   data() {
@@ -119,7 +123,13 @@ export default {
       homeClassicList: {},
       homeClassicItems: {},
       homeClassicOtherItems: {},
-      homePartnerList: {}
+      homePartnerList: {},
+      bgImage:"",
+      form:{
+        email: "",
+        pwd: "",
+        code: "",
+      }
     };
   },
   beforeCreate() {
@@ -133,12 +143,27 @@ export default {
   },
   mounted() {
     //页面加载完成回调
+    this.bgImage = this.API.captchaApi
+    this.increment(0);
     this.getSliderList(); //轮播图
     this.getHomeCategoryList(); //分类
     this.getHomeClassicList(); //案例
     this.getHomePartnerList(); //合作商
   },
+  computed: {
+    // 使用对象展开运算符将 getters 混入 computed 对象中
+    ...mapGetters([
+      'getNavList',
+      'getUserInfo',
+      // ...
+    ])
+  },
   methods: {
+    ...mapActions([
+				'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
+				'decrement',
+				'setuserinfo'
+			]),
     getSliderList() {
       //获取轮播数据
       let self = this;
@@ -152,6 +177,15 @@ export default {
         },
         response => {}
       );
+    },
+    sendImageCode() {
+      // 更换验证码图片
+	  let self = this;
+	  self.bgImage = self.API.captchaApi+"?index="+Math.random();
+    },
+    submitForm(formName) {
+      //提交按钮
+      
     },
     getHomeCategoryList() {
       //获取优质分类
@@ -340,7 +374,7 @@ export default {
     box-shadow: 0px 0px 0px #999 !important;
   }
   .el-tabs {
-    margin-bottom: 18px;
+    margin-bottom: 5px;
   }
   .el-checkbox__label {
     color: #bbbbbb !important;
@@ -369,7 +403,7 @@ export default {
     width: 100%;
     height: 42px;
     background: #eeeeee;
-    margin: 30px 0px;
+    margin: 20px 0px;
     border: 0px;
     border-radius: 4px;
     color: #bbbbbb;
@@ -669,11 +703,35 @@ export default {
   border-radius: 4px;
   outline: none;
   background: #f4f4f4;
-  margin: 9px 0;
+  margin: 5px 0;
   padding: 0px 22px;
   border: 1px solid #e1e1e1;
 }
-
+.login-btn-input{
+  width: 220px;
+  height: 42px;
+  border-radius: 4px;
+  outline: none;
+  background: #f4f4f4;
+  margin: 5px 0;
+  padding: 0px 22px;
+  border: 1px solid #e1e1e1;
+}
+.send-code-btn-login {
+  position: absolute;
+  border:0px;
+  background-color:#ccc!important;
+  top: 198px;
+  right: 30px;
+  width: 110px;
+  height: 42px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.send-code-btn-login:hover,.send-code-btn-login:active,.send-code-btn-login:focus{
+  background-repeat: no-repeat!important;
+  background-size: 100% 100%!important;
+}
 .max-content-box {
   width: 100%;
   height: 100%;

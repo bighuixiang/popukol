@@ -22,26 +22,26 @@
 					<el-col :span="9" :offset="7">
 						<el-form ref="form" :rules="rules" :model="form" label-width="80px">
 							<el-form-item label="邮箱" prop="email">
-								<el-input v-model="form.email"></el-input>
+								<el-input v-model="form.email" placeholder="请输入邮箱地址"></el-input>
 							</el-form-item>
 							<el-form-item label="公司名称" prop="company">
-								<el-input v-model="form.company"></el-input>
+								<el-input v-model="form.company" placeholder="请输入4-50位字符（中文，英文，数字）"></el-input>
 							</el-form-item>
 							<el-form-item label="联系人" prop="contactName">
-								<el-input v-model="form.contactName"></el-input>
+								<el-input v-model="form.contactName" placeholder="请输入4-50位字符（中文，英文，数字）"></el-input>
 							</el-form-item>
 							<el-form-item label="联系电话" prop="contactPhone">
-								<el-input v-model="form.contactPhone"></el-input>
+								<el-input v-model="form.contactPhone" placeholder="请输入联系人电话"></el-input>
 							</el-form-item>
               <el-form-item label="验证码" prop="code">
-                  <el-input v-model="form.code" ref="code" class="send-code-input"></el-input>
+                  <el-input v-model="form.code" ref="code" placeholder="请输入邮箱验证码" class="send-code-input"></el-input>
                 <el-button type="primary" class="send-code-btn" @click="sendEmailCode()">发送验证码</el-button>
 							</el-form-item>
 							<el-form-item label="创建密码" prop="pwd">
-								<el-input type="password"  v-model="form.pwd"></el-input>
+								<el-input type="password" placeholder="密码为6-12位字母和数字组成" v-model="form.pwd"></el-input>
 							</el-form-item>
 							<el-form-item label="确认密码" prop="confirmPwd">
-								<el-input type="password"  v-model="form.confirmPwd">
+								<el-input type="password" placeholder="请再次输入密码" v-model="form.confirmPwd">
 								</el-input>
 							</el-form-item>
 
@@ -105,7 +105,7 @@ export default {
         ],
         pwd: [
           { required: true, validator: this.validatePass, trigger: "blur" },
-          { min: 6, max: 12, message: "长度在 6 到 12 个字符", trigger: "blur" }
+          { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
         ],
         confirmPwd: [
           { required: true, validator: this.validatePass2, trigger: "blur" }
