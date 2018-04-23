@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 // 应用初始状态
 const state = {
+	loginFlag :false,
 	pcMainIndex: 0,
 	userInfo: {},
 	navList: [{
@@ -19,7 +20,7 @@ const state = {
 		"isCur": false,
 	}, {
 		"name": "微博",
-		"url": "/mmgroup",
+		"url": "/weibo",
 		"isCur": false,
 	}, {
 		"name": "小红书",
@@ -67,7 +68,10 @@ const mutations = {
 	},
 	SETUSERINFO(state, userInfo) {
 		state.userInfo = userInfo
-	}
+	},
+	SETLOGINFLAG(state, loginFlag) {
+		state.loginFlag = loginFlag
+	},
 }
 
 // 创建 store 实例
