@@ -15,6 +15,16 @@ export const homeClassicItems = `${IP}/classic/case/record/info`
 export const homeClassicOtherItems = `${IP}/classic/case/brief/info`
 //GET   ===> 首页合作伙伴列表
 export const homePartnerList = `${IP}/partner/record/list`
+//GET   ===> 验证码图片
+export const captchaApi = `${IP}/user/captcha`
+//GET   ===> 验证码邮箱
+export const emailApi = `${IP}/user/register/code`
+//POST  ===> 注册
+export const signUpApi = `${IP}/user/register`
+//POST  ===> 登录
+export const loginApi = `${IP}/user/login`
+//POST  ===> 退出登录
+export const loginOutApi = `${IP}/user/logout`
 
 //GET   ===> 账号分类列表
 export const recordList = `${IP}/platform/category/record/list`

@@ -16,44 +16,29 @@
 			
 			<div class="margin-auto-1200-box login-from">
 				<div class="page-title">
-					广告主注册
+					广告主登录
 				</div>
 				<el-row :gutter="24">
 					<el-col :span="9" :offset="7">
-						<el-form ref="form" :model="form" label-width="80px">
-							<el-form-item label="邮箱">
-								<el-input v-model="form.name"></el-input>
+						<el-form ref="form" :rules="rules" :model="form" label-width="80px">
+							<el-form-item label="邮箱账号" prop="email">
+								<el-input v-model="form.email"></el-input>
 							</el-form-item>
-							<el-form-item label="公司名称">
-								<el-input v-model="form.name"></el-input>
+							<el-form-item  label="登录密码" prop="pwd">
+								<el-input type="password" v-model="form.pwd"></el-input>
 							</el-form-item>
-							<el-form-item label="联系人">
-								<el-input v-model="form.name"></el-input>
-							</el-form-item>
-							<el-form-item label="联系电话">
-								<el-input v-model="form.name"></el-input>
-							</el-form-item>
-							<el-form-item label="创建密码">
-								<el-input v-model="form.name"></el-input>
-							</el-form-item>
-							<el-form-item label="确认密码">
-								<el-input v-model="form.name">
-								</el-input>
-							</el-form-item>
-
-							<el-form-item label="">
-								<el-checkbox-group v-model="form.type">
-								<el-checkbox label="我已阅读并同意《POPUKOL平台服务协议》" name="type"></el-checkbox>
-								</el-checkbox-group>
+							<el-form-item label="验证码" prop="code">
+								<el-input v-model="form.code" ref="code" class="send-code-input"></el-input>
+								<el-button type="primary"  v-bind:style="{ 'background-image': 'url(' + bgImage + ')'}" class="send-code-btn-login" @click="sendImageCode()"></el-button>
 							</el-form-item>
 							<div class="from-bottom">
-								<el-button type="primary" @click="onSubmit">立即注册</el-button>
+								<el-button type="primary"  @click="submitForm('form')">确定</el-button>
 							</div>
 						</el-form>
 					</el-col>
 				</el-row>
-				<div class="bottom-text">
-					已有账号，<i>直接登录</i>
+				<div class="bottom-text" @click="goToUrl('/signUp')">
+					还没有账号,<i>去注册</i>
 				</div>
 			</div>
 			
@@ -73,14 +58,33 @@ export default {
       isShowI18n: false,
       keywords: "", //搜索关键字
       form: {
-        name: "",
-        type: [],
-        desc: ""
+        email: "",
+        pwd: "",
+        code: "",
+	  },
+	  bgImage:"",
+      rules: {
+        email: [
+          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱地址",
+            trigger: ["blur", "change"]
+          }
+        ],
+        code: [
+          { required: true, validator: this.emailIsTrue, trigger: "blur" }
+        ],
+        pwd: [
+          { required: true, validator: this.validatePass, trigger: "blur" },
+          { min: 6, max: 12, message: "长度在 6 到 12 个字符", trigger: "blur" }
+        ]
       }
     };
   },
   mounted() {
     let self = this;
+    self.bgImage = self.API.captchaApi
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
@@ -96,28 +100,74 @@ export default {
       "decrement",
       "setuserinfo"
     ]),
-    onSubmit() {
-      console.log("submit!", this.form);
+    sendImageCode() {
+	  let self = this;
+	  console.log(1)
+	  self.bgImage = ""
+	  
+	  self.bgImage = self.API.captchaApi+"?index="+Math.random();
+    },
+    submitForm(formName) {
+      //提交按钮
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.postFromFn();
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    emailIsTrue(rule, value, callback) {
+      var self = this;
+      if (value === "") {
+        callback(new Error("请输入验证码"));
+      } else {
+        if (self.form.email !== "") {
+          callback();
+        } else {
+          callback(new Error("请先填写邮箱"));
+        }
+      }
+    },
+    validatePass(rule, value, callback) {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        callback();
+      }
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     },
     goToUrl(url) {
-				let self = this;
-        self.$router.push({
-          path: url,
-        });
-			},
-    test() {
+      let self = this;
+      self.$router.push({
+        path: url
+      });
+    },
+    postFromFn() {
       let self = this;
       self.$http
-        .post(self.API.recordList, {
-          params: {
-            platformId: 1
-          }
+        .post(self.API.loginApi, {
+          ...self.form
         })
         .then(
           response => {
             // 响应成功回调
             if (response.data.code == 0) {
-              console.log(response.data);
+              self.$message({
+                type: "success",
+                message: `登录成功`
+              });
+              setTimeout(() => {
+                self.goToUrl("/home");
+              }, 1000);
+            }else{
+              self.$message({
+                type: "error",
+                message: `验证码不正确`
+              });
             }
           },
           response => {}
@@ -136,25 +186,31 @@ export default {
   .el-breadcrumb__inner {
     color: #999 !important;
   }
-  .text-btn:hover{
+  .text-btn:hover {
     opacity: 0.8;
     cursor: pointer;
     user-select: none;
   }
 }
-.isActive-red{
-	color:red!important;
+.isActive-red {
+  color: red !important;
 }
-.bottom-text{
-	font-size: 14px;
-	color: #333;
-	display: block;
-	margin: 54px 0px 120px;
-	text-align: center;
-	i{
-		font-style: normal;
-		color: red;
-	}
+
+.send-code-input .el-input__inner {
+  width: 232px;
+}
+.bottom-text {
+  font-size: 14px;
+  color: #333;
+  display: block;
+  margin: 54px 0px 120px;
+  cursor: pointer;
+  text-align: center;
+
+  i {
+    font-style: normal;
+    color: red;
+  }
 }
 .from-bottom {
   text-align: center;
@@ -175,12 +231,53 @@ export default {
     font-size: 14px;
     color: #333;
     line-height: 40px;
-    padding: 0 20px 0 0;
+    padding: 0 12px 0 0;
   }
+  .el-form-item.is-required .el-form-item__label:before {
+    display: none;
+  }
+  .el-form-item__error {
+    background: red;
+    color: #fff;
+    top: 4px;
+    padding: 10px 20px;
+    left: 380px;
+    white-space: nowrap;
+    border-radius: 4px;
+  }
+  .el-form-item__error:after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 0px;
+    width: 0px;
+    top: 8px;
+    left: -8px;
+    border-top: 8px solid transparent;
+    border-right: 16px solid red;
+    border-bottom: 8px solid transparent;
+  }
+
 }
+
 </style>
 
 <style lang="scss" scoped>
+.send-code-btn-login {
+  position: absolute;
+  border:0px;
+  background-color:#ccc!important;
+  top: 0px;
+  right: 0px;
+  width: 110px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.send-code-btn-login:hover,.send-code-btn-login:active,.send-code-btn-login:focus{
+  background-repeat: no-repeat!important;
+  background-size: 100% 100%!important;
+}
 .content {
   width: 100%;
   height: 100%;

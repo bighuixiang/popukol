@@ -33,11 +33,15 @@
 							<el-form-item label="联系电话" prop="contactPhone">
 								<el-input v-model="form.contactPhone"></el-input>
 							</el-form-item>
+              <el-form-item label="验证码" prop="code">
+                  <el-input v-model="form.code" ref="code" class="send-code-input"></el-input>
+                <el-button type="primary" class="send-code-btn" @click="sendEmailCode()">发送验证码</el-button>
+							</el-form-item>
 							<el-form-item label="创建密码" prop="pwd">
-								<el-input v-model="form.pwd"></el-input>
+								<el-input type="password"  v-model="form.pwd"></el-input>
 							</el-form-item>
 							<el-form-item label="确认密码" prop="confirmPwd">
-								<el-input v-model="form.confirmPwd">
+								<el-input type="password"  v-model="form.confirmPwd">
 								</el-input>
 							</el-form-item>
 
@@ -83,31 +87,38 @@ export default {
         type: []
       },
       rules: {
-          email: [
-            { type: 'email',required: true, message: '请填写正确邮箱', trigger: 'change' }
-          ],
-          company: [
-            { required: true, message: '请填写公司名称', trigger: 'change' }
-          ],
-          contactName: [
-            { required: true, message: '请填写联系人名称', trigger: 'change' }
-          ],
-          contactPhone: [
-            { type: 'number', required: true, message: '填写正确电话', trigger: 'change' }
-          ],
-          pwd: [
-             { required: true,validator: this.validatePass, trigger: 'blur' }
-          ],
-          confirmPwd: [
-             { required: true,validator: this.validatePass2, trigger: 'blur' }
-          ],
-          code: [
-            { required: true, message: '请填写活动形式', trigger: 'blur' }
-          ],
-          type:[
-            { type: 'array', required: true, message: '请阅读并同意协议', trigger: 'change' }
-          ]
-        }
+        email: [
+         { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+         { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+        ],
+        company: [
+          { required: true, message: "请填写公司名称", trigger: "change" }
+        ],
+        contactName: [
+          { required: true, message: "请填写联系人名称", trigger: "change" }
+        ],
+        contactPhone: [
+          { required: true, message: "填写正确电话", trigger: "change" }
+        ],
+        code: [
+          { required: true, validator: this.emailIsTrue, trigger: "blur" }
+        ],
+        pwd: [
+          { required: true, validator: this.validatePass, trigger: "blur" },
+          { min: 6, max: 12, message: "长度在 6 到 12 个字符", trigger: "blur" }
+        ],
+        confirmPwd: [
+          { required: true, validator: this.validatePass2, trigger: "blur" }
+        ],
+        type: [
+          {
+            type: "array",
+            required: true,
+            message: "请阅读并同意协议",
+            trigger: "change"
+          }
+        ]
+      }
     };
   },
   mounted() {
@@ -127,60 +138,111 @@ export default {
       "decrement",
       "setuserinfo"
     ]),
-    onSubmit() {
-      console.log("submit!", this.form);
+    sendEmailCode() {
+      let self = this;
+      var reg = new RegExp(
+        "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
+      );
+      if (!reg.test(self.form.email)) {
+        this.$alert("请填写正确邮箱", "未发送成功", {
+          confirmButtonText: "确定",
+          closeOnClickModal:true
+        });
+      } else {
+        self.$http
+          .get(self.API.emailApi, {
+            params: {
+              email: self.form.email
+            }
+          })
+          .then(
+            response => {
+              // 响应成功回调
+              if (response.data.code == 0) {
+                self.$message({
+                  type: "success",
+                  message: `验证码成功发送至>>>${self.form.email}`
+                });
+                console.log(response.data);
+              }else{
+                this.$alert(response.data.msg, "未发送成功", {
+                  confirmButtonText: "确定",
+                  closeOnClickModal:true
+                });
+              }
+            },
+            response => {}
+          );
+      }
     },
     submitForm(formName) {
       //提交按钮
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          alert('submit!');
+          this.postFromFn();
         } else {
-          console.log('error submit!!');
+          console.log("error submit!!");
           return false;
         }
       });
     },
-    validatePass(rule, value, callback){
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.rules.confirmPwd !== '') {
-            this.$refs.form.validateField('confirmPwd');
-          }
+    emailIsTrue(rule, value, callback) {
+      var self =this;
+      if (value === "") {
+        callback(new Error("请输入验证码"));
+      } else {
+        if (self.form.email !== "") {
           callback();
-        }
-      },
-      validatePass2(rule, value, callback){
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.form.pwd) {
-          callback(new Error('两次输入密码不一致!'));
         } else {
-          callback();
+          callback(new Error("请先填写邮箱"));
         }
-      },
+      }
+    },
+    validatePass(rule, value, callback) {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.rules.confirmPwd !== "") {
+          this.$refs.form.validateField("confirmPwd");
+        }
+        callback();
+      }
+    },
+    validatePass2(rule, value, callback) {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.form.pwd) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
     goToUrl(url) {
-				let self = this;
-        self.$router.push({
-          path: url,
-        });
-			},
-    test() {
+      let self = this;
+      self.$router.push({
+        path: url
+      });
+    },
+    postFromFn() {
       let self = this;
       self.$http
-        .post(self.API.recordList, {
-          params: {
-            platformId: 1
-          }
+        .post(self.API.signUpApi, {
+          ...self.form
         })
         .then(
           response => {
             // 响应成功回调
             if (response.data.code == 0) {
+              self.$message({
+                  type: "success",
+                  message: `注册成功`
+                });
+                setTimeout(() => {
+                  self.goToUrl('/home')
+                }, 2000);
               console.log(response.data);
             }
           },
@@ -200,25 +262,34 @@ export default {
   .el-breadcrumb__inner {
     color: #999 !important;
   }
-  .text-btn:hover{
+  .text-btn:hover {
     opacity: 0.8;
     cursor: pointer;
     user-select: none;
   }
 }
-.isActive-red{
-	color:red!important;
+.isActive-red {
+  color: red !important;
 }
-.bottom-text{
-	font-size: 14px;
-	color: #333;
-	display: block;
-	margin: 54px 0px 120px;
-	text-align: center;
-	i{
-		font-style: normal;
-		color: red;
-	}
+.send-code-btn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+.send-code-input .el-input__inner {
+  width: 232px;
+}
+.bottom-text {
+  font-size: 14px;
+  color: #333;
+  display: block;
+  margin: 54px 0px 120px;
+  cursor: pointer;
+  text-align: center;
+  i {
+    font-style: normal;
+    color: red;
+  }
 }
 .from-bottom {
   text-align: center;
@@ -241,19 +312,19 @@ export default {
     line-height: 40px;
     padding: 0 12px 0 0;
   }
-  .el-form-item.is-required .el-form-item__label:before{
+  .el-form-item.is-required .el-form-item__label:before {
     display: none;
   }
-  .el-form-item__error{
+  .el-form-item__error {
     background: red;
     color: #fff;
     top: 4px;
     padding: 10px 20px;
     left: 380px;
     white-space: nowrap;
-    border-radius:4px; 
+    border-radius: 4px;
   }
-  .el-form-item__error:after{
+  .el-form-item__error:after {
     content: "";
     display: block;
     position: absolute;
