@@ -97,7 +97,9 @@
 					</div>
 					<div class="list">
 						<el-checkbox-group @change="officalChange" class="checkList" v-model="checkList">
-							<el-checkbox label="官方认证"></el-checkbox>
+							<el-checkbox label="黄V认证" :key="1"></el-checkbox>
+							<el-checkbox label="蓝V认证" :key="2"></el-checkbox>
+							<el-checkbox label="金V认证" :key="3"></el-checkbox>
 						</el-checkbox-group>
 					</div>
 				</div>
@@ -401,7 +403,7 @@
 				str.push(self.params.regionId + "/")
 				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
 				str.push(self.params.offical)
-				self.$http.get(self.API.wechatAccountListAPI + str.join(''), {
+				self.$http.get(self.API.weboAccountListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
 						limit: 10,
@@ -495,6 +497,7 @@
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {
 						self.cityDataList = response.data.data;
+						self.cityId = self.cityDataList[0].id;
 					}
 				}, (response) => {});
 			},
@@ -502,6 +505,7 @@
 				this.cityId = val;
 			},
 			officalChange(val) {
+				console.log(val)
 				this.params.offical = val.length === 0 ? 0 : 1;
 				this.params.page = 1;
 				this.addWechatList();
@@ -550,7 +554,7 @@
 				//				12 微信   13微博  14 小红书
 				self.$http.get(self.API.subRecordList, {
 					params: {
-						platformId: 12,
+						platformId: 13,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {

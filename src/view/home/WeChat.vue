@@ -495,6 +495,7 @@
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {
 						self.cityDataList = response.data.data;
+						self.cityId = self.cityDataList[0].id;
 					}
 				}, (response) => {});
 			},
