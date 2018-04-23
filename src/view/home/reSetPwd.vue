@@ -15,7 +15,8 @@
 			</div>
 			
 			<div class="margin-auto-1200-box login-from">
-				<div class="page-title">
+        <div class="relative-box" v-show="!isReSetOk">
+          <div class="page-title">
 					忘记密码
 				</div>
 				<el-row :gutter="24">
@@ -42,6 +43,21 @@
 						</el-form>
 					</el-col>
 				</el-row>
+        </div>
+        <div class="relative-box" v-show="isReSetOk">
+            
+          <div class="page-title">
+           <i class="el-icon-success"></i>
+            <span>重置成功</span>
+          </div>
+          <span class="page-center-text">
+            您的密码已经设置成功，为了保证您的账户安全</br>
+            建议您定期修改密码以保护账户安全。
+          </span>
+          <el-button type="primary" class="reset-login-btn" @click="goToUrl('/login')">重新登录</el-button>
+        </div>
+        
+				
 
 			</div>
 			
@@ -59,17 +75,22 @@ export default {
   data() {
     return {
       isShowI18n: false,
+      isReSetOk: true,
       keywords: "", //搜索关键字
       form: {
         email: "",
         pwd: "",
         confirmPwd: "",
-        code: "",
+        code: ""
       },
       rules: {
         email: [
-         { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-         { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱地址",
+            trigger: ["blur", "change"]
+          }
         ],
         code: [
           { required: true, validator: this.emailIsTrue, trigger: "blur" }
@@ -80,7 +101,7 @@ export default {
         ],
         confirmPwd: [
           { required: true, validator: this.validatePass2, trigger: "blur" }
-        ],
+        ]
       }
     };
   },
@@ -109,11 +130,11 @@ export default {
       if (!reg.test(self.form.email)) {
         this.$alert("请填写正确邮箱", "未发送成功", {
           confirmButtonText: "确定",
-          closeOnClickModal:true
+          closeOnClickModal: true
         });
       } else {
         self.$http
-          .get(self.API.emailApi, {
+          .get(self.API.reSetEmailApi, {
             params: {
               email: self.form.email
             }
@@ -121,16 +142,16 @@ export default {
           .then(
             response => {
               // 响应成功回调
-              if (response.data.code == 0) {
+              if (response.data.status == 0) {
                 self.$message({
                   type: "success",
                   message: `验证码成功发送至>>>${self.form.email}`
                 });
                 console.log(response.data);
-              }else{
+              } else {
                 this.$alert(response.data.msg, "未发送成功", {
                   confirmButtonText: "确定",
-                  closeOnClickModal:true
+                  closeOnClickModal: true
                 });
               }
             },
@@ -150,7 +171,7 @@ export default {
       });
     },
     emailIsTrue(rule, value, callback) {
-      var self =this;
+      var self = this;
       if (value === "") {
         callback(new Error("请输入验证码"));
       } else {
@@ -192,21 +213,23 @@ export default {
     postFromFn() {
       let self = this;
       self.$http
-        .post(self.API.signUpApi, {
+        .post(self.API.reSetApi, {
           ...self.form
         })
         .then(
           response => {
             // 响应成功回调
-            if (response.data.code == 0) {
+            if (response.data.status == 0) {
               self.$message({
-                  type: "success",
-                  message: `注册成功`
-                });
-                setTimeout(() => {
-                  self.goToUrl('/home')
-                }, 2000);
+                type: "success",
+                message: `重置成功`
+              });
+              self.isReSetOk = true;
+              setTimeout(() => {
+                self.goToUrl("/home");
+              }, 1000);
               console.log(response.data);
+              console.log(11111);
             }
           },
           response => {}
@@ -307,7 +330,25 @@ export default {
   height: 100%;
   position: relative;
 }
-
+.reset-login-btn{
+  width:160px;
+  height: 36px;
+  padding:0px;
+  display:block;
+  margin:40px auto;
+}
+.page-center-text {
+  display: block;
+  width: 300px;
+  position: relative;
+  text-align: center;
+  margin: 0 auto;
+  color:#999999;
+  font-size:14px;
+}
+.from-bottom {
+  margin-top: 50px;
+}
 .margin-auto-1200-box {
   width: 1200px;
   margin: 0 auto;
@@ -317,6 +358,12 @@ export default {
   color: #666;
   text-align: center;
   margin: 80px 0px 64px;
+  i {
+    font-size: 30px;
+    position: relative;
+    top: 4px;
+    color: #5ab535;
+  }
 }
 .login-head-box {
   width: 100%;
@@ -330,6 +377,7 @@ export default {
   .login-bar {
     display: block;
     text-align: center;
+    visibility: hidden;
     .el-breadcrumb {
       display: inline-block;
       margin: 21px auto 42px;
