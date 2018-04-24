@@ -12,5 +12,6 @@ export const getUserInfo = state => {
 }
 
 export const getLoginFlag = state => {
+	console.log("getLoginFlag====>" ,getLoginFlag)
     return state.loginFlag
 }

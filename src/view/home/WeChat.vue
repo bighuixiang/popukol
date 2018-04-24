@@ -53,8 +53,8 @@
    								 <i class="el-icon-arrow-down el-icon--right"></i>
   							</span>
 							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item command="{'id':'0','name':'头条'}">头条</el-dropdown-item>
-								<el-dropdown-item command="{'id':'1','name':'次条'}">次条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'1','name':'头条'}">头条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'0','name':'次条'}">次条</el-dropdown-item>
 							</el-dropdown-menu>
 						</el-dropdown>
 						<el-input class="inputwidth" size="mini" v-model="params.prices.min" placeholder="元"></el-input>
@@ -92,7 +92,7 @@
 			<div class="item">
 				<div class="title">其他筛选</div>
 				<div class="right">
-					<div class="buxian cur">
+					<div class="buxian"  :class="{'cur':checkList.length==0}" @click="buxianCheck">
 						<span>不限</span>
 					</div>
 					<div class="list">
@@ -143,7 +143,7 @@
 							<el-col :span="6" class="tableZh">
 								<div class="left">
 									<img class="userImg" :src="scope.row.headImg" />
-									<img class="ico" :src="scope.row.headImg" />
+									<img v-if="scope.row.officalStatus==1" class="ico" src="../../../dist/static/icon/meitirenzhen/wxrz.png" />
 								</div>
 							</el-col>
 							<el-col :span="18" class="tableZh">
@@ -242,7 +242,7 @@
 				provinveDataList: [], //省
 				cityDataList: [], //市区
 				bjtypeobj: {
-					id: "0",
+					id: "1",
 					name: "头条"
 				},
 				areaList: [{
@@ -274,7 +274,7 @@
 		async mounted() {
 			let self = this
 			self.increment(1)
-			await self.addRecordType();
+			self.addRecordType();
 			await self.addProvinceAndCity();
 			await self.addWechatList();
 		},
@@ -314,10 +314,10 @@
 					fansMax = 0;
 				switch(self.fansIndex) {
 					case -1:
-						if(self.params.fanss.min.trim() == "")
+						if(self.params.fanss.min + ''.trim() == "")
 							self.params.fanss.min = 0;
 
-						if(self.params.fanss.max.trim() == "")
+						if(self.params.fanss.max + ''.trim() == "")
 							self.params.fanss.max = 0;
 
 						fansMin = self.params.fanss.min;
@@ -359,10 +359,10 @@
 					priceMax = 0;
 				switch(self.priceIndex) {
 					case -1:
-						if(self.params.prices.min.trim() == "")
+						if(self.params.prices.min + ''.trim() == "")
 							self.params.prices.min = 0;
 
-						if(self.params.prices.max.trim() == "")
+						if(self.params.prices.max + ''.trim() == "")
 							self.params.prices.max = 0;
 
 						priceMin = self.params.prices.min;
@@ -397,6 +397,7 @@
 				let str = [];
 				str.push(self.params.categoryId + "/")
 				str.push(fansMin + "-" + fansMax + "/")
+				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
 				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
@@ -434,6 +435,12 @@
 			},
 			currentChange(index) {
 				this.params.page = index;
+				this.addWechatList();
+			},
+			buxianCheck(){
+				this.checkList = [];
+				this.params.offical = 0;
+				this.params.page = 1;
 				this.addWechatList();
 			},
 			setRecord(val, id) {
@@ -485,7 +492,6 @@
 			},
 			provinveChange(val) {
 				let self = this;
-				console.log("provinveChange")
 				this.cityId = "";
 				this.provinveId = val;
 				self.$http.get(self.API.cityList, {
@@ -495,6 +501,7 @@
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {
 						self.cityDataList = response.data.data;
+						self.cityId = self.cityDataList[0].id;
 					}
 				}, (response) => {});
 			},
@@ -511,20 +518,20 @@
 				this.params.page = 1;
 				this.addWechatList();
 			},
-			addCar(row){
+			addCar(row) {
 				//加入选号车
 				let self = this;
 				console.log(row)
-//				if(row.isFl){
-//					
-//				}
+				//				if(row.isFl){
+				//					
+				//				}
 			},
-			zhDetail(row){
+			zhDetail(row) {
 				//账号详情
 				let self = this;
 				console.log(row)
 			},
-			yytoufang(row){
+			yytoufang(row) {
 				//预约投放
 				let self = this;
 				console.log(row)
@@ -532,6 +539,8 @@
 			bjtype(val) { //				参考报价类型
 				val = val.replace(/'/g, '"');
 				this.bjtypeobj = JSON.parse(val);
+				this.params.page = 1;
+				this.addWechatList();
 			},
 			handleSelectionChange(val) {
 				this.multipleSelection = val;
@@ -653,7 +662,7 @@
 				position: absolute;
 				right: 0;
 				bottom: 0;
-				width: 18px;
+				width: 12px;
 				height: auto;
 				display: block;
 			}
