@@ -98,6 +98,7 @@ export default {
             // 响应成功回调
             if (response.data.status == 0) {
               self.casesList = response.data.data;
+              self.checkBar(0,self.casesList[0].id)
               // self.activeHomeClassicList = response.data.data[0].id + "";
               // self.getHomeClassicOtherItems(response.data.data[0].id);
               // console.log("getHomeClassicOtherItems", response.data.data[0].id);

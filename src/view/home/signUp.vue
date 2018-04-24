@@ -332,6 +332,9 @@ export default {
     white-space: nowrap;
     border-radius: 4px;
   }
+  .el-form-item__content{
+    height: 40px;
+  }
   .el-form-item__error:after {
     content: "";
     display: block;

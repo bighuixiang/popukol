@@ -9,7 +9,7 @@ export const homeCategoryList = `${IP}/platform/account/top/category`
 export const homeCategoryItems = `${IP}/platform/account/top/list`
 //GET   ===> 首页经典案例列表
 export const homeClassicList = `${IP}/classic/case/category/list`
-//GET   ===> 首页经典案例详情
+//GET   ===> 单独页经典案例详情
 export const homeClassicItems = `${IP}/classic/case/record/info`
 //GET   ===> 帮助中心list
 export const helpList = `${IP}/support/center/type/list`
