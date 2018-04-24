@@ -8,6 +8,17 @@
 		<!-- end 搜索 -->
 		<!-- start 账号分类 -->
 		<div class="condition">
+			<div class="item">
+				<div class="title"><span style="margin-right: 26px;">平</span>台</div>
+				<div class="right">
+					<div class="buxian" :class="{'cur':platfromIndex==0}" @click="setPlatform(0,0)">
+						<span>不限</span>
+					</div>
+					<div class="list">
+						<div @click="setPlatform(index+1,item.id)" :class="{'cur':platfromIndex==index+1}" v-for="(item,index) in platformList"><span>{{item.name}}</span></div>
+					</div>
+				</div>
+			</div>
 			<div class="item kuozhan">
 				<div class="title">账号分类</div>
 				<div class="right">
@@ -47,16 +58,16 @@
 						<div @click="setPrice(index+1,item.id)" :class="{'cur':priceIndex==index+1}" v-for="(item,index) in ['1000元以下','1000-3000元','3000-5000元','5000-10000元','10000元以上']"><span>{{item}}</span></div>
 					</div>
 					<div class="filter">
-						<el-dropdown @command="bjtype" trigger="click" class="xiala">
+						<!--<el-dropdown @command="bjtype" trigger="click" class="xiala">
 							<span class="el-dropdown-link type">
    								 {{bjtypeobj.name}}
    								 <i class="el-icon-arrow-down el-icon--right"></i>
   							</span>
 							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item command="{'id':'1','name':'头条'}">头条</el-dropdown-item>
-								<el-dropdown-item command="{'id':'0','name':'次条'}">次条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'1','name':'头条'}">淘宝头条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'0','name':'次条'}">淘宝次条</el-dropdown-item>
 							</el-dropdown-menu>
-						</el-dropdown>
+						</el-dropdown>-->
 						<el-input class="inputwidth" size="mini" v-model="params.prices.min" placeholder="元"></el-input>
 						<div class="hengxian"></div>
 						<el-input class="inputwidth" size="mini" v-model="params.prices.max" placeholder="元"></el-input>
@@ -89,10 +100,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="item">
+			<!--<div class="item">
 				<div class="title">其他筛选</div>
 				<div class="right">
-					<div class="buxian"  :class="{'cur':checkList.length==0}" @click="buxianCheck">
+					<div class="buxian" :class="{'cur':checkList.length==0}" @click="buxianCheck">
 						<span>不限</span>
 					</div>
 					<div class="list">
@@ -101,7 +112,7 @@
 						</el-checkbox-group>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 		<!-- end 账号分类 -->
 		<!-- start 排序 -->
@@ -120,13 +131,13 @@
 			</el-dropdown>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
-			    按阅读数
+			    按观看次数
 			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
 			    <i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
 			  </span>
 				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item command="3">阅读数由高到低</el-dropdown-item>
-					<el-dropdown-item command="4">阅读数由低到高</el-dropdown-item>
+					<el-dropdown-item command="3">观看次数由高到低</el-dropdown-item>
+					<el-dropdown-item command="4">观看次数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
 			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
@@ -143,15 +154,17 @@
 							<el-col :span="6" class="tableZh">
 								<div class="left">
 									<img class="userImg" :src="scope.row.headImg" />
-									<img v-if="scope.row.officalStatus==1" class="ico" src="/static/icon/meitirenzhen/wxrz.png" />
+									<!--<img v-if="scope.row.officalStatus==1" class="ico" src="/static/icon/meitirenzhen/wxrz.png" />-->
 								</div>
 							</el-col>
 							<el-col :span="18" class="tableZh">
 								<div class="right">
 									<div class="name">{{scope.row.name}}
 										<div class="erweima">
-											<img class="erweimamin" src="../../../static/icon/meitirenzhen/erweima.png" />
-											<img class="erweimaMax" :src="scope.row.headImg" />
+											{{scope.row.platformId}}
+											<img v-if="scope.row.platformId==23" class="erweimamin" src=" ../../../static/icon/meitirenzhen/jd.png"" />
+											<img v-if="scope.row.platformId==15" class="erweimamin" src=" ../../../static/icon/meitirenzhen/tb.png"" />
+											<!--<img class="erweimaMax" :src="scope.row.headImg" />-->
 										</div>
 									</div>
 									<span class="tag">原创</span>
@@ -170,16 +183,21 @@
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column label="报价">
+				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">
 						<div>
-							<p>头条:￥{{scope.row.mainPrice}}</p>
-							<p>次条:￥{{scope.row.subPrice}}</p>
+							<div v-if="getLoginFlag">
+								<p>头条:￥{{scope.row.mainPrice}}</p>
+								<p>次条:￥{{scope.row.subPrice}}</p>
+							</div>
+							<div v-else>
+								登录广告主账号可查看更多报价
+							</div>
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column prop="categoryModel" label="账号分类">
-				</el-table-column>
+				<!--<el-table-column prop="categoryModel" label="账号分类">
+				</el-table-column>-->
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<div>
@@ -214,6 +232,7 @@
 					//入参	
 					page: 1,
 					keywords: "", //搜索关键字
+					platformId: 0, //平台
 					regionId: 0, //地区
 					categoryId: 0, //账号分类
 					fanss: { //粉丝数区间	
@@ -227,8 +246,10 @@
 					},
 					offical: 0, //官方   0 未选中   1 已选择
 				},
+				platformId: "", //平台ID
 				provinveId: "", //省ID
 				cityId: "", //区ID
+				platfromIndex: 0, //平台   当前索引
 				recordIndex: 0, //账号分类   当前索引
 				fansIndex: 0, //粉丝数   当前索引
 				priceIndex: 0, //价格   当前索引
@@ -237,6 +258,7 @@
 
 				total: 0, //当前分页总数
 
+				platformList: [], //平台列表
 				recordTypeList: [], //账号分类列表
 				checkList: [], //官方认证
 				provinveDataList: [], //省
@@ -274,7 +296,8 @@
 		async mounted() {
 			let self = this
 			self.increment(4)
-			self.addRecordType();
+			await self.addPlatform();
+			await self.addRecordType();
 			await self.addProvinceAndCity();
 			await self.addWechatList();
 		},
@@ -282,6 +305,7 @@
 			// 使用对象展开运算符将 getters 混入 computed 对象中
 			...mapGetters([
 				'getNavList',
+				"getLoginFlag",
 				'getUserInfo',
 				// ...
 			])
@@ -395,14 +419,15 @@
 					self.params.regionId = self.cityId;
 				}
 				let str = [];
+				str.push(self.params.platformId + "/")
 				str.push(self.params.categoryId + "/")
 				str.push(fansMin + "-" + fansMax + "/")
-				str.push(self.bjtypeobj.id + "/")
+				//				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
 				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-				str.push(self.params.offical)
-				self.$http.get(self.API.wechatAccountListAPI + str.join(''), {
+				//				str.push(self.params.offical)
+				self.$http.get(self.API.talentListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
 						limit: 10,
@@ -437,7 +462,7 @@
 				this.params.page = index;
 				this.addWechatList();
 			},
-			buxianCheck(){
+			buxianCheck() {
 				this.checkList = [];
 				this.params.offical = 0;
 				this.params.page = 1;
@@ -446,6 +471,12 @@
 			setRecord(val, id) {
 				this.recordIndex = val - 0;
 				this.params.categoryId = id;
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			setPlatform(val, id) {
+				this.platfromIndex = val - 0;
+				this.params.platformId = id;
 				this.params.page = 1;
 				this.addWechatList();
 			},
@@ -554,12 +585,27 @@
 				}, (response) => {});
 
 			},
+			addPlatform() {
+				let self = this;
+				//				12 微信   13微博  14 小红书
+				self.$http.get(self.API.subPlatformListAPI, {
+					params: {
+						pid: 4,
+					}
+				}).then((response) => { // 响应成功回调
+					if(response.data.status == 0) {
+						self.platformList = response.data.data
+					}
+				}, (response) => {
+
+				});
+			},
 			addRecordType() {
 				let self = this;
 				//				12 微信   13微博  14 小红书
-				self.$http.get(self.API.subRecordList, {
+				self.$http.get(self.API.recordList, {
 					params: {
-						platformId: 12,
+						platformId: 4,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {

@@ -50,5 +50,9 @@ export const wechatAccountListAPI = `${IP}/wechat/account/`
 export const weiboAccountListAPI = `${IP}/weibo/account/`
 //GET   ===> 分页-小红书
 export const xhsListAPI = `${IP}/xhs/account/`
+//GET   ===> 分页-达人
+export const talentListAPI = `${IP}/daren/account/`
+//GET   ===> 分页-查询子平台数据
+export const subPlatformListAPI = `${IP}/platform/sub/record/list`
 //GET   ===> 首页头部导航列表
 export const topNavListAPI = `${IP}/platform/record/list`

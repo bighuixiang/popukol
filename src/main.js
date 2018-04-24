@@ -37,7 +37,7 @@ Axios.interceptors.response.use(function(response) {
 }, function(error) {
 	// 对响应错误做点什么
 	NProgress.done();
-	return Promise.reject(error);
+	return Promise.	reject(error);
 });
 
 Vue.prototype.API = APIS;

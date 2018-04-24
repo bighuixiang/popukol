@@ -170,11 +170,16 @@
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column label="报价">
+				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">
 						<div>
-							<p>头条:￥{{scope.row.mainPrice}}</p>
-							<p>次条:￥{{scope.row.subPrice}}</p>
+							<div v-if="getLoginFlag">
+								<p>头条:￥{{scope.row.mainPrice}}</p>
+								<p>次条:￥{{scope.row.subPrice}}</p>
+							</div>
+							<div v-else>
+								登录广告主账号可查看更多报价
+							</div>
 						</div>
 					</template>
 				</el-table-column>
@@ -282,6 +287,7 @@
 			// 使用对象展开运算符将 getters 混入 computed 对象中
 			...mapGetters([
 				'getNavList',
+				"getLoginFlag",
 				'getUserInfo',
 				// ...
 			])
@@ -397,11 +403,11 @@
 				let str = [];
 				str.push(self.params.categoryId + "/")
 				str.push(fansMin + "-" + fansMax + "/")
-//				str.push(self.bjtypeobj.id + "/")
+				//				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
 				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-//				str.push(self.params.offical)
+				//				str.push(self.params.offical)
 				self.$http.get(self.API.xhsListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
@@ -437,7 +443,7 @@
 				this.params.page = index;
 				this.addWechatList();
 			},
-			buxianCheck(){
+			buxianCheck() {
 				this.checkList = [];
 				this.params.offical = 0;
 				this.params.page = 1;
@@ -557,9 +563,9 @@
 			addRecordType() {
 				let self = this;
 				//				12 微信   13微博  14 小红书
-				self.$http.get(self.API.subRecordList, {
+				self.$http.get(self.API.recordList, {
 					params: {
-						platformId: 14,
+						platformId: 3,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {

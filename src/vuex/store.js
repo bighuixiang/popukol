@@ -36,7 +36,7 @@ const state = {
 		"isCur": false,
 	}, {
 		"name": "头条/知乎/豆瓣",
-		"url": "/mmgroup",
+		"url": "/headlines",
 		"isCur": false,
 	}, {
 		"name": "Facebook/Twitter",

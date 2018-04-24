@@ -8,6 +8,17 @@
 		<!-- end 搜索 -->
 		<!-- start 账号分类 -->
 		<div class="condition">
+			<div class="item">
+				<div class="title"><span style="margin-right: 26px;">平</span>台</div>
+				<div class="right">
+					<div class="buxian" :class="{'cur':platfromIndex==0}" @click="setPlatform(0,0)">
+						<span>不限</span>
+					</div>
+					<div class="list">
+						<div @click="setPlatform(index+1,item.id)" :class="{'cur':platfromIndex==index+1}" v-for="(item,index) in platformList"><span>{{item.name}}</span></div>
+					</div>
+				</div>
+			</div>
 			<div class="item kuozhan">
 				<div class="title">账号分类</div>
 				<div class="right">
@@ -47,16 +58,16 @@
 						<div @click="setPrice(index+1,item.id)" :class="{'cur':priceIndex==index+1}" v-for="(item,index) in ['1000元以下','1000-3000元','3000-5000元','5000-10000元','10000元以上']"><span>{{item}}</span></div>
 					</div>
 					<div class="filter">
-						<el-dropdown @command="bjtype" trigger="click" class="xiala">
+						<!--<el-dropdown @command="bjtype" trigger="click" class="xiala">
 							<span class="el-dropdown-link type">
    								 {{bjtypeobj.name}}
    								 <i class="el-icon-arrow-down el-icon--right"></i>
   							</span>
 							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item command="{'id':'1','name':'直发'}">直发</el-dropdown-item>
-								<el-dropdown-item command="{'id':'0','name':'转发'}">转发</el-dropdown-item>
+								<el-dropdown-item command="{'id':'1','name':'头条'}">淘宝头条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'0','name':'次条'}">淘宝次条</el-dropdown-item>
 							</el-dropdown-menu>
-						</el-dropdown>
+						</el-dropdown>-->
 						<el-input class="inputwidth" size="mini" v-model="params.prices.min" placeholder="元"></el-input>
 						<div class="hengxian"></div>
 						<el-input class="inputwidth" size="mini" v-model="params.prices.max" placeholder="元"></el-input>
@@ -89,7 +100,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="item">
+			<!--<div class="item">
 				<div class="title">其他筛选</div>
 				<div class="right">
 					<div class="buxian" :class="{'cur':checkList.length==0}" @click="buxianCheck">
@@ -97,13 +108,11 @@
 					</div>
 					<div class="list">
 						<el-checkbox-group @change="officalChange" class="checkList" v-model="checkList">
-							<el-checkbox label="黄V认证" :key="1"></el-checkbox>
-							<el-checkbox label="蓝V认证" :key="2"></el-checkbox>
-							<el-checkbox label="金V认证" :key="3"></el-checkbox>
+							<el-checkbox label="官方认证"></el-checkbox>
 						</el-checkbox-group>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 		<!-- end 账号分类 -->
 		<!-- start 排序 -->
@@ -122,13 +131,13 @@
 			</el-dropdown>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
-			    按阅读数
+			    按观看次数
 			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
 			    <i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
 			  </span>
 				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item command="3">阅读数由高到低</el-dropdown-item>
-					<el-dropdown-item command="4">阅读数由低到高</el-dropdown-item>
+					<el-dropdown-item command="3">观看次数由高到低</el-dropdown-item>
+					<el-dropdown-item command="4">观看次数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
 			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
@@ -145,18 +154,18 @@
 							<el-col :span="6" class="tableZh">
 								<div class="left">
 									<img class="userImg" :src="scope.row.headImg" />
-									<img v-if="scope.row.authLevel==1" class="ico" src="/static/icon/meitirenzhen/wbhrz.png" />
-									<img v-if="scope.row.authLevel==2" class="ico" src="/static/icon/meitirenzhen/wblrz.png" />
-									<img v-if="scope.row.authLevel==3" class="ico" src="/static/icon/meitirenzhen/wbjrz.png" />
+									<!--<img v-if="scope.row.officalStatus==1" class="ico" src="/static/icon/meitirenzhen/wxrz.png" />-->
 								</div>
 							</el-col>
 							<el-col :span="18" class="tableZh">
 								<div class="right">
 									<div class="name">{{scope.row.name}}
-										<!--<div class="erweima">
-											<img class="erweimamin" src="../../../static/icon/meitirenzhen/erweima.png" />
-											<img class="erweimaMax" :src="scope.row.headImg" />
-										</div>-->
+										<div class="erweima">
+											{{scope.row.platformId}}
+											<img v-if="scope.row.platformId==23" class="erweimamin" src=" ../../../static/icon/meitirenzhen/jd.png"" />
+											<img v-if="scope.row.platformId==15" class="erweimamin" src=" ../../../static/icon/meitirenzhen/tb.png"" />
+											<!--<img class="erweimaMax" :src="scope.row.headImg" />-->
+										</div>
 									</div>
 									<span class="tag">原创</span>
 								</div>
@@ -164,16 +173,16 @@
 						</el-row>
 					</template>
 				</el-table-column>
-				<el-table-column prop="fans" label="转发数">
+				<el-table-column prop="fans" label="粉丝数">
 				</el-table-column>
-				<!--<el-table-column label="阅读数">
+				<el-table-column label="阅读数">
 					<template slot-scope="scope">
 						<div>
 							<p>头条:{{ scope.row.extra.viewCount }}+</p>
 							<p>次条:{{ scope.row.extra.subViewCount}}+</p>
 						</div>
 					</template>
-				</el-table-column>-->
+				</el-table-column>
 				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">
 						<div>
@@ -187,8 +196,8 @@
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column prop="categoryModel" label="账号分类">
-				</el-table-column>
+				<!--<el-table-column prop="categoryModel" label="账号分类">
+				</el-table-column>-->
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<div>
@@ -223,6 +232,7 @@
 					//入参	
 					page: 1,
 					keywords: "", //搜索关键字
+					platformId: 0, //平台
 					regionId: 0, //地区
 					categoryId: 0, //账号分类
 					fanss: { //粉丝数区间	
@@ -234,10 +244,12 @@
 						min: "",
 						max: ""
 					},
-					offical: [0, 0, 0], //官方   0 未选中   1 已选择
+					offical: 0, //官方   0 未选中   1 已选择
 				},
+				platformId: "", //平台ID
 				provinveId: "", //省ID
 				cityId: "", //区ID
+				platfromIndex: 0, //平台   当前索引
 				recordIndex: 0, //账号分类   当前索引
 				fansIndex: 0, //粉丝数   当前索引
 				priceIndex: 0, //价格   当前索引
@@ -246,13 +258,14 @@
 
 				total: 0, //当前分页总数
 
+				platformList: [], //平台列表
 				recordTypeList: [], //账号分类列表
 				checkList: [], //官方认证
 				provinveDataList: [], //省
 				cityDataList: [], //市区
 				bjtypeobj: {
 					id: "1",
-					name: "直发"
+					name: "头条"
 				},
 				areaList: [{
 					id: 1,
@@ -282,7 +295,8 @@
 		},
 		async mounted() {
 			let self = this
-			self.increment(2)
+			self.increment(6)
+			await self.addPlatform();
 			await self.addRecordType();
 			await self.addProvinceAndCity();
 			await self.addWechatList();
@@ -300,7 +314,6 @@
 			...mapActions([
 				'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
 				'decrement',
-				"setloginflag",
 				'setuserinfo'
 			]),
 			addWechatList() {
@@ -406,14 +419,15 @@
 					self.params.regionId = self.cityId;
 				}
 				let str = [];
+				str.push(self.params.platformId + "/")
 				str.push(self.params.categoryId + "/")
 				str.push(fansMin + "-" + fansMax + "/")
-				str.push(self.bjtypeobj.id + "/")
+				//				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
 				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-				str.push(self.params.offical.join("-"))
-				self.$http.get(self.API.weiboAccountListAPI + str.join(''), {
+				//				str.push(self.params.offical)
+				self.$http.get(self.API.talentListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
 						limit: 10,
@@ -449,16 +463,20 @@
 				this.addWechatList();
 			},
 			buxianCheck() {
-				//说明新增了
-				let self = this;
 				this.checkList = [];
-				this.params.offical = [0, 0, 0];
+				this.params.offical = 0;
 				this.params.page = 1;
 				this.addWechatList();
 			},
 			setRecord(val, id) {
 				this.recordIndex = val - 0;
 				this.params.categoryId = id;
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			setPlatform(val, id) {
+				this.platfromIndex = val - 0;
+				this.params.platformId = id;
 				this.params.page = 1;
 				this.addWechatList();
 			},
@@ -522,24 +540,7 @@
 				this.cityId = val;
 			},
 			officalChange(val) {
-				//说明新增了
-				let self = this;
-				this.params.offical = [0, 0, 0];
-				val.forEach(item => {
-					switch(item) {
-						case "黄V认证":
-							self.params.offical[0] = 1;
-							break;
-						case "蓝V认证":
-							self.params.offical[1] = 1;
-							break;
-						case "金V认证":
-							self.params.offical[2] = 1;
-							break;
-						default:
-							break;
-					}
-				})
+				this.params.offical = val.length === 0 ? 0 : 1;
 				this.params.page = 1;
 				this.addWechatList();
 			},
@@ -584,12 +585,27 @@
 				}, (response) => {});
 
 			},
+			addPlatform() {
+				let self = this;
+				//				12 微信   13微博  14 小红书
+				self.$http.get(self.API.subPlatformListAPI, {
+					params: {
+						pid: 4,
+					}
+				}).then((response) => { // 响应成功回调
+					if(response.data.status == 0) {
+						self.platformList = response.data.data
+					}
+				}, (response) => {
+
+				});
+			},
 			addRecordType() {
 				let self = this;
 				//				12 微信   13微博  14 小红书
 				self.$http.get(self.API.recordList, {
 					params: {
-						platformId: 2,
+						platformId: 4,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {
@@ -751,7 +767,6 @@
 					width: 10px;
 					height: 1px;
 					background-color: #aaaaaa;
-					display: inline-block;
 					margin-left: 6px;
 					margin-right: 6px;
 					margin-top: 22px;
@@ -761,7 +776,6 @@
 					width: 66px;
 					height: 24px;
 					border-radius: 2px;
-					display: inline-block;
 					padding: 0;
 					float: left;
 				}
@@ -880,7 +894,6 @@
 			border: 1px solid #e8e8e8;
 			.defult {
 				background-color: #FFFFFF;
-				display: inline-block;
 				padding: 0px 16px;
 				border: 1px solid #e8e8e8;
 				border-left: none;

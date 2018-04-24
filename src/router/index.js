@@ -29,6 +29,11 @@ export default new Router({
 			component: resolve => require(['../view/Home/Talent.vue'], resolve),
 			name: '淘宝/京东达人'
 		},{
+			path: '/headlines',
+			component: resolve => require(['../view/Home/Headlines.vue'], resolve),
+			name: '头条/知乎/豆瓣'
+		},
+		{
 			path: '/cases',
 			name: 'cases',
 			component: resolve => require(['../view/Home/cases.vue'], resolve)

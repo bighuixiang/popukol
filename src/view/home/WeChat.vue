@@ -170,11 +170,16 @@
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column label="报价">
+				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">
 						<div>
-							<p>头条:￥{{scope.row.mainPrice}}</p>
-							<p>次条:￥{{scope.row.subPrice}}</p>
+							<div v-if="getLoginFlag">
+								<p>头条:￥{{scope.row.mainPrice}}</p>
+								<p>次条:￥{{scope.row.subPrice}}</p>
+							</div>
+							<div>
+								登录广告主账号可查看更多报价
+							</div>
 						</div>
 					</template>
 				</el-table-column>
@@ -282,6 +287,7 @@
 			// 使用对象展开运算符将 getters 混入 computed 对象中
 			...mapGetters([
 				'getNavList',
+				"getLoginFlag",
 				'getUserInfo',
 				// ...
 			])
@@ -557,9 +563,9 @@
 			addRecordType() {
 				let self = this;
 				//				12 微信   13微博  14 小红书
-				self.$http.get(self.API.subRecordList, {
+				self.$http.get(self.API.recordList, {
 					params: {
-						platformId: 12,
+						platformId: 1,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {
