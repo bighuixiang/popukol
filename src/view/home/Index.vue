@@ -3,7 +3,7 @@
 	<div class="max-content-box">
 		<div class="content-box">
 			<div class="slider-box">
-				<el-carousel height="350px" arrow="never" :interval="50000">
+				<el-carousel height="350px" arrow="never" :interval="5000">
 					<el-carousel-item v-for="item in sliderList" :key="item.remark">
               <a :href="(typeof(item.url)=='undefined'?'/home':item.url)"><img :src="item.imgUrl" alt=""></a>
 					</el-carousel-item>
@@ -43,8 +43,9 @@
           <el-tab-pane :key="index" v-for="(channelCategory,index) in channelCategorys" :label="channelCategory.name" :name="channelCategory.id+''">
              
               <div v-for="(item,index) in channelCategoryList" class="user-price-box">
-         
+                <a <a :href="'//'+item.url" target="blank">
                 <img class="avatar-box" :src="item.headImg" alt="">
+                </a>
                 <i class="avatar-line"></i>
                 <span class="name-text">{{item.name}}</span>
                 <div class="text-center-box">
@@ -61,7 +62,7 @@
         <span class="compentent-title">
           优质资源
         </span>
-        <a class="compentent-more">更多></a>
+        <a class="compentent-more" @click="goToUrl('/weChat')">更多></a>
       </div>
 
 			<div class="compentent-box compentent-anli">
@@ -70,7 +71,7 @@
               <div class="homeClassicItems-box" >
                 <div class="homeClassicItems-left-box" v-bind:style="{ 'background-image': 'url(' + homeClassicOtherItems.imgUrl + ')'}">
                   <div class="relative-box">
-                    <el-button>查看案例详情</el-button>
+                    <el-button @click="goToUrl('/cases?id='+homeClassicItem.id)">查看案例详情</el-button>
                   </div>
                 </div>
                 <div class="homeClassicItems-right-box blur" v-bind:style="{ 'background-image': 'url(' + homeClassicOtherItems.imgUrl + ')'}">
@@ -604,7 +605,7 @@ export default {
     padding-top: 80px;
   }
   .el-col-6{
-    margin-top: 20px;
+    margin-bottom: 20px;
   }
   .el-card__body{
     padding: 0px;
@@ -653,6 +654,10 @@ export default {
     border-radius: 4px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   }
+  .user-price-box:hover{
+    transition: all 0.2s;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  }
   .avatar-box {
     width: 80px;
     height: 80px;
@@ -660,6 +665,11 @@ export default {
     display: block;
     position: relative;
     margin: 20px auto;
+  }
+  .avatar-box:hover{
+    transition: all 0.2s;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
   }
   .avatar-line {
     margin: 18px;
