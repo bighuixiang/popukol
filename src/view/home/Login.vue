@@ -5,10 +5,10 @@
 				<img class="login-logo" @click="goToUrl('/home')" src="../../../static/icon/topandbottomlogo/toplogo.png" alt="">
 				<div class="login-bar">
 					<el-breadcrumb separator="|">
-						<el-breadcrumb-item><span class="text-btn isActive-red" @click="goToUrl('/login')">登录</span></el-breadcrumb-item>
-						<el-breadcrumb-item><span class="text-btn" @click="goToUrl('/signup')">注册</span></el-breadcrumb-item>
+						<el-breadcrumb-item><span class="text-btn text-btn-12">登录广告主账号，查看更多专属报价</span></el-breadcrumb-item>
 					</el-breadcrumb>
 				</div>
+        <!-- <span class="login-page-tag"></span> -->
 			</div>
 		</div>
 
@@ -199,10 +199,21 @@ export default {
 </script>
 
 <style lang="scss">
+.text-btn-12{
+  font-size: 12px!important;
+}
 .login-logo {
   cursor: pointer;
 }
 .login-head-box {
+  .login-page-tag{
+    font-size: 12px;
+    color: #f2f2f2;
+    text-align: center;
+    position: absolute;
+    display: block;
+    top: 0px;
+  }
   .el-breadcrumb {
     font-size: 16px;
     color: #999 !important;
@@ -289,6 +300,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+
 .send-code-btn-login {
   position: absolute;
   border: 0px;

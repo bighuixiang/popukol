@@ -5,7 +5,7 @@
 			<div class="slider-box">
 				<el-carousel height="350px" arrow="never" :interval="50000">
 					<el-carousel-item v-for="item in sliderList" :key="item.remark">
-              <a href=""><img :src="item.imgUrl" alt=""></a>
+              <a :href="(typeof(item.url)=='undefined'?'/home':item.url)"><img :src="item.imgUrl" alt=""></a>
 					</el-carousel-item>
 				</el-carousel>
 					<div class="user-login-box">
@@ -184,7 +184,7 @@ export default {
     this.getHomeClassicList(); //案例
     this.getHomePartnerList(); //合作商
     document.onkeydown = (e)=>{
-      if(e.keyCode == 13 && this.submitForm){
+      if(e.keyCode == 13 && self.submitForm){
         document.body.focus();
          self.submitForm();
       }
@@ -220,7 +220,8 @@ export default {
           // 响应成功回调
           if (response.data.status == 0) {
             self.sliderList = response.data.data;
-            console.log(self.sliderList);
+            console.log('sliderList',self.sliderList);
+            console.log('sliderList',typeof(self.sliderList[0].url)=='undefined');
           }
         },
         response => {}
@@ -481,6 +482,9 @@ export default {
     ); /* IE6~IE9 */
 }
 .slider-box {
+  .el-breadcrumb__inner{
+    cursor: pointer!important;
+  }
   .canClick{
     transition: all 0.2s;
     background:red!important;
