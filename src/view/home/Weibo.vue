@@ -53,8 +53,8 @@
    								 <i class="el-icon-arrow-down el-icon--right"></i>
   							</span>
 							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item command="{'id':'0','name':'头条'}">头条</el-dropdown-item>
-								<el-dropdown-item command="{'id':'1','name':'次条'}">次条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'1','name':'直发'}">直发</el-dropdown-item>
+								<el-dropdown-item command="{'id':'0','name':'转发'}">转发</el-dropdown-item>
 							</el-dropdown-menu>
 						</el-dropdown>
 						<el-input class="inputwidth" size="mini" v-model="params.prices.min" placeholder="元"></el-input>
@@ -92,7 +92,7 @@
 			<div class="item">
 				<div class="title">其他筛选</div>
 				<div class="right">
-					<div class="buxian cur">
+					<div class="buxian" :class="{'cur':checkList.length==0}" @click="buxianCheck">
 						<span>不限</span>
 					</div>
 					<div class="list">
@@ -145,16 +145,18 @@
 							<el-col :span="6" class="tableZh">
 								<div class="left">
 									<img class="userImg" :src="scope.row.headImg" />
-									<img class="ico" :src="scope.row.headImg" />
+									<img v-if="scope.row.authLevel==1" class="ico" src="../../../dist/static/icon/meitirenzhen/wbhrz.png" />
+									<img v-if="scope.row.authLevel==2" class="ico" src="../../../dist/static/icon/meitirenzhen/wblrz.png" />
+									<img v-if="scope.row.authLevel==3" class="ico" src="../../../dist/static/icon/meitirenzhen/wbjrz.png" />
 								</div>
 							</el-col>
 							<el-col :span="18" class="tableZh">
 								<div class="right">
 									<div class="name">{{scope.row.name}}
-										<div class="erweima">
+										<!--<div class="erweima">
 											<img class="erweimamin" src="../../../static/icon/meitirenzhen/erweima.png" />
 											<img class="erweimaMax" :src="scope.row.headImg" />
-										</div>
+										</div>-->
 									</div>
 									<span class="tag">原创</span>
 								</div>
@@ -162,21 +164,26 @@
 						</el-row>
 					</template>
 				</el-table-column>
-				<el-table-column prop="fans" label="粉丝数">
+				<el-table-column prop="fans" label="转发数">
 				</el-table-column>
-				<el-table-column label="阅读数">
+				<!--<el-table-column label="阅读数">
 					<template slot-scope="scope">
 						<div>
 							<p>头条:{{ scope.row.extra.viewCount }}+</p>
 							<p>次条:{{ scope.row.extra.subViewCount}}+</p>
 						</div>
 					</template>
-				</el-table-column>
-				<el-table-column label="报价">
+				</el-table-column>-->
+				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">
 						<div>
-							<p>头条:￥{{scope.row.mainPrice}}</p>
-							<p>次条:￥{{scope.row.subPrice}}</p>
+							<div v-if="getLoginFlag">
+								<p>头条:￥{{scope.row.mainPrice}}</p>
+								<p>次条:￥{{scope.row.subPrice}}</p>
+							</div>
+							<div v-else>
+								登录广告主账号可查看更多报价
+							</div>
 						</div>
 					</template>
 				</el-table-column>
@@ -227,7 +234,7 @@
 						min: "",
 						max: ""
 					},
-					offical: 0, //官方   0 未选中   1 已选择
+					offical: [0, 0, 0], //官方   0 未选中   1 已选择
 				},
 				provinveId: "", //省ID
 				cityId: "", //区ID
@@ -244,8 +251,8 @@
 				provinveDataList: [], //省
 				cityDataList: [], //市区
 				bjtypeobj: {
-					id: "0",
-					name: "头条"
+					id: "1",
+					name: "直发"
 				},
 				areaList: [{
 					id: 1,
@@ -284,6 +291,7 @@
 			// 使用对象展开运算符将 getters 混入 computed 对象中
 			...mapGetters([
 				'getNavList',
+				"getLoginFlag",
 				'getUserInfo',
 				// ...
 			])
@@ -292,6 +300,7 @@
 			...mapActions([
 				'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
 				'decrement',
+				"setloginflag",
 				'setuserinfo'
 			]),
 			addWechatList() {
@@ -316,10 +325,10 @@
 					fansMax = 0;
 				switch(self.fansIndex) {
 					case -1:
-						if(self.params.fanss.min.trim() == "")
+						if(self.params.fanss.min + ''.trim() == "")
 							self.params.fanss.min = 0;
 
-						if(self.params.fanss.max.trim() == "")
+						if(self.params.fanss.max + ''.trim() == "")
 							self.params.fanss.max = 0;
 
 						fansMin = self.params.fanss.min;
@@ -361,10 +370,10 @@
 					priceMax = 0;
 				switch(self.priceIndex) {
 					case -1:
-						if(self.params.prices.min.trim() == "")
+						if(self.params.prices.min + ''.trim() == "")
 							self.params.prices.min = 0;
 
-						if(self.params.prices.max.trim() == "")
+						if(self.params.prices.max + ''.trim() == "")
 							self.params.prices.max = 0;
 
 						priceMin = self.params.prices.min;
@@ -399,11 +408,12 @@
 				let str = [];
 				str.push(self.params.categoryId + "/")
 				str.push(fansMin + "-" + fansMax + "/")
+				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
 				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-				str.push(self.params.offical)
-				self.$http.get(self.API.weboAccountListAPI + str.join(''), {
+				str.push(self.params.offical.join("-"))
+				self.$http.get(self.API.weiboAccountListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
 						limit: 10,
@@ -436,6 +446,14 @@
 			},
 			currentChange(index) {
 				this.params.page = index;
+				this.addWechatList();
+			},
+			buxianCheck() {
+				//说明新增了
+				let self = this;
+				this.checkList = [];
+				this.params.offical = [0, 0, 0];
+				this.params.page = 1;
 				this.addWechatList();
 			},
 			setRecord(val, id) {
@@ -487,7 +505,6 @@
 			},
 			provinveChange(val) {
 				let self = this;
-				console.log("provinveChange")
 				this.cityId = "";
 				this.provinveId = val;
 				self.$http.get(self.API.cityList, {
@@ -505,8 +522,24 @@
 				this.cityId = val;
 			},
 			officalChange(val) {
-				console.log(val)
-				this.params.offical = val.length === 0 ? 0 : 1;
+				//说明新增了
+				let self = this;
+				this.params.offical = [0, 0, 0];
+				val.forEach(item => {
+					switch(item) {
+						case "黄V认证":
+							self.params.offical[0] = 1;
+							break;
+						case "蓝V认证":
+							self.params.offical[1] = 1;
+							break;
+						case "金V认证":
+							self.params.offical[2] = 1;
+							break;
+						default:
+							break;
+					}
+				})
 				this.params.page = 1;
 				this.addWechatList();
 			},
@@ -515,20 +548,20 @@
 				this.params.page = 1;
 				this.addWechatList();
 			},
-			addCar(row){
+			addCar(row) {
 				//加入选号车
 				let self = this;
 				console.log(row)
-//				if(row.isFl){
-//					
-//				}
+				//				if(row.isFl){
+				//					
+				//				}
 			},
-			zhDetail(row){
+			zhDetail(row) {
 				//账号详情
 				let self = this;
 				console.log(row)
 			},
-			yytoufang(row){
+			yytoufang(row) {
 				//预约投放
 				let self = this;
 				console.log(row)
@@ -536,6 +569,8 @@
 			bjtype(val) { //				参考报价类型
 				val = val.replace(/'/g, '"');
 				this.bjtypeobj = JSON.parse(val);
+				this.params.page = 1;
+				this.addWechatList();
 			},
 			handleSelectionChange(val) {
 				this.multipleSelection = val;
@@ -657,7 +692,7 @@
 				position: absolute;
 				right: 0;
 				bottom: 0;
-				width: 18px;
+				width: 12px;
 				height: auto;
 				display: block;
 			}

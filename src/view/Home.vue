@@ -146,13 +146,14 @@
 		},
 		mounted() {
 			let self = this
+			//			self.getNavsList()
 		},
-		watch: {
-			'$route' (to, from) { //监听路由改变 
-				this.currentPathName = to.name;
-				this.currentPathNameParent = to.matched[0].name;
-			}
-		},
+		//		watch: {
+		//			'$route' (to, from) { //监听路由改变 
+		//				this.currentPathName = to.name;
+		//				this.currentPathNameParent = to.matched[0].name;
+		//			}
+		//		},
 		computed: {
 			// 使用对象展开运算符将 getters 混入 computed 对象中
 			...mapGetters([
@@ -170,6 +171,18 @@
 				'decrement',
 				'setuserinfo'
 			]),
+			getNavsList() {
+				//topNavListAPI
+				let self = this;
+				self.$http.get(self.API.topNavListAPI).then((response) => { // 响应成功回调
+					console.log(response.data)
+					if(response.data.status == 0) {
+						//						self.recordTypeList = response.data.data
+					}
+				}, (response) => {
+
+				});
+			},
 			goToUrl(item) {
 				let self = this;
 				if(item.url != '') {
@@ -280,7 +293,7 @@
 	
 	.cebianlan {
 		position: fixed;
-		right:12px;
+		right: 12px;
 		bottom: 144px;
 		z-index: 999;
 	}

@@ -43,4 +43,6 @@ export const cityList = `${IP}/region/city/list`
 //GET   ===> 分页-微信
 export const wechatAccountListAPI = `${IP}/wechat/account/`
 //GET   ===> 分页-微博
-export const weboAccountListAPI = `${IP}/webo/account/`
+export const weiboAccountListAPI = `${IP}/weibo/account/`
+//GET   ===> 首页头部导航列表
+export const topNavListAPI = `${IP}/platform/record/list`
