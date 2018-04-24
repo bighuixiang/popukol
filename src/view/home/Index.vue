@@ -20,8 +20,8 @@
 							<div class="login-text-btn">
 								<el-checkbox v-model="checked">下次自动登录</el-checkbox>
 								<el-breadcrumb separator="|">
-									<el-breadcrumb-item :to="{ path: '/' }">忘记密码</el-breadcrumb-item>
-									<el-breadcrumb-item :to="{ path: '/' }">注册</el-breadcrumb-item>
+									<el-breadcrumb-item :to="{ path: '/reSetPwd' }">忘记密码</el-breadcrumb-item>
+									<el-breadcrumb-item :to="{ path: '/signUp' }">注册</el-breadcrumb-item>
 								</el-breadcrumb>
 							</div>
 							 <button class="login-btn" v-bind:class="{'canClick': isCanClick}" @click="submitForm()">登录</button>
@@ -48,12 +48,12 @@
                 <i class="avatar-line"></i>
                 <span class="name-text">{{item.name}}</span>
                 <div class="text-center-box">
-                    <span class="people-text"><i class="img-icon people-icon"></i>{{item.fans}}</span>
+                    <span class="people-text"><i class="img-icon people-icon"></i>{{item.fans>=10000?item.fans/10000+"w":item.fans}}</span>
                     <span class="channel-text"><i class="img-icon channel-icon"></i>{{item.categoryModel}}</span>
                 </div>
                 <div class="price-group">
                     <span class="price-text"><span>￥</span>{{item.mainPrice}}</span>
-                    <span class="user-home"><i class="user-home-icon"></i></span>
+                    <span class="user-home"><a :href="'//'+item.url" target="blank"><i class="user-home-icon"></i></a></span>
                 </div>
               </div>
           </el-tab-pane>
@@ -66,7 +66,7 @@
 
 			<div class="compentent-box compentent-anli">
         <el-tabs v-model="activeHomeClassicList" @tab-click="handleClickHomeClassicList">
-          <el-tab-pane :key="index" v-for="(homeClassicItem,index) in homeClassicList" :label="homeClassicItem.name" :name="homeClassicItem.id+''">
+          <el-tab-pane :key="index+'-anli'" v-for="(homeClassicItem,index) in homeClassicList" :label="homeClassicItem.name" :name="homeClassicItem.id+''">
               <div class="homeClassicItems-box" >
                 <div class="homeClassicItems-left-box" v-bind:style="{ 'background-image': 'url(' + homeClassicOtherItems.imgUrl + ')'}">
                   <div class="relative-box">
@@ -91,7 +91,7 @@
 
       <div class="compentent-box compentent-hezuo">
         <el-row :gutter="20">
-          <el-col :span="6" v-for="homePartnerListitem in homePartnerList">
+          <el-col :span="6" :key="index" v-for="(homePartnerListitem,index) in homePartnerList">
             <el-card shadow="hover">
               <img :src="homePartnerListitem.logo" alt="">
             </el-card>
@@ -170,19 +170,24 @@ export default {
   },
   mounted() {
     //页面加载完成回调
+    var self=this;
     this.bgImage = this.API.captchaApi
-    this.autoLogin();
+    // if(this.getLoginFlag){
+    //   this.isLogin = true;
+    //   this.userInfo = this.getUserInfo
+    // }
+    this.getPasswordBycookie();
+    this.getUserInfoFn();
     this.increment(0);
     this.getSliderList(); //轮播图
     this.getHomeCategoryList(); //分类
     this.getHomeClassicList(); //案例
     this.getHomePartnerList(); //合作商
-    console.log('getLoginFlag',this.getLoginFlag)
-    
-    if(this.getLoginFlag){
-      console.log('getLoginFlag',this.getLoginFlag)
-      this.isLogin = true;
-      this.userInfo = this.getUserInfo
+    document.onkeydown = (e)=>{
+      if(e.keyCode == 13 && this.submitForm){
+        document.body.focus();
+         self.submitForm();
+      }
     }
   },
   computed: {
@@ -242,6 +247,7 @@ export default {
       let reg = new RegExp(
         "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
       );
+      document.body.blur();
       for(let key in this.form){
         if(this.form[key]==""){
           self.$message({
@@ -277,7 +283,7 @@ export default {
               });
               self.getUserInfoFn();
               self.setloginflag(true);
-              self.autoLogin();
+              self.getPasswordBycookie();
             }else{
               self.$message({
                 type: "error",
@@ -288,7 +294,7 @@ export default {
           response => {}
         );
     },
-    autoLogin(){
+    getPasswordBycookie(){
         // 从cookie 中读取 账号密码
       var self = this;
       if(self.checked){
@@ -301,21 +307,27 @@ export default {
     },
     getUserInfoFn(){
       let self = this;
-      self.isLogin = true;
       self.$http
         .get(self.API.userInfoApi, {
         })
         .then(
           response => {
             // 响应成功回调
-            if (response.data.status == 0) {
-              self.userInfo = response.data
-              self.setuserinfo(response.data);
+            if (response.data.status == 0 && response.data.data.username != null ) {
+              self.isLogin = true;
+              self.userInfo = response.data.data;
+              console.log("userInfo",self.userInfo)
+              self.setuserinfo(response.data.data);
+              self.setloginflag(true);
             }else{
-              self.$message({
-                type: "error",
-                message: response.data.msg
-              });
+              if(response.data.data.username != null){
+                self.isLogin = false;
+                self.$message({
+                  type: "error",
+                  message: response.data.msg
+                });
+              }
+              
             }
           },
           response => {}
@@ -697,7 +709,7 @@ export default {
     font-size: 16px;
     color: #666;
     padding-left: 18px;
-    line-height: 54px;
+    line-height: 52px;
     display: inline-block;
     font-style: normal;
     font-stretch: normal;
@@ -723,7 +735,7 @@ export default {
     width: 30px;
     height: 30px;
     float: right;
-    top: 12px;
+    top: 10px;
     position: relative;
     margin-right: 20px;
     background-image: url("../../../static/icon/wangzhan/home.png");
@@ -837,13 +849,13 @@ export default {
   display: block;
   border-radius:50%;
   background-color:#ccc;
-  margin:60px auto 40px;
+  margin:60px auto 10px;
 }
 
 .user-box-span{
   font-size:16px;
   line-height:30px;
-  margin:25px 0px;
+  margin:0px 0px 20px;
   text-align:center;
   display: block;
 }

@@ -2,7 +2,7 @@
 <div class="content">
 			<div class="login-head-box">
 				<div class="margin-auto-1200-box">
-					<img class="login-logo" src="../../../static/icon/topandbottomlogo/toplogo.png" alt="">
+					<img class="login-logo" @click="goToUrl('/home')"  src="../../../static/icon/topandbottomlogo/toplogo.png" alt="">
 					<div class="login-bar">
 						<el-breadcrumb separator="|">
 							<el-breadcrumb-item><span class="text-btn" @click="goToUrl('/login')">登录</span></el-breadcrumb-item>
@@ -123,6 +123,12 @@ export default {
   },
   mounted() {
     let self = this;
+    document.onkeydown = (e)=>{
+      if(e.keyCode == 13 && self.submitForm){
+        document.body.focus();
+         self.submitForm('form');
+      }
+    }
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
@@ -254,6 +260,9 @@ export default {
 </script>
 
 <style lang="scss">
+.login-logo{
+  cursor: pointer;
+}
 .login-head-box {
   .el-breadcrumb {
     font-size: 16px;
