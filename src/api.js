@@ -11,6 +11,10 @@ export const homeCategoryItems = `${IP}/platform/account/top/list`
 export const homeClassicList = `${IP}/classic/case/category/list`
 //GET   ===> 首页经典案例详情
 export const homeClassicItems = `${IP}/classic/case/record/info`
+//GET   ===> 帮助中心list
+export const helpList = `${IP}/support/center/type/list`
+//GET   ===> 帮助中心详情
+export const helpItems = `${IP}/support/center/record/info`
 //GET   ===> 首页优质资源详情2
 export const homeClassicOtherItems = `${IP}/classic/case/brief/info`
 //GET   ===> 首页合作伙伴列表
