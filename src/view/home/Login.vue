@@ -61,6 +61,7 @@ export default {
         code: ""
       },
       bgImage: "",
+      language:{},
       rules: {
         email: [
           {
@@ -99,6 +100,9 @@ export default {
   },
   mounted() {
     let self = this;
+    self.SLS();
+    self.language = self.getLanguage();
+    console.log(self.language)
     self.bgImage = self.API.captchaApi;
     document.onkeydown = (e)=>{
       if(e.keyCode == 13 && self.submitForm){

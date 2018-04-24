@@ -4,10 +4,10 @@
 			<!-- start 顶部用户信息栏 -->
 			<div class="mjx-header-user mjx-clearfix">
 				<div class="mjx-header-user-back mjx-width">
-					<div class="i18n" tabindex="-1" @click="isShowI18n=true" @blur="i18nHide">
-						语言: 简体中文<i class="el-icon-arrow-down el-icon--right"></i>
-						<div class="info" v-show="isShowI18n">
-							繁體中文
+					<div class="i18n zh_click" tabindex="-1" @click="isShowI18n=true" @blur="i18nHide">
+						<span languagetype="no">{{languageText1}}</span><i class="el-icon-arrow-down el-icon--right"></i>
+						<div class="info zh_click" v-show="isShowI18n" @click.stop="language">
+							<span languagetype="no" ref="languageRef">{{languageText2}}</span>
 							<div class="sanjiao"></div>
 						</div>
 					</div>
@@ -141,11 +141,18 @@
 				isShowZiMeiTi: false,
 				isShowAppDown: false,
 				msgTotal: 0,
-				logoUrl: ''
+				logoUrl: '',
+				languageText1: "语言: 简体中文",
+				languageText2: "繁體中文",
 			}
 		},
 		mounted() {
 			let self = this
+			let languageType = window.localStorage.getItem("languageType");
+			if(languageType == 2) {
+				self.languageText1 = "語言:繁體中文";
+				self.languageText2 = "简体中文";
+			}
 			//			self.getNavsList()
 		},
 		//		watch: {
@@ -171,6 +178,28 @@
 				'decrement',
 				'setuserinfo'
 			]),
+			language() {
+				let self = this;
+				let languageRef = self.$refs.languageRef;
+				let type = 1;
+				if(languageRef.innerText.indexOf('繁') > -1) {
+					self.languageText1 = "語言:繁體中文";
+					self.languageText2 = "简体中文";
+					type = 2;
+				} else {
+					self.languageText1 = "语言: 简体中文";
+					self.languageText2 = "繁體中文";
+				}
+				window.localStorage.setItem("languageType", type) //简体中文
+				self.SLS(type);
+				self.languageSwitching(type);
+				self.isShowI18n = false;
+			},
+			languageSwitching(type) {
+				let self = this;
+				self.$http.get(self.API.langAPI + type).then((response) => { // 响应成功回调
+				}, (response) => {});
+			},
 			getNavsList() {
 				//topNavListAPI
 				let self = this;

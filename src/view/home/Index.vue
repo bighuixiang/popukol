@@ -172,6 +172,7 @@ export default {
   mounted() {
     //页面加载完成回调
     var self=this;
+    self.SLS();
     this.bgImage = this.API.captchaApi
     // if(this.getLoginFlag){
     //   this.isLogin = true;

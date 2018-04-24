@@ -56,3 +56,5 @@ export const talentListAPI = `${IP}/daren/account/`
 export const subPlatformListAPI = `${IP}/platform/sub/record/list`
 //GET   ===> 首页头部导航列表
 export const topNavListAPI = `${IP}/platform/record/list`
+//GET   ===> 首页头部导航列表
+export const langAPI = `${IP}/lang/type/`

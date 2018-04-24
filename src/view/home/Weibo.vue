@@ -282,6 +282,7 @@
 		},
 		async mounted() {
 			let self = this
+			self.SLS();
 			self.increment(2)
 			await self.addRecordType();
 			await self.addProvinceAndCity();

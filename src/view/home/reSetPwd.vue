@@ -107,6 +107,7 @@ export default {
   },
   mounted() {
     let self = this;
+    self.SLS();
     document.onkeydown = (e)=>{
       if(e.keyCode == 13 && self.submitForm){
         document.body.focus();

@@ -295,6 +295,7 @@
 		},
 		async mounted() {
 			let self = this
+			self.SLS();
 			self.increment(4)
 			await self.addPlatform();
 			await self.addRecordType();

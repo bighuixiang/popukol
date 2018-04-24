@@ -47,6 +47,7 @@ export default {
   },
   mounted() {
     let self = this;
+    self.SLS();
     self.getHomeClassicList();
   },
   computed: {
