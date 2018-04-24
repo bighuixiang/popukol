@@ -44,5 +44,7 @@ export const cityList = `${IP}/region/city/list`
 export const wechatAccountListAPI = `${IP}/wechat/account/`
 //GET   ===> 分页-微博
 export const weiboAccountListAPI = `${IP}/weibo/account/`
+//GET   ===> 分页-小红书
+export const xhsListAPI = `${IP}/xhs/account/`
 //GET   ===> 首页头部导航列表
 export const topNavListAPI = `${IP}/platform/record/list`

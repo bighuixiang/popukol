@@ -24,11 +24,11 @@ const state = {
 		"isCur": false,
 	}, {
 		"name": "小红书",
-		"url": "/mmgroup",
+		"url": "/redbook",
 		"isCur": false,
 	}, {
 		"name": "淘宝/京东达人",
-		"url": "/mmgroup",
+		"url": "/talent",
 		"isCur": false,
 	}, {
 		"name": "直播/短视频",

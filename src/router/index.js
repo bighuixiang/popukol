@@ -20,6 +20,14 @@ export default new Router({
 			path: '/weibo',
 			component: resolve => require(['../view/Home/Weibo.vue'], resolve),
 			name: '微博'
+		},{
+			path: '/redbook',
+			component: resolve => require(['../view/Home/RedBook.vue'], resolve),
+			name: '小红书'
+		},{
+			path: '/talent',
+			component: resolve => require(['../view/Home/Talent.vue'], resolve),
+			name: '淘宝/京东达人'
 		}]
 	}, {
 		path: '/signUp',

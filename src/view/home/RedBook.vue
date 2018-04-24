@@ -47,7 +47,7 @@
 						<div @click="setPrice(index+1,item.id)" :class="{'cur':priceIndex==index+1}" v-for="(item,index) in ['1000元以下','1000-3000元','3000-5000元','5000-10000元','10000元以上']"><span>{{item}}</span></div>
 					</div>
 					<div class="filter">
-						<el-dropdown @command="bjtype" trigger="click" class="xiala">
+						<!--<el-dropdown @command="bjtype" trigger="click" class="xiala">
 							<span class="el-dropdown-link type">
    								 {{bjtypeobj.name}}
    								 <i class="el-icon-arrow-down el-icon--right"></i>
@@ -56,7 +56,7 @@
 								<el-dropdown-item command="{'id':'1','name':'头条'}">头条</el-dropdown-item>
 								<el-dropdown-item command="{'id':'0','name':'次条'}">次条</el-dropdown-item>
 							</el-dropdown-menu>
-						</el-dropdown>
+						</el-dropdown>-->
 						<el-input class="inputwidth" size="mini" v-model="params.prices.min" placeholder="元"></el-input>
 						<div class="hengxian"></div>
 						<el-input class="inputwidth" size="mini" v-model="params.prices.max" placeholder="元"></el-input>
@@ -89,7 +89,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="item">
+			<!--<div class="item">
 				<div class="title">其他筛选</div>
 				<div class="right">
 					<div class="buxian"  :class="{'cur':checkList.length==0}" @click="buxianCheck">
@@ -101,7 +101,7 @@
 						</el-checkbox-group>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 		<!-- end 账号分类 -->
 		<!-- start 排序 -->
@@ -120,13 +120,13 @@
 			</el-dropdown>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
-			    按阅读数
+			    按获赞与收藏数
 			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
 			    <i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
 			  </span>
 				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item command="3">阅读数由高到低</el-dropdown-item>
-					<el-dropdown-item command="4">阅读数由低到高</el-dropdown-item>
+					<el-dropdown-item command="3">获赞与收藏数由高到低</el-dropdown-item>
+					<el-dropdown-item command="4">获赞与收藏数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
 			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
@@ -143,16 +143,16 @@
 							<el-col :span="6" class="tableZh">
 								<div class="left">
 									<img class="userImg" :src="scope.row.headImg" />
-									<img v-if="scope.row.officalStatus==1" class="ico" src="/static/icon/meitirenzhen/wxrz.png" />
+									<!--<img v-if="scope.row.officalStatus==1" class="ico" src="../../../dist/static/icon/meitirenzhen/wxrz.png" />-->
 								</div>
 							</el-col>
 							<el-col :span="18" class="tableZh">
 								<div class="right">
 									<div class="name">{{scope.row.name}}
-										<div class="erweima">
+										<!--<div class="erweima">
 											<img class="erweimamin" src="../../../static/icon/meitirenzhen/erweima.png" />
 											<img class="erweimaMax" :src="scope.row.headImg" />
-										</div>
+										</div>-->
 									</div>
 									<span class="tag">原创</span>
 								</div>
@@ -273,7 +273,7 @@
 		},
 		async mounted() {
 			let self = this
-			self.increment(1)
+			self.increment(3)
 			self.addRecordType();
 			await self.addProvinceAndCity();
 			await self.addWechatList();
@@ -397,12 +397,12 @@
 				let str = [];
 				str.push(self.params.categoryId + "/")
 				str.push(fansMin + "-" + fansMax + "/")
-				str.push(self.bjtypeobj.id + "/")
+//				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
 				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-				str.push(self.params.offical)
-				self.$http.get(self.API.wechatAccountListAPI + str.join(''), {
+//				str.push(self.params.offical)
+				self.$http.get(self.API.xhsListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
 						limit: 10,
@@ -559,7 +559,7 @@
 				//				12 微信   13微博  14 小红书
 				self.$http.get(self.API.subRecordList, {
 					params: {
-						platformId: 12,
+						platformId: 14,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {

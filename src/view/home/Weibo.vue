@@ -145,9 +145,9 @@
 							<el-col :span="6" class="tableZh">
 								<div class="left">
 									<img class="userImg" :src="scope.row.headImg" />
-									<img v-if="scope.row.authLevel==1" class="ico" src="../../../dist/static/icon/meitirenzhen/wbhrz.png" />
-									<img v-if="scope.row.authLevel==2" class="ico" src="../../../dist/static/icon/meitirenzhen/wblrz.png" />
-									<img v-if="scope.row.authLevel==3" class="ico" src="../../../dist/static/icon/meitirenzhen/wbjrz.png" />
+									<img v-if="scope.row.authLevel==1" class="ico" src="/static/icon/meitirenzhen/wbhrz.png" />
+									<img v-if="scope.row.authLevel==2" class="ico" src="/static/icon/meitirenzhen/wblrz.png" />
+									<img v-if="scope.row.authLevel==3" class="ico" src="/static/icon/meitirenzhen/wbjrz.png" />
 								</div>
 							</el-col>
 							<el-col :span="18" class="tableZh">
@@ -817,6 +817,7 @@
 					float: left;
 					padding-left: 86px;
 					padding-bottom: 12px;
+					padding-right: 148px;
 					.checkList {
 						padding-left: 12px;
 					}

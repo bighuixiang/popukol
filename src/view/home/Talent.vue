@@ -273,7 +273,7 @@
 		},
 		async mounted() {
 			let self = this
-			self.increment(1)
+			self.increment(4)
 			self.addRecordType();
 			await self.addProvinceAndCity();
 			await self.addWechatList();
