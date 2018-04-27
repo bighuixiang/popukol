@@ -150,7 +150,7 @@ export default {
     .bar-item{
       line-height: 32px;
       margin: 10px 0px;
-      font-size:12px!important;
+      font-size:16px!important;
       color:#333;
       cursor: pointer;
     }
@@ -165,7 +165,7 @@ export default {
     background: #fff;
     .main-content-head{
       font-weight: bold;
-      font-size: 18px;
+      font-size: 16px;
     }
     .main-content-head{
       position: relative;

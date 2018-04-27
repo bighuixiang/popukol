@@ -9,6 +9,10 @@ export default new Router({
 		name: 'Home',
 		component: resolve => require(['../view/Home.vue'], resolve),
 		children: [{
+			path: '/mmgroup',
+			name: 'mmgroup',
+			component: resolve => require(['../view/Home/mmgroup.vue'], resolve)
+		},{
 			path: '/',
 			component: resolve => require(['../view/Home/Index.vue'], resolve),
 			name: '首页'
