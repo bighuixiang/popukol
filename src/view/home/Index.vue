@@ -91,17 +91,25 @@
 
 
       <div class="compentent-box compentent-hezuo">
-        <el-row :gutter="20">
-          <el-col :span="6" :key="index" v-for="(homePartnerListitem,index) in homePartnerList">
-            <el-card shadow="hover">
-              <img :src="homePartnerListitem.logo" alt="">
-            </el-card>
-          </el-col>
-    
-        </el-row>
-        <span class="compentent-title">
+        
+          <span class="compentent-title bottom-slide-title" >
           合作伙伴
         </span>
+        <el-carousel ref="carouselBottom" :interval="5000" height="230px" arrow="always" class="bottom-slide-box">
+          <el-carousel-item v-for="(item,index_f) in homePartnerList" :key="index_f">
+            <el-row :gutter="20">
+              <el-col :span="6" :key="index" v-for="(homePartnerListitem,index) in homePartnerList[index_f]">
+                <el-card shadow="hover">
+                  <img :src="homePartnerListitem.logo" alt="">
+                </el-card>
+              </el-col>
+            </el-row>
+          </el-carousel-item>
+        </el-carousel>
+        <div class="bottom-slide-button">
+         <i class="el-icon-arrow-left" @click="nextSlide('prve')"></i>
+         <i class="el-icon-arrow-right" @click="nextSlide('next')"></i>
+        </div>
       </div>
 
 		</div>
@@ -148,7 +156,7 @@ export default {
       homeClassicList: {},
       homeClassicItems: {},
       homeClassicOtherItems: {},
-      homePartnerList: {},
+      homePartnerList: [],
       bgImage:"",
       form:{
         email: "",
@@ -214,6 +222,13 @@ export default {
         path: url
       });
     },
+    nextSlide(val) {
+      if(val == "next"){
+        this.$refs.carouselBottom.next();
+      }else{
+        this.$refs.carouselBottom.prev();
+      }
+    },
     getSliderList() {
       //获取轮播数据
       let self = this;
@@ -222,8 +237,6 @@ export default {
           // 响应成功回调
           if (response.data.status == 0) {
             self.sliderList = response.data.data;
-            console.log('sliderList',self.sliderList);
-            console.log('sliderList',typeof(self.sliderList[0].url)=='undefined');
           }
         },
         response => {}
@@ -261,7 +274,7 @@ export default {
         }
       }
       if (!reg.test(self.form.email)) {
-        this.$alert("请填写正确邮箱", "邮箱格式错误", {
+          this.$alert("请填写正确邮箱", "邮箱格式错误", {
           confirmButtonText: "确定",
           closeOnClickModal:true
         });
@@ -442,8 +455,13 @@ export default {
           response => {
             // 响应成功回调
             if (response.data.status == 0) {
-              self.homePartnerList = response.data.data;
-              console.log(response.data.data);
+              var arr = response.data.data;
+              var arrIndex =  Math.ceil(arr.length/8);
+              for(var i=0;i<arrIndex;i++){
+                var arrGrounp ;
+                arrGrounp = arr.slice(i*12,(i+1)*12)
+                self.homePartnerList.push(arrGrounp)
+              }
             }
           },
           response => {}
@@ -461,6 +479,43 @@ export default {
 </script>
 
 <style lang="scss">
+.bottom-slide-box{
+  .el-carousel__arrow--right,.el-carousel__arrow--left{
+    display: none;
+  }
+   .el-carousel__item:nth-child(2n) {
+    background-color: rgba(0, 0, 0, 0)!important;
+  }
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: rgba(0, 0, 0, 0)!important;
+  }
+  .el-icon-arrow-right,.el-icon-arrow-left{
+    font-size: 40px;
+  }
+  .el-card{
+    box-shadow: 0px 0px 10px rgba(129, 85, 85, 0.3);
+    border: 0px;
+  }
+}
+.bottom-slide-button{
+  position: absolute;
+  top: 88px;
+  width: 100%;
+
+  .el-icon-arrow-right,.el-icon-arrow-left{
+    font-size: 46px;
+    font-weight: bold;
+    color: #e8e8e8;
+  }
+  .el-icon-arrow-left{
+    float: left;
+    margin-left: -50px;
+  }
+  .el-icon-arrow-right{
+    float: right;
+    margin-right: -50px;
+  }
+}
 .relative-box {
   width: 100%;
   height: 100%;
@@ -566,6 +621,7 @@ export default {
     color: #bbbbbb;
     font-size: 16px;
     outline: none;
+    font-family: 'HiraginoSansGBW3';
   }
   .login-btn:hover {
     background: #f3f3f3;
@@ -603,10 +659,9 @@ export default {
 
 .compentent-hezuo{
   .el-row{
-    padding-top: 80px;
   }
   .el-col-6{
-    margin-bottom: 20px;
+    margin: 8px 0px;
   }
   .el-card__body{
     padding: 0px;
@@ -621,6 +676,11 @@ export default {
 
 .compentent-box {
   position: relative;
+
+  .el-tabs__item {
+    font-weight: bold;
+    padding: 0px 20px;
+  }
   
   .el-tabs__nav-wrap::after {
     display: none;
@@ -629,17 +689,18 @@ export default {
   .compentent-title {
     width: 90px;
     height: 24px;
-    font-family: HiraginoSansGB-W3;
+    font-family: HiraginoSansGBW3;
     font-size: 21px;
-    font-weight: 550;
+    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
-    line-height: 0.95;
+    line-height: 1;
     letter-spacing: normal;
     text-align: left;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    background: -webkit-linear-gradient(to right, #dd2025 , #f27219);
     background-image: linear-gradient(to right, #dd2025, #f27219);
     border-image-source: linear-gradient(to right, #dd2025, #f27219);
     position: absolute;
@@ -843,6 +904,15 @@ export default {
 </style>
 
 <style lang="scss" scoped type="text/sass">
+.bottom-slide-box{
+  margin-top:80px;
+  .el-carousel__arrow--right{
+    background:rgba(0,0,0,0)!important;
+  }
+}
+.bottom-slide-title{
+  top:-50px;
+}
 .el-carousel__item h3 {
   color: #475669;
   font-size: 14px;
@@ -906,6 +976,9 @@ export default {
   padding: 0px 22px;
   border: 1px solid #e1e1e1;
 }
+.login-btn-input input::-webkit-input-placeholder,.login-btn-input::-webkit-input-placeholder{ 
+  color: #666; 
+} 
 .send-code-btn-login {
   position: absolute;
   border:0px;
