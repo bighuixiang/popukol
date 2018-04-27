@@ -81,6 +81,7 @@ export default {
         company: "",
         contactName: "",
         contactPhone: "",
+        language:"",
         pwd: "",
         confirmPwd: "",
         code: "",
@@ -88,8 +89,8 @@ export default {
       },
       rules: {
         email: [
-         { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-         { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+         { required: true, message: '请填写正确邮箱地址', trigger: 'blur' },
+         { type: 'email', message: '请填写正确邮箱地址', trigger: ['blur', 'change'] }
         ],
         company: [
           { required: true, message: "请填写公司名称", trigger: "change" }
@@ -124,6 +125,15 @@ export default {
   mounted() {
     let self = this;
     self.SLS();
+    self.language = self.getLanguage();
+    self.rules.email[0].message = self.language.rightEmail;
+    self.rules.email[1].message = self.language.rightEmail;
+    self.rules.company[0].message = self.language.rightCompany;
+    self.rules.contactName[0].message = self.language.rightContactName;
+    self.rules.contactPhone[0].message = self.language.rightContactPhone;
+    self.rules.pwd[1].message = self.language.length;
+    self.rules.type[0].message = self.language.rightType;
+    
     document.onkeydown = (e)=>{
       if(e.keyCode == 13 && self.submitForm){
         document.body.focus();
@@ -151,8 +161,8 @@ export default {
         "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
       );
       if (!reg.test(self.form.email)) {
-        this.$alert("请填写正确邮箱", "未发送成功", {
-          confirmButtonText: "确定",
+        this.$alert(self.language.rightEmail, self.language.notSend, {
+          confirmButtonText: self.language.yes,
           closeOnClickModal:true
         });
       } else {
@@ -168,12 +178,12 @@ export default {
               if (response.data.code == 0) {
                 self.$message({
                   type: "success",
-                  message: `验证码成功发送至>>>${self.form.email}`
+                  message: `${self.language.yzsSendOk}>>>${self.form.email}`
                 });
                 console.log(response.data);
               }else{
-                this.$alert(response.data.msg, "未发送成功", {
-                  confirmButtonText: "确定",
+                this.$alert(response.data.msg, self.language.notSend, {
+                  confirmButtonText: self.language.yes,
                   closeOnClickModal:true
                 });
               }
@@ -196,18 +206,19 @@ export default {
     emailIsTrue(rule, value, callback) {
       var self =this;
       if (value === "") {
-        callback(new Error("请输入验证码"));
+        callback(new Error(self.language.rightYzm));
       } else {
         if (self.form.email !== "") {
           callback();
         } else {
-          callback(new Error("请先填写邮箱"));
+          callback(new Error(self.language.firstEmail));
         }
       }
     },
     validatePass(rule, value, callback) {
+      var self =this;
       if (value === "") {
-        callback(new Error("请输入密码"));
+        callback(new Error(self.language.rightPwd));
       } else {
         if (this.rules.confirmPwd !== "") {
           this.$refs.form.validateField("confirmPwd");
@@ -216,10 +227,11 @@ export default {
       }
     },
     validatePass2(rule, value, callback) {
+      var self =this;
       if (value === "") {
-        callback(new Error("请再次输入密码"));
+        callback(new Error(self.language.rightPwdAegin));
       } else if (value !== this.form.pwd) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error(self.language.rightPwdAeginError));
       } else {
         callback();
       }
@@ -245,7 +257,7 @@ export default {
             if (response.data.code == 0) {
               self.$message({
                   type: "success",
-                  message: `注册成功`
+                  message: self.language.signUpOk
                 });
                 setTimeout(() => {
                   self.goToUrl('/home')
