@@ -2,6 +2,7 @@ const languageZN = {
 	"rightEmail": "请填写正确邮箱地址",
 	"rightEmail1": "请填写正确邮箱地址",
 	"firstEmail": "请先填写邮箱",
+	"noEmailTitle": "邮箱格式错误",
 	"length":"长度在 6 到 20 个字符",
 	"rightYzm": "请输入验证码",
 	"rightPwd": "请输入密码",
@@ -16,6 +17,7 @@ const languageZN = {
 	"yes": "确定",
 	"yzsSendOk": "验证码成功发送至",
 	"signUpOk": "注册成功",
+	"loginInfoE": "请将登陆信息填写完整",
 	
 	
 	
@@ -23,7 +25,8 @@ const languageZN = {
 const languageTW = {
 	"rightEmail": "請填寫正確郵箱地址",
 	"rightEmail1": "請填寫正確郵箱地址",
-	"firstEmail": "請先填寫郵箱",
+	"firstEmail": "请先填写邮箱",
+	"noEmailTitle": "邮箱格式错误",
 	"length":"長度在 6 到 20 個字符",
 	"rightYzm": "請輸入驗證碼",
 	"rightPwd": "請輸入密碼",
@@ -38,6 +41,7 @@ const languageTW = {
 	"yes": "確定",
 	"yzsSendOk": "驗證碼成功發送至",
 	"signUpOk": "註冊成功",
+	"loginInfoE": "請將登陸信息填寫完整",
 	
 	
 	

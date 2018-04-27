@@ -166,6 +166,7 @@ export default {
       isCanClick:false,
       isLogin:false,
       userInfo:"",
+      language:"",
     };
   },
   beforeCreate() {
@@ -193,6 +194,7 @@ export default {
     this.getHomeCategoryList(); //分类
     this.getHomeClassicList(); //案例
     this.getHomePartnerList(); //合作商
+    self.language = self.getLanguage();
     document.onkeydown = (e)=>{
       if(e.keyCode == 13 && self.submitForm){
         document.body.focus();
@@ -268,14 +270,14 @@ export default {
         if(this.form[key]==""){
           self.$message({
             type: "error",
-            message: `请将登陆信息填写完整`
+            message: self.language.loginInfoE
           });
           return false;
         }
       }
       if (!reg.test(self.form.email)) {
-          this.$alert("请填写正确邮箱", "邮箱格式错误", {
-          confirmButtonText: "确定",
+          this.$alert(self.language.rightEmail, self.language.noEmailTitle, {
+          confirmButtonText: self.language.yes,
           closeOnClickModal:true
         });
           return false;
@@ -295,7 +297,7 @@ export default {
             if (response.data.status == 0) {
               self.$message({
                 type: "success",
-                message: `登录成功`
+                message: self.language.rightLogin
               });
               self.getUserInfoFn();
               self.setloginflag(true);
