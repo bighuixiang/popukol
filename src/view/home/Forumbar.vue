@@ -107,7 +107,7 @@
 		<!-- start 排序 -->
 		<div class="sort">
 			<div class="defultLeftborder defult" :class="{'cur' :sortIndex=='0'}" @click="dropdownchanage(0)">默认排序</div>
-			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
+			<!--<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='1'||sortIndex=='2'}">
 			    按粉丝数
 			    <i v-if="sortIndex=='1'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
@@ -128,7 +128,7 @@
 					<el-dropdown-item command="3">获赞与收藏数由高到低</el-dropdown-item>
 					<el-dropdown-item command="4">获赞与收藏数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
-			</el-dropdown>
+			</el-dropdown>-->
 			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
 		</div>
 		<!-- end 排序 -->
@@ -160,17 +160,17 @@
 						</el-row>
 					</template>
 				</el-table-column>
-				<el-table-column prop="fans" label="粉丝数">
-				</el-table-column>
-				<el-table-column label="阅读数">
+				<!--<el-table-column prop="fans" label="粉丝数">
+				</el-table-column>-->
+				<!--<el-table-column label="阅读数">
 					<template slot-scope="scope">
 						<div>
 							<p>头条:{{ scope.row.extra.viewCount }}+</p>
 							<p>次条:{{ scope.row.extra.subViewCount}}+</p>
 						</div>
 					</template>
-				</el-table-column>
-				<el-table-column label="报价" width="220">
+				</el-table-column>-->
+				<el-table-column label="报价">
 					<template slot-scope="scope">
 						<div>
 							<div v-if="getLoginFlag">
@@ -183,9 +183,9 @@
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column prop="categoryModel" label="账号分类">
-				</el-table-column>
-				<el-table-column label="操作">
+				<!--<el-table-column prop="categoryModel" label="账号分类">
+				</el-table-column>-->
+				<el-table-column label="操作" width="220">
 					<template slot-scope="scope">
 						<div>
 							<el-button @click="yytoufang(scope.row)" class="btnred" plain size="mini">预约投放</el-button>
@@ -276,7 +276,7 @@
 				multipleSelection: []
 			}
 		},
-		async created(){
+		async created() {
 			let self = this
 			self.addRecordType();
 			await self.addProvinceAndCity();
@@ -285,8 +285,8 @@
 		async mounted() {
 			let self = this
 			self.SLS();
-			self.increment(3)
-			
+			self.increment(9)
+
 		},
 		computed: {
 			// 使用对象展开运算符将 getters 混入 computed 对象中
@@ -411,9 +411,9 @@
 				//				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
-				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
+				str.push(priceSort + "/")
 				//				str.push(self.params.offical)
-				self.$http.get(self.API.xhsListAPI + str.join(''), {
+				self.$http.get(self.API.forumListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
 						limit: 10,
@@ -570,7 +570,7 @@
 				//				12 微信   13微博  14 小红书
 				self.$http.get(self.API.recordList, {
 					params: {
-						platformId: 3,
+						platformId: 10,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {

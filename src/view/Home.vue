@@ -4,13 +4,13 @@
 			<!-- start 顶部用户信息栏 -->
 			<div class="mjx-header-user mjx-clearfix">
 				<div class="mjx-header-user-back mjx-width">
-					<div class="i18n zh_click" tabindex="-1" @click="isShowI18n=true" @blur="i18nHide">
+					<a class="i18n zh_click" tabindex="-1" @click="isShowI18n=true" @blur="i18nHide">
 						<span languagetype="no">{{languageText1}}</span><i class="el-icon-arrow-down el-icon--right"></i>
 						<div class="info zh_click" v-show="isShowI18n" @click.stop="language">
 							<span languagetype="no" ref="languageRef">{{languageText2}}</span>
 							<div class="sanjiao"></div>
 						</div>
-					</div>
+					</a>
 					<!-- 右侧  start-->
 					<router-link class="helper" to="/helper">帮助中心</router-link>
 					<!-- 右侧  end-->
@@ -39,8 +39,17 @@
 			<div class="navbar-xh">
 				<ul class="ul">
 					<li v-for="item in getNavList" :class="{active:item.isCur}">
-						<div @click="goToUrl(item)" v-if="item.url!=''" :to="item.url">{{item.name}}</div>
-						<div v-else @click='showAppDown' href="javascript:">{{item.name}}</div>
+						<div @click="goToUrl(item)" v-if="item.url!=''">{{item.name}}</div>
+						<a class="noa" @click='showAppDown' href="javascript:void(0)" v-else tabindex="-1" @blur="moreHide">
+							<div class="more">{{item.name}}
+								<span class="info" v-show="isShowMore">
+								<p @click.stop="moreClick(1)">新闻网站</p>
+								<p @click.stop="moreClick(2)">论坛贴吧</p>
+								<p @click.stop="moreClick(3)">DSP广告</p>
+								<span class="sanjiao"></span>
+								</span>
+							</div>
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -139,7 +148,7 @@
 			return {
 				isShowI18n: false,
 				isShowZiMeiTi: false,
-				isShowAppDown: false,
+				isShowMore: false,
 				msgTotal: 0,
 				logoUrl: '',
 				languageText1: "语言: 简体中文",
@@ -214,14 +223,40 @@
 			},
 			goToUrl(item) {
 				let self = this;
-				if(item.url != '') {
+				if(item.url.indexOf('http') > -1) {
+					window.open(item.url)
+				} else if(item.url != '') {
 					self.$router.push({
 						path: item.url,
 					});
 				}
 			},
+			moreClick(type) {
+				let self = this;
+				self.isShowMore = false;
+				switch(type) {
+					case 1:
+						self.$router.push({
+							path: "/newsweb",
+						});
+						break;
+					case 2:
+						self.$router.push({
+							path: "/forumbar",
+						});
+						break;
+					case 3:
+						self.$router.push({
+							path: "/dsp",
+						});
+						break;
+				}
+			},
 			i18nHide() {
 				this.isShowI18n = false;
+			},
+			moreHide() {
+				this.isShowMore = false;
 			},
 			closeZiMeiTi() {
 				this.isShowZiMeiTi = false;
@@ -239,7 +274,8 @@
 			},
 			showAppDown() {
 				let self = this
-				self.isShowAppDown = true
+				self.increment(9)
+				self.isShowMore = true;
 			},
 			onSubmit() {
 				console.log('submit!');
@@ -319,6 +355,63 @@
 	.fade-leave-active {
 		transition: opacity .1s
 	}*/
+	
+	.noa:hover {
+		color: #FFFFFF !important;
+	}
+	
+	.noa:active {
+		color: #FFFFFF !important;
+	}
+	
+	.noa:link {
+		color: #FFFFFF !important;
+	}
+	
+	.more {
+		position: relative;
+		.info {
+			position: absolute;
+			z-index: 8;
+			/* display: none; */
+			width: 100px;
+			padding: 0;
+			text-align: center;
+			border-radius: 2px;
+			background-color: #FCFCFC;
+			box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.29);
+			-webkit-box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.29);
+			-moz-box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.29);
+			-ms-box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.29);
+			/* top: 0; */
+			margin-top: 0px;
+			margin-left: -33px;
+			color: #333333;
+			p {
+				line-height: 1;
+				padding: 12px;
+				border-bottom: 1px solid #e8e8e8;
+				font-size: 16px;
+				color: #333333 !important;
+			}
+			p:hover {
+				background-color: #ECECEC;
+			}
+			.sanjiao {
+				position: absolute;
+				top: -20px;
+				width: 0px;
+				height: 0px;
+				border-top: 12px solid transparent;
+				border-right: 12px solid transparent;
+				border-bottom: 12px solid #FCFCFC;
+				border-left: 12px solid transparent;
+				left: 50%;
+				margin-left: -12px;
+				z-index: -1;
+			}
+		}
+	}
 	
 	.cebianlan {
 		position: fixed;

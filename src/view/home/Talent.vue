@@ -161,7 +161,6 @@
 								<div class="right">
 									<div class="name">{{scope.row.name}}
 										<div class="erweima">
-											{{scope.row.platformId}}
 											<img v-if="scope.row.platformId==23" class="erweimamin" src=" ../../../static/icon/meitirenzhen/jd.png"" />
 											<img v-if="scope.row.platformId==15" class="erweimamin" src=" ../../../static/icon/meitirenzhen/tb.png"" />
 											<!--<img class="erweimaMax" :src="scope.row.headImg" />-->
@@ -293,14 +292,17 @@
 				multipleSelection: []
 			}
 		},
-		async mounted() {
+		async created(){
+			let self = this
+			self.addPlatform();
+			self.addRecordType();
+			await self.addProvinceAndCity();
+			await self.addWechatList();
+		},
+		mounted() {
 			let self = this
 			self.SLS();
 			self.increment(4)
-			await self.addPlatform();
-			await self.addRecordType();
-			await self.addProvinceAndCity();
-			await self.addWechatList();
 		},
 		computed: {
 			// 使用对象展开运算符将 getters 混入 computed 对象中

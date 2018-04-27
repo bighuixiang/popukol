@@ -8,6 +8,38 @@
 		<!-- end 搜索 -->
 		<!-- start 账号分类 -->
 		<div class="condition">
+			<div class="item">
+				<div class="title">直播平台</div>
+				<div class="right">
+					<div class="buxian" :class="{'cur':platfromIndex==0}" @click="setPlatform(0,0)">
+						<span>不限</span>
+					</div>
+					<div class="list">
+						<div @click="setPlatform(index+1,item.id)" v-if="item.typeFlag==1" :class="{'cur':platfromIndex==index+1}" v-for="(item,index) in platformList"><span>{{item.name}}</span></div>
+					</div>
+					<div class="filter">
+						<el-checkbox-group @change="videoChange" class="checkList" v-model="videoList">
+							<el-checkbox label="只看直播账号" style="color: #888888;"></el-checkbox>
+						</el-checkbox-group>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="title">视频平台</div>
+				<div class="right">
+					<div class="buxian" :class="{'cur':platfromIndex1==0}" @click="setPlatform1(0,0)">
+						<span>不限</span>
+					</div>
+					<div class="list">
+						<div @click="setPlatform1(index+1,item.id)" v-if="item.typeFlag==2" :class="{'cur':platfromIndex1==index+1}" v-for="(item,index) in platformList"><span>{{item.name}}</span></div>
+					</div>
+					<div class="filter">
+						<el-checkbox-group @change="videoChange" class="checkList" v-model="videoList">
+							<el-checkbox label="只看视频账号" style="color: #888888;"></el-checkbox>
+						</el-checkbox-group>
+					</div>
+				</div>
+			</div>
 			<div class="item kuozhan">
 				<div class="title">账号分类</div>
 				<div class="right">
@@ -15,7 +47,7 @@
 						<span>不限</span>
 					</div>
 					<div class="list">
-						<div v-for="(item,index) in recordTypeList" @click="setRecord(index+1,item.id)" :class="{'cur':recordIndex==index+1}"><span>{{item.name}}</span></div>
+						<div v-for="(item,index) in recordTypeList"  @click="setRecord(index+1,item.id)" :class="{'cur':recordIndex==index+1}"><span>{{item.name}}</span></div>
 					</div>
 				</div>
 			</div>
@@ -53,8 +85,8 @@
    								 <i class="el-icon-arrow-down el-icon--right"></i>
   							</span>
 							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item command="{'id':'1','name':'头条'}">头条</el-dropdown-item>
-								<el-dropdown-item command="{'id':'0','name':'次条'}">次条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'1','name':'头条'}">淘宝头条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'0','name':'次条'}">淘宝次条</el-dropdown-item>
 							</el-dropdown-menu>
 						</el-dropdown>-->
 						<el-input class="inputwidth" size="mini" v-model="params.prices.min" placeholder="元"></el-input>
@@ -89,19 +121,19 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="item">
+			<div class="item">
 				<div class="title">其他筛选</div>
 				<div class="right">
-					<div class="buxian"  :class="{'cur':checkList.length==0}" @click="buxianCheck">
+					<div class="buxian" :class="{'cur':checkList.length==0}" @click="buxianCheck">
 						<span>不限</span>
 					</div>
 					<div class="list">
 						<el-checkbox-group @change="officalChange" class="checkList" v-model="checkList">
-							<el-checkbox label="官方认证"></el-checkbox>
+							<el-checkbox label="认证"></el-checkbox>
 						</el-checkbox-group>
 					</div>
 				</div>
-			</div>-->
+			</div>
 		</div>
 		<!-- end 账号分类 -->
 		<!-- start 排序 -->
@@ -120,13 +152,13 @@
 			</el-dropdown>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
-			    按获赞与收藏数
+			    按阅读数
 			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
 			    <i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
 			  </span>
 				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item command="3">获赞与收藏数由高到低</el-dropdown-item>
-					<el-dropdown-item command="4">获赞与收藏数由低到高</el-dropdown-item>
+					<el-dropdown-item command="3">阅读数由高到低</el-dropdown-item>
+					<el-dropdown-item command="4">阅读数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
 			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
@@ -143,16 +175,18 @@
 							<el-col :span="6" class="tableZh">
 								<div class="left">
 									<img class="userImg" :src="scope.row.headImg" />
-									<!--<img v-if="scope.row.officalStatus==1" class="ico" src="../../../dist/static/icon/meitirenzhen/wxrz.png" />-->
+									<img v-if="scope.row.officalStatus==1" class="ico" src="/static/icon/meitirenzhen/wxrz.png" />
 								</div>
 							</el-col>
 							<el-col :span="18" class="tableZh">
 								<div class="right">
 									<div class="name">{{scope.row.name}}
-										<!--<div class="erweima">
-											<img class="erweimamin" src="../../../static/icon/meitirenzhen/erweima.png" />
-											<img class="erweimaMax" :src="scope.row.headImg" />
-										</div>-->
+										<div class="erweima">
+											<img v-if="scope.row.platformId==17" class="erweimamin" src="../../../static/icon/meitirenzhen/tt.png" />
+											<img v-if="scope.row.platformId==25" class="erweimamin " src="../../../static/icon/meitirenzhen/douban.png" />
+											<img v-if="scope.row.platformId==26" class="erweimamin " src=" ../../../static/icon/meitirenzhen/zhihu.png" />
+											<!--<img class="erweimaMax" :src="scope.row.headImg" />-->
+										</div>
 									</div>
 									<span class="tag">原创</span>
 								</div>
@@ -162,14 +196,14 @@
 				</el-table-column>
 				<el-table-column prop="fans" label="粉丝数">
 				</el-table-column>
-				<el-table-column label="阅读数">
+				<!--<el-table-column label="阅读数">
 					<template slot-scope="scope">
 						<div>
 							<p>头条:{{ scope.row.extra.viewCount }}+</p>
 							<p>次条:{{ scope.row.extra.subViewCount}}+</p>
 						</div>
 					</template>
-				</el-table-column>
+				</el-table-column>-->
 				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">
 						<div>
@@ -183,8 +217,8 @@
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column prop="categoryModel" label="账号分类">
-				</el-table-column>
+				<!--<el-table-column prop="categoryModel" label="账号分类">
+				</el-table-column>-->
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<div>
@@ -219,8 +253,10 @@
 					//入参	
 					page: 1,
 					keywords: "", //搜索关键字
+					platformId: 0, //平台
 					regionId: 0, //地区
 					categoryId: 0, //账号分类
+					categoryType: 0, //平台分类
 					fanss: { //粉丝数区间	
 						min: "",
 						max: ""
@@ -232,8 +268,11 @@
 					},
 					offical: 0, //官方   0 未选中   1 已选择
 				},
+				platformId: "", //平台ID
 				provinveId: "", //省ID
 				cityId: "", //区ID
+				platfromIndex: 0, //直播平台   当前索引
+				platfromIndex1: 0, //视频平台   当前索引
 				recordIndex: 0, //账号分类   当前索引
 				fansIndex: 0, //粉丝数   当前索引
 				priceIndex: 0, //价格   当前索引
@@ -242,8 +281,10 @@
 
 				total: 0, //当前分页总数
 
+				platformList: [], //平台列表
 				recordTypeList: [], //账号分类列表
 				checkList: [], //官方认证
+				videoList: [], //查看视频
 				provinveDataList: [], //省
 				cityDataList: [], //市区
 				bjtypeobj: {
@@ -276,17 +317,14 @@
 				multipleSelection: []
 			}
 		},
-		async created(){
-			let self = this
-			self.addRecordType();
-			await self.addProvinceAndCity();
-			await self.addWechatList();
-		},
 		async mounted() {
 			let self = this
+			self.increment(5)
 			self.SLS();
-			self.increment(3)
-			
+			await self.addPlatform();
+			await self.addRecordType();
+			await self.addProvinceAndCity();
+			await self.addWechatList();
 		},
 		computed: {
 			// 使用对象展开运算符将 getters 混入 computed 对象中
@@ -406,14 +444,15 @@
 					self.params.regionId = self.cityId;
 				}
 				let str = [];
+				str.push(self.params.platformId + "/")
+				str.push(self.params.categoryType + "/")
 				str.push(self.params.categoryId + "/")
 				str.push(fansMin + "-" + fansMax + "/")
-				//				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
 				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-				//				str.push(self.params.offical)
-				self.$http.get(self.API.xhsListAPI + str.join(''), {
+				str.push(self.params.offical)
+				self.$http.get(self.API.videoListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
 						limit: 10,
@@ -457,6 +496,30 @@
 			setRecord(val, id) {
 				this.recordIndex = val - 0;
 				this.params.categoryId = id;
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			setPlatform(val, id) {
+				this.platfromIndex = val - 0;
+				this.platfromIndex1 = -1;
+				if(val == 0) {
+					this.platfromIndex1 = 0;
+				}
+				this.params.categoryType = 0
+				this.videoList = [];
+				this.params.platformId = id;
+				this.params.page = 1;
+				this.addWechatList();
+			},
+			setPlatform1(val, id) {
+				this.platfromIndex1 = val - 0;
+				this.platfromIndex = -1;
+				if(val == 0) {
+					this.platfromIndex = 0;
+				}
+				this.videoList = [];
+				this.params.categoryType = 0
+				this.params.platformId = id;
 				this.params.page = 1;
 				this.addWechatList();
 			},
@@ -524,6 +587,30 @@
 				this.params.page = 1;
 				this.addWechatList();
 			},
+			videoChange(val) {
+				let self = this
+				self.platfromIndex = -1;
+				self.platfromIndex1 = -1;
+				if(val.length == 1) {
+					self.params.categoryType = val[0] == "只看直播账号" ? 1 : 2;
+				} else if(val.length == 2) {
+					self.videoList = [];
+					if(self.params.categoryType == 1) {
+						self.params.categoryType = 2;
+						self.videoList.push("只看视频账号")
+					} else {
+						self.params.categoryType = 1;
+						self.videoList.push("只看直播账号")
+					}
+				} else {
+					self.platfromIndex = 0;
+					self.platfromIndex1 = 0;
+					self.params.categoryType = 0
+				}
+				self.params.platformId = 0;
+				self.params.page = 1;
+				self.addWechatList();
+			},
 			dropdownchanage(val) {
 				this.sortIndex = val - 0;
 				this.params.page = 1;
@@ -565,12 +652,27 @@
 				}, (response) => {});
 
 			},
+			addPlatform() {
+				let self = this;
+				//				12 微信   13微博  14 小红书
+				self.$http.get(self.API.subPlatformListAPI, {
+					params: {
+						pid: 5,
+					}
+				}).then((response) => { // 响应成功回调
+					if(response.data.status == 0) {
+						self.platformList = response.data.data
+					}
+				}, (response) => {
+
+				});
+			},
 			addRecordType() {
 				let self = this;
 				//				12 微信   13微博  14 小红书
 				self.$http.get(self.API.recordList, {
 					params: {
-						platformId: 3,
+						platformId: 5,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {

@@ -36,6 +36,22 @@ export default new Router({
 			path: '/headlines',
 			component: resolve => require(['../view/Home/Headlines.vue'], resolve),
 			name: '头条/知乎/豆瓣'
+		},{
+			path: '/facebook',
+			component: resolve => require(['../view/Home/Facebook.vue'], resolve),
+			name: 'Facebook/twitter'
+		},{
+			path: '/shortvideo',
+			component: resolve => require(['../view/Home/ShortVideo.vue'], resolve),
+			name: '直播/短视频'
+		},{
+			path: '/newsweb',
+			component: resolve => require(['../view/Home/Newsweb.vue'], resolve),
+			name: '新闻网站'
+		},{
+			path: '/forumbar',
+			component: resolve => require(['../view/Home/Forumbar.vue'], resolve),
+			name: '论坛贴吧'
 		},
 		{
 			path: '/cases',

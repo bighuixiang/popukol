@@ -52,6 +52,16 @@ export const weiboAccountListAPI = `${IP}/weibo/account/`
 export const xhsListAPI = `${IP}/xhs/account/`
 //GET   ===> 分页-达人
 export const talentListAPI = `${IP}/daren/account/`
+//GET   ===> 分页-直播/短视频
+export const videoListAPI = `${IP}/video/account/`
+//GET   ===> 分页-知乎
+export const headlinesListAPI = `${IP}/tzb/account/`
+//GET   ===> 分页-Facebook
+export const facebookListAPI = `${IP}/ft/account/`
+//GET   ===> 分页-新闻
+export const newsListAPI = `${IP}/news/account/`
+//GET   ===> 分页-论坛
+export const forumListAPI = `${IP}/forum/account/`
 //GET   ===> 分页-查询子平台数据
 export const subPlatformListAPI = `${IP}/platform/sub/record/list`
 //GET   ===> 首页头部导航列表
