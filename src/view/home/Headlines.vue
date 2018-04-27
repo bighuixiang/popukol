@@ -100,7 +100,7 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="item">
+			<div class="item">
 				<div class="title">其他筛选</div>
 				<div class="right">
 					<div class="buxian" :class="{'cur':checkList.length==0}" @click="buxianCheck">
@@ -108,11 +108,11 @@
 					</div>
 					<div class="list">
 						<el-checkbox-group @change="officalChange" class="checkList" v-model="checkList">
-							<el-checkbox label="官方认证"></el-checkbox>
+							<el-checkbox label="认证"></el-checkbox>
 						</el-checkbox-group>
 					</div>
 				</div>
-			</div>-->
+			</div>
 		</div>
 		<!-- end 账号分类 -->
 		<!-- start 排序 -->
@@ -129,7 +129,7 @@
 					<el-dropdown-item command="2">粉丝数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
+			<!--<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
 			    按观看次数
 			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
@@ -139,7 +139,7 @@
 					<el-dropdown-item command="3">观看次数由高到低</el-dropdown-item>
 					<el-dropdown-item command="4">观看次数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
-			</el-dropdown>
+			</el-dropdown>-->
 			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
 		</div>
 		<!-- end 排序 -->
@@ -161,9 +161,9 @@
 								<div class="right">
 									<div class="name">{{scope.row.name}}
 										<div class="erweima">
-											{{scope.row.platformId}}
-											<img v-if="scope.row.platformId==23" class="erweimamin" src=" ../../../static/icon/meitirenzhen/jd.png"" />
-											<img v-if="scope.row.platformId==15" class="erweimamin" src=" ../../../static/icon/meitirenzhen/tb.png"" />
+											<img v-if="scope.row.platformId==17" class="erweimamin" src="../../../static/icon/meitirenzhen/tt.png"/>
+											<img v-if="scope.row.platformId==25" class="erweimamin " src="../../../static/icon/meitirenzhen/douban.png" />
+											<img v-if="scope.row.platformId==26" class="erweimamin " src=" ../../../static/icon/meitirenzhen/zhihu.png" />
 											<!--<img class="erweimaMax" :src="scope.row.headImg" />-->
 										</div>
 									</div>
@@ -175,14 +175,14 @@
 				</el-table-column>
 				<el-table-column prop="fans" label="粉丝数">
 				</el-table-column>
-				<el-table-column label="阅读数">
+				<!--<el-table-column label="阅读数">
 					<template slot-scope="scope">
 						<div>
 							<p>头条:{{ scope.row.extra.viewCount }}+</p>
 							<p>次条:{{ scope.row.extra.subViewCount}}+</p>
 						</div>
 					</template>
-				</el-table-column>
+				</el-table-column>-->
 				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">
 						<div>
@@ -326,9 +326,9 @@
 					case 1:
 						fansSort = 1;
 						break;
-					case 3:
-						viewSort = 1;
-						break;
+						//					case 3:
+						//						viewSort = 1;
+						//						break;
 					case 5:
 						priceSort = 1;
 						break;
@@ -426,9 +426,9 @@
 				//				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
-				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-				//				str.push(self.params.offical)
-				self.$http.get(self.API.talentListAPI + str.join(''), {
+				str.push(fansSort + "-" + priceSort + "/")
+				str.push(self.params.offical)
+				self.$http.get(self.API.headlinesListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
 						limit: 10,
@@ -591,7 +591,7 @@
 				//				12 微信   13微博  14 小红书
 				self.$http.get(self.API.subPlatformListAPI, {
 					params: {
-						pid: 4,
+						pid: 6,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {
@@ -606,7 +606,7 @@
 				//				12 微信   13微博  14 小红书
 				self.$http.get(self.API.recordList, {
 					params: {
-						platformId: 4,
+						platformId: 6,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {

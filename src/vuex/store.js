@@ -32,7 +32,7 @@ const state = {
 		"isCur": false,
 	}, {
 		"name": "直播/短视频",
-		"url": "/mmgroup",
+		"url": "/shortvideo",
 		"isCur": false,
 	}, {
 		"name": "头条/知乎/豆瓣",
@@ -40,15 +40,15 @@ const state = {
 		"isCur": false,
 	}, {
 		"name": "Facebook/Twitter",
-		"url": "/mmgroup",
+		"url": "/facebook",
 		"isCur": false,
 	}, {
 		"name": "新媒体全案",
-		"url": "/mmgroup",
+		"url": "http://www.fnewmedia.com/",
 		"isCur": false,
 	}, {
 		"name": "更多",
-		"url": "/mmgroup",
+		"url": "",
 		"isCur": false,
 	}],
 }
