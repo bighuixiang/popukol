@@ -66,7 +66,7 @@ export default {
         email: [
           {
             required: true,
-            message: "请输入邮箱地址",
+            message: "请输入正确的邮箱地址",
             trigger: "blur"
           },
           {
@@ -102,7 +102,9 @@ export default {
     let self = this;
     self.SLS();
     self.language = self.getLanguage();
-    console.log(self.language)
+    self.rules.email[0].message = self.language.rightEmail;
+    self.rules.email[1].message = self.language.rightEmail1;
+    self.rules.pwd[1].message = self.language.rightEmail1;
     self.bgImage = self.API.captchaApi;
     document.onkeydown = (e)=>{
       if(e.keyCode == 13 && self.submitForm){
@@ -145,18 +147,19 @@ export default {
     emailIsTrue(rule, value, callback) {
       var self = this;
       if (value === "") {
-        callback(new Error("请输入验证码"));
+        callback(new Error(self.language.rightYzm));
       } else {
         if (self.form.email !== "") {
           callback();
         } else {
-          callback(new Error("请先填写邮箱"));
+          callback(new Error(self.language.firstEmail));
         }
       }
     },
     validatePass(rule, value, callback) {
+      var self = this;
       if (value === "") {
-        callback(new Error("请输入密码"));
+        callback(new Error(self.language.rightPwd));
       } else {
         callback();
       }
@@ -182,7 +185,7 @@ export default {
             if (response.data.code == 0) {
               self.$message({
                 type: "success",
-                message: `登录成功`
+                message: self.language.rightLogin
               });
               self.setloginflag(true);
               setTimeout(() => {
