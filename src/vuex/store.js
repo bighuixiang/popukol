@@ -12,6 +12,8 @@ const state = {
 	userInfo: {},
 	tfActiveIndex: "1",
 	adminType: 1, //1 投放需求   2.放开  3.
+	releaseNum:1,
+	tfActiveIndex: '1',
 	tfLeftList: [{
 		"name": "微信投放需求",
 		"url": "/wechattfxq",
@@ -138,6 +140,9 @@ const mutations = {
 	},
 	SETLOGINFLAG(state, loginFlag) {
 		state.loginFlag = loginFlag
+	},
+	SETRELEASENUM(state, releaseNum) {
+		state.releaseNum = releaseNum
 	},
 	SETTFACTIVEINFO(state, index) {
 		state.tfActiveIndex = index

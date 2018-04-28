@@ -12,8 +12,13 @@ export const getUserInfo = state => {
 }
 
 export const getLoginFlag = state => {
-	return state.loginFlag
+    return state.loginFlag
 }
+
+export const getReleaseNum = state => {
+    return state.releaseNum 
+}
+
 export const getTfLeftList = state => {
 	return state.tfLeftList
 }

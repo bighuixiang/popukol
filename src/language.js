@@ -18,6 +18,7 @@ const languageZN = {
 	"yzsSendOk": "验证码成功发送至",
 	"signUpOk": "注册成功",
 	"loginInfoE": "请将登陆信息填写完整",
+	"sendOk": "发送成功",
 	
 	
 	
@@ -42,6 +43,7 @@ const languageTW = {
 	"yzsSendOk": "驗證碼成功發送至",
 	"signUpOk": "註冊成功",
 	"loginInfoE": "請將登陸信息填寫完整",
+	"sendOk": "發送成功",
 	
 	
 	
