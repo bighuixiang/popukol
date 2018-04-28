@@ -12,7 +12,7 @@ const state = {
 	userInfo: {},
 	tfActiveIndex: "1",
 	adminType: 1, //1 投放需求   2.放开  3.
-	releaseNum:1,
+	releaseNum: 1,
 	tfActiveIndex: '1',
 	tfLeftList: [{
 		"name": "微信投放需求",
@@ -121,14 +121,12 @@ const mutations = {
 					break;
 			}
 		} else {
-			//			for(let i = 0; i < state.navList.length; i++) {
-			//				console.log(i)
-			//				console.log(obj)
-			//				if(i == obj)
-			//					state.navList[i].isCur = true
-			//				else
-			//					state.navList[i].isCur = false
-			//			}
+			for(let i = 0; i < state.navList.length; i++) {
+				if(i == obj)
+					state.navList[i].isCur = true
+				else
+					state.navList[i].isCur = false
+			}
 		}
 
 	},
