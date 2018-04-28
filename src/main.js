@@ -21,23 +21,23 @@ Vue.use(Vuex)
 // 添加请求拦截器
 Axios.interceptors.request.use(function(config) {
 	// 在发送请求之前做些什么
-	NProgress.start();
+//	NProgress.start();
 	config.data = qs.stringify(config.data);
 	return config;
 }, function(error) {
 	// 对请求错误做些什么
-	NProgress.done();
+//	NProgress.done();
 	return Promise.reject(error);
 });
 
 // 添加响应拦截器
 Axios.interceptors.response.use(function(response) {
 	// 对响应数据做点什么
-	NProgress.done();
+//	NProgress.done();
 	return response;
 }, function(error) {
 	// 对响应错误做点什么
-	NProgress.done();
+//	NProgress.done();
 	return Promise.reject(error);
 });
 

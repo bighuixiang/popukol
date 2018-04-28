@@ -9,9 +9,9 @@ export default new Router({
 		name: 'Home',
 		component: resolve => require(['../view/Home.vue'], resolve),
 		children: [{
-			path: '/mmgroup',
-			name: 'mmgroup',
-			component: resolve => require(['../view/Home/mmgroup.vue'], resolve)
+			path: '/dsp',
+			name: 'DSP广告页面',
+			component: resolve => require(['../view/Home/Dsp.vue'], resolve)
 		},{
 			path: '/',
 			component: resolve => require(['../view/Home/Index.vue'], resolve),
