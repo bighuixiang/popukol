@@ -13,3 +13,11 @@ export const setuserinfo = ({commit},userInfo) => {
 export const setloginflag = ({commit},loginFlag) => {
     commit('SETLOGINFLAG',loginFlag)
 }
+
+export const setTfActiveInfo = ({commit},activeIndex) => {
+    commit('SETTFACTIVEINFO',activeIndex)
+}
+
+//export const setTfActiveInfo = ({commit},activeIndex) => {
+//  commit('SETTFACTIVEINFO',activeIndex)
+//}

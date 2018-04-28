@@ -12,7 +12,16 @@
 						</div>
 					</a>
 					<!-- 右侧  start-->
-					<router-link class="helper" to="/helper">帮助中心</router-link>
+					<div class="header-right">
+						<div class="userinfo">
+							广告主:<span>1546465465</span>
+						</div>
+						<div class="message">
+							消息
+							<span></span>
+						</div>
+						<router-link class="helper" to="/helper">帮助中心</router-link>
+					</div>
 					<!-- 右侧  end-->
 				</div>
 			</div>
@@ -26,46 +35,47 @@
 					<div class="duanshiping">创意短视频营销平台</div>
 				</div>
 				<div class="rightTel">
-					<img class="leftTel" src="../../static/icon/topandbottomlogo/tel.png" />
+					<!--<img class="leftTel" src="../../static/icon/topandbottomlogo/tel.png" />
 					<div class="rightinfo">
 						<div class="lianxi">联系热线</div>
 						<div class="tel">400-123-0111</div>
-					</div>
+					</div>-->
+					<el-menu :default-active="getTfActiveIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+						<el-menu-item index="1">选号推广</el-menu-item>
+						<el-menu-item index="2">投放管理</el-menu-item>
+						<el-menu-item index="3">个人中心</el-menu-item>
+					</el-menu>
 				</div>
 			</div>
 			<!-- end 顶部logo信息 -->
 
 			<!-- start 顶部导航信息 -->
-			<div class="navbar-xh">
-				<ul class="ul">
-					<li v-for="item in getNavList" :class="{active:item.isCur}">
-						<div @click="goToUrl(item)" v-if="item.url!=''">{{item.name}}</div>
-						<a class="noa transition-box" v-else @click='showAppDown' href="javascript:void(0)" tabindex="-1" @blur="moreHide">
-							<div class="more">{{item.name}}
-								<span class="info" v-show="isShowMore">
-								<p @click.stop="moreClick(1)">新闻网站</p>
-								<p @click.stop="moreClick(2)">论坛贴吧</p>
-								<p @click.stop="moreClick(3)">DSP广告</p>
-								<span class="sanjiao"></span>
-								</span>
-							</div>
-						</a>
-					</li>
-				</ul>
-			</div>
+			<div class="navbar-xh"></div>
 			<!-- end 顶部导航信息 -->
-			<el-col :span="24" class="panel-center">
-				<section class="panel-c-c">
+			<div :span="24" class="panel-center" style="background-color: #FAFAFA;clear: both;">
+				<div class="center">
+					<div class="leftMenu">
+						<ul class="ul">
+							<li v-for="item in getTfLeftList" :class="{active:item.isCur}">
+								<div @click="goToUrl(item)" v-if="item.url!=''">{{item.name}}</div>
+							</li>
+						</ul>
+					</div>
+					<div class="rightMenu">
+						<transition name="fade">
+							<router-view></router-view>
+						</transition>
+					</div>
+				</div>
+				<!--<section class="panel-c-c">
 					<div class="grid-content bg-purple-light">
-						<el-col :span="24" style="background-color:#fff;box-sizing: border-box;">
-							<transition name="fade">
-								<router-view></router-view>
-							</transition>
+						<el-col  style="background-color:#fff;box-sizing: border-box;">
+							
 						</el-col>
 					</div>
-				</section>
+				</section>-->
 				<!--</el-col>-->
-			</el-col>
+			</div>
 
 			<!-- start 底部信息 -->
 			<div class="footer">
@@ -109,14 +119,14 @@
 
 					<div class="info" v-show="isShowZiMeiTi">
 						<div class="item">
-							<div class="ico tel"></div>
+							<div class="ico email"></div>
 							<div class="detail">
 								<p>售前咨询电话</p>
 								<span class="red">400-123-0111</span>
 							</div>
 						</div>
 						<div class="item">
-							<div class="ico qq"></div>
+							<div class="ico email"></div>
 							<div class="detail">
 								<p>售前咨询QQ</p>
 								<span>4001230111</span>
@@ -175,7 +185,10 @@
 			...mapGetters([
 				'getNavList',
 				'getUserInfo',
-				// ...
+				'getTfLeftList',
+				'getTfActiveIndex',
+
+				// ...mapGetters
 			]),
 			curIsLogin() {
 				return typeof(this.getUserInfo.dmId) != "undefined"
@@ -299,7 +312,9 @@
 				//					window.localStorage.removeItem('userInfo')
 				//				});
 			},
-			handleselect: function(a, b) {},
+			handleSelect(key, keyPath) {
+
+			},
 			//退出登录
 			logout: function() {
 				var self = this;
@@ -351,10 +366,115 @@
 </script>
 
 <style lang="scss" scoped>
-	/*.fade-enter-active,
-	.fade-leave-active {
-		transition: opacity .1s
-	}*/
+	.leftMenu {
+		width: 268px;
+		margin-left: 12px;
+		float: left;
+		.ul {
+			background-color: #FFFFFF;
+			margin-top: 24px;
+			border-radius: 4px;
+			overflow: hidden;
+			font-size: 16px;
+			text-align: center;
+			cursor:pointer;
+			color: #333333;
+			
+			li {
+				padding-top: 12px;
+				padding-bottom: 12px;
+			}
+			li:hover,.active {
+				background-color: #DE1A20;
+				color: #FFFFFF;
+			}
+		}
+	}
+	
+	.el-menu-demo {
+		height: 80px;
+		li {
+			height: 80px;
+			line-height: 80px;
+			position: relative;
+			color: #666666;
+			font-size: 16px;
+			border: none !important;
+		}
+		li:hover {
+			color: #DE1A20 !important;
+		}
+		li:hover:before {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			height: 4px;
+			width: 28px;
+			left: 50%;
+			margin-left: -14px;
+			background-color: #DE1A20;
+		}
+		.is-active {
+			color: #DE1A20 !important;
+			border: none;
+		}
+		.is-active:before {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			height: 4px;
+			width: 28px;
+			left: 50%;
+			margin-left: -14px;
+			background-color: #DE1A20;
+		}
+	}
+	
+	.center {
+		width: 1200px;
+		margin: auto;
+		overflow: hidden;
+	}
+	
+	.rightMenu {
+		width: 900px;
+		float: right;
+	}
+	
+	.header-right {
+		line-height: 32px;
+		height: 32px;
+		float: right;
+		color: #999999;
+		line-height: 32px;
+		font-size: 12px;
+		.userinfo {
+			float: left;
+			span {
+				color: #DE1A20;
+			}
+		}
+		.message {
+			position: relative;
+			margin-left: 12px;
+			margin-right: 12px;
+			float: left;
+			cursor: pointer;
+			span {
+				position: absolute;
+				top: 6px;
+				right: -3px;
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				background-color: #DE1A20;
+			}
+		}
+		.helper {
+			color: #999999;
+			float: left;
+		}
+	}
 	
 	.noa:hover {
 		color: #FFFFFF !important;
@@ -476,8 +596,8 @@
 				top: 12px;
 				width: 32px;
 				height: 32px;
-				background: url(../../static/icon/admin/close.png) no-repeat center center;
-				background-size: 16px auto;
+				background: url(../../static/icon/guanggaozhu/clear.png) no-repeat center center;
+				background-size: 22px auto;
 			}
 			.item {
 				clear: both;
@@ -492,16 +612,6 @@
 				.email {
 					background: url(../../static/icon/admin/email.png) no-repeat center center;
 					background-size: 16px auto;
-				}
-				.tel {
-					border: none;
-					background: url(../../static/icon/admin/tel.png) no-repeat center center;
-					background-size: 32px auto;
-				}
-				.qq {
-					border: none;
-					background: url(../../static/icon/admin/qq.png) no-repeat center center;
-					background-size: 32px auto;
 				}
 				.detail {
 					width: 160px;
@@ -620,7 +730,7 @@
 	.navbar-xh {
 		position: relative;
 		width: 100%;
-		height: 50px;
+		height: 4px;
 		min-width: 1200px;
 		background-color: #DE1A20;
 		.ul {
@@ -660,9 +770,9 @@
 		position: relative;
 		.rightTel {
 			position: absolute;
-			top: 20px;
+			top: 0;
 			right: 0;
-			height: 60px;
+			height: 80px;
 			overflow: hidden;
 			.leftTel {
 				display: block;
@@ -787,13 +897,6 @@
 	.el-button--primary:hover,
 	.el-button--primary:active {
 		color: #999999 !important;
-	}
-	
-	.helper {
-		color: #999999;
-		line-height: 32px;
-		font-size: 12px;
-		float: right;
 	}
 	
 	.mjx-header {
