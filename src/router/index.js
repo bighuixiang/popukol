@@ -64,6 +64,10 @@ export default new Router({
 			}
 		]
 	}, {
+		path: '/Release',
+		name: 'Release',
+		component: resolve => require(['../view/Home/Release.vue'], resolve)
+	}, {
 		path: '/signUp',
 		name: 'signUp',
 		component: resolve => require(['../view/Home/signUp.vue'], resolve)
