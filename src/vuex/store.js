@@ -10,7 +10,8 @@ const state = {
 	loginFlag: false,
 	pcMainIndex: 0,
 	userInfo: {},
-	tfActiveIndex: '1',
+	tfActiveIndex: "1",
+	adminType: 1, //1 投放需求   2.放开  3.
 	tfLeftList: [{
 		"name": "微信投放需求",
 		"url": "/wechattfxq",
@@ -93,25 +94,41 @@ const state = {
 
 // 定义所需的 mutations
 const mutations = {
-	INCREMENT(state, index, type) {
-		switch(type) {
-			case 1:
-				for(let i = 0; i < state.tfActiveIndex.length; i++) {
-					if(i == index)
-						state.tfActiveIndex[i].isCur = true
-					else
-						state.tfActiveIndex[i].isCur = false
-				}
-				break;
-			default:
-				for(let i = 0; i < state.navList.length; i++) {
-					if(i == index)
-						state.navList[i].isCur = true
-					else
-						state.navList[i].isCur = false
-				}
-				break;
+	INCREMENT(state, obj) {
+		let type, index;
+		if(typeof obj.type != "undefined") {
+			type = obj.type;
+			index = obj.val;
+			switch(type) {
+				case 1:
+					for(let i = 0; i < state.tfLeftList.length; i++) {
+						if(i == index)
+							state.tfLeftList[i].isCur = true
+						else
+							state.tfLeftList[i].isCur = false
+					}
+					break;
+				case 2:
+					state.adminType = index;
+					break;
+				case 3:
+					state.tfActiveIndex = index + '';
+					break;
+
+				default:
+					break;
+			}
+		} else {
+			//			for(let i = 0; i < state.navList.length; i++) {
+			//				console.log(i)
+			//				console.log(obj)
+			//				if(i == obj)
+			//					state.navList[i].isCur = true
+			//				else
+			//					state.navList[i].isCur = false
+			//			}
 		}
+
 	},
 	DECREMENT(state, index) {
 		state.pcMainIndex = index
@@ -124,7 +141,11 @@ const mutations = {
 	},
 	SETTFACTIVEINFO(state, index) {
 		state.tfActiveIndex = index
-	}
+	},
+	//	SETADMINTYPE(state, type) {
+	//		state.adminType = type
+	//	}
+
 }
 
 // 创建 store 实例

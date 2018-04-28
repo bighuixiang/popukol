@@ -82,7 +82,7 @@ export default new Router({
 	}, {
 		path: '/admin',
 		name: 'Admin',
-		component: resolve => require(['../view/AdminTF.vue'], resolve),
+		component: resolve => require(['../view/Admin.vue'], resolve),
 		children: [{
 			path: '/wechattfxq',
 			component: resolve => require(['../view/admin/WeChatTFXQ.vue'], resolve),

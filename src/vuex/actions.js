@@ -1,6 +1,6 @@
 //test
-export const increment = ({commit},index) => {
-    commit('INCREMENT',index)
+export const increment = ({commit},obj) => {
+    commit('INCREMENT',obj)
 }
 export const decrement = ({commit},index) => {
     commit('DECREMENT',index)
@@ -17,6 +17,9 @@ export const setloginflag = ({commit},loginFlag) => {
 export const setTfActiveInfo = ({commit},activeIndex) => {
     commit('SETTFACTIVEINFO',activeIndex)
 }
+//export const setAdmin = ({commit},adminType) => {
+//  commit('SETADMINTYPE',adminType)
+//}
 
 //export const setTfActiveInfo = ({commit},activeIndex) => {
 //  commit('SETTFACTIVEINFO',activeIndex)

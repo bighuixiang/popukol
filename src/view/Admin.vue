@@ -53,7 +53,8 @@
 			<div class="navbar-xh"></div>
 			<!-- end 顶部导航信息 -->
 			<div :span="24" class="panel-center" style="background-color: #FAFAFA;clear: both;">
-				<div class="center">
+
+				<div class="center" v-if="getAdminType==1">
 					<div class="leftMenu">
 						<ul class="ul">
 							<li v-for="item in getTfLeftList" :class="{active:item.isCur}">
@@ -66,6 +67,11 @@
 							<router-view></router-view>
 						</transition>
 					</div>
+				</div>
+				<div class="center" v-if="getAdminType==2">
+					<transition name="fade">
+						<router-view></router-view>
+					</transition>
 				</div>
 				<!--<section class="panel-c-c">
 					<div class="grid-content bg-purple-light">
@@ -187,6 +193,7 @@
 				'getUserInfo',
 				'getTfLeftList',
 				'getTfActiveIndex',
+				'getAdminType',
 
 				// ...mapGetters
 			]),
@@ -377,14 +384,14 @@
 			overflow: hidden;
 			font-size: 16px;
 			text-align: center;
-			cursor:pointer;
+			cursor: pointer;
 			color: #333333;
-			
 			li {
 				padding-top: 12px;
 				padding-bottom: 12px;
 			}
-			li:hover,.active {
+			li:hover,
+			.active {
 				background-color: #DE1A20;
 				color: #FFFFFF;
 			}

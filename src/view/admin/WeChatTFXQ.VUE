@@ -92,7 +92,7 @@
 			<div class="item">
 				<div class="title">其他筛选</div>
 				<div class="right">
-					<div class="buxian"  :class="{'cur':checkList.length==0}" @click="buxianCheck">
+					<div class="buxian" :class="{'cur':checkList.length==0}" @click="buxianCheck">
 						<span>不限</span>
 					</div>
 					<div class="list">
@@ -279,8 +279,9 @@
 		async mounted() {
 			let self = this
 			self.SLS();
-			self.increment(1)
-			self.increment(1,1)
+			self.increment({val:"1",type: 2}) //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
+			self.increment({val:"1",type: 3}) //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
+			self.increment({val:"0",type: 1}) //设置左边导航
 			self.addRecordType();
 			await self.addProvinceAndCity();
 			await self.addWechatList();
@@ -445,7 +446,7 @@
 				this.params.page = index;
 				this.addWechatList();
 			},
-			buxianCheck(){
+			buxianCheck() {
 				this.checkList = [];
 				this.params.offical = 0;
 				this.params.page = 1;

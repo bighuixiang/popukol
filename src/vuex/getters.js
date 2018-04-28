@@ -20,3 +20,6 @@ export const getTfLeftList = state => {
 export const getTfActiveIndex = state => {
 	return state.tfActiveIndex
 }
+export const getAdminType = state => {
+	return state.adminType
+}
