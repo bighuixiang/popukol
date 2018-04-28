@@ -702,7 +702,6 @@ export default {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    background: -webkit-linear-gradient(to right, #dd2025 , #f27219);
     background-image: linear-gradient(to right, #dd2025, #f27219);
     border-image-source: linear-gradient(to right, #dd2025, #f27219);
     position: absolute;
@@ -790,6 +789,7 @@ export default {
     line-height: 52px;
     display: inline-block;
     font-style: normal;
+    font-weight: bold;
     font-stretch: normal;
     letter-spacing: normal;
     text-align: left;

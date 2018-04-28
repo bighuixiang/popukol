@@ -15,6 +15,8 @@ export const homeClassicItems = `${IP}/classic/case/record/info`
 export const helpList = `${IP}/support/center/type/list`
 //GET   ===> 帮助中心详情
 export const helpItems = `${IP}/support/center/record/info`
+//POST   ===> 预留电话接口DSP
+export const dspApi = `${IP}/visit/message/record/add`
 //GET   ===> 首页优质资源详情2
 export const homeClassicOtherItems = `${IP}/classic/case/brief/info`
 //GET   ===> 首页合作伙伴列表
