@@ -10,6 +10,7 @@ const state = {
 	loginFlag :false,
 	pcMainIndex: 0,
 	userInfo: {},
+	releaseNum:1,
 	navList: [{
 		"name": "首页",
 		"url": "/",
@@ -71,6 +72,9 @@ const mutations = {
 	},
 	SETLOGINFLAG(state, loginFlag) {
 		state.loginFlag = loginFlag
+	},
+	SETRELEASENUM(state, releaseNum) {
+		state.releaseNum = releaseNum
 	},
 }
 

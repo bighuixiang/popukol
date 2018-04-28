@@ -175,7 +175,7 @@ export default {
           .then(
             response => {
               // 响应成功回调
-              if (response.data.code == 0) {
+              if (response.data.status == 0) {
                 self.$message({
                   type: "success",
                   message: `${self.language.yzsSendOk}>>>${self.form.email}`
@@ -254,7 +254,7 @@ export default {
         .then(
           response => {
             // 响应成功回调
-            if (response.data.code == 0) {
+            if (response.data.status == 0) {
               self.$message({
                   type: "success",
                   message: self.language.signUpOk

@@ -13,3 +13,7 @@ export const setuserinfo = ({commit},userInfo) => {
 export const setloginflag = ({commit},loginFlag) => {
     commit('SETLOGINFLAG',loginFlag)
 }
+
+export const setReleaseNum = ({commit},releaseNum) => {
+    commit('SETRELEASENUM',releaseNum)
+}

@@ -44,7 +44,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      abc: "小垃圾",
+      language: "",
       form: {
         company: "",
         name: "",
@@ -68,7 +68,7 @@ export default {
             required: true,
             min: 7,
             max: 11,
-            message: "长度在 7 到 11 个字符",
+            message: "长度在 8 到 20 个字符",
             trigger: ["blur", "change"]
           }
         ],
@@ -77,7 +77,7 @@ export default {
             required: true,
             min: 1,
             max: 20,
-            message: "长度在 1 到 20 个字符",
+            message: "长度在 4 到 20 个字符",
             trigger: ["blur", "change"]
           }
         ],
@@ -96,6 +96,15 @@ export default {
   mounted() {
     let self = this;
     self.SLS();
+    self.language = self.getLanguage();
+    self.rules.email[0].message = self.language.rightEmail;
+    self.rules.email[1].message = self.language.rightEmail1;
+    document.onkeydown = (e)=>{
+      if(e.keyCode == 13 && self.submitForm){
+        document.body.focus();
+         self.submitForm('form');
+      }
+    }
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
@@ -123,22 +132,32 @@ export default {
       //提交按钮
       this.$refs[formName].validate(valid => {
         if (valid) {
-          //   this.postFromFn();
+          this.sendDspApi();
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
-    getHomeClassicList() {
+    sendDspApi() {
       //首页经典案例列表
       let self = this;
-      self.$http.get(self.API.helpList).then(
+      self.$http.post(self.API.dspApi,
+        self.form
+      ).then(
         response => {
           // 响应成功回调
           if (response.data.status == 0) {
-            self.casesList = response.data.data;
-          }
+              self.$message({
+                type: "success",
+                message: self.language.sendOk
+              });
+            } else {
+              self.$message({
+                type: "error",
+                message: response.data.msg
+              });
+            }
         },
         response => {}
       );

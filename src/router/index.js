@@ -65,7 +65,12 @@ export default new Router({
 	}, {
 		path: '/Release',
 		name: 'Release',
-		component: resolve => require(['../view/Home/Release.vue'], resolve)
+		component: resolve => require(['../view/Home/Release.vue'], resolve),
+		children: [{
+			path: '/Check',
+			name: '选择渠道',
+			component: resolve => require(['../view/Home/Check.vue'], resolve)
+		}]
 	}, {
 		path: '/signUp',
 		name: 'signUp',

@@ -5,7 +5,7 @@
       创建投放需求
     </div>
     <div class="create-step">
-        <el-steps :active="2" :align-center="true" :space="360">
+        <el-steps :active="getReleaseNum" :align-center="true" :space="360">
           <el-step title="选择投放平台"></el-step>
           <el-step title="天谢谢活动内容"></el-step>
           <el-step title="选择账号"></el-step>
@@ -13,15 +13,10 @@
         </el-steps>
     </div>
 
-    <div class="qudao-box">
-      <div class="qudao-items">
-        <div class="qudao-item">
-            <img src="../../../static/icon/meitirenzhen/weatch.png" alt="">
-            <span>微信</span>
-        </div>
-      </div>
-        
-    </div>
+    <transition name="fade">
+      <router-view></router-view>
+    </transition>
+    
   </div>
   
 </div>
@@ -33,26 +28,21 @@
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 export default {
-  data(){
-      return{
-
-      }
+  data() {
+    return {};
   },
   mounted() {
     let self = this;
     self.SLS();
     self.language = self.getLanguage();
-    // self.rules.email[0].message = self.language.rightEmail;
-    // self.rules.email[1].message = self.language.rightEmail1;
-    // self.rules.pwd[1].message = self.language.rightEmail1;
-    // self.bgImage = self.API.captchaApi;
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
     ...mapGetters([
       "getLoginFlag",
       "getNavList",
-      "getUserInfo"
+      "getUserInfo",
+      "getReleaseNum",
       // ...
     ])
   },
@@ -61,7 +51,8 @@ export default {
       "increment", // 映射 this.increment() 为 this.$store.dispatch('increment')
       "decrement",
       "setloginflag",
-      "setuserinfo"
+      "setuserinfo",
+      "setReleaseNum",
     ]),
     submitForm(formName) {
       //提交按钮
@@ -82,6 +73,9 @@ export default {
       self.$router.push({
         path: url
       });
+    },
+    checkThis(id){
+
     },
     postFromFn() {
       let self = this;
@@ -115,37 +109,38 @@ export default {
 };
 </script>
 <style lang="scss">
-.qudao-box{
+.qudao-box {
   width: 800px;
-  padding: 17px;
-  height: 240px;
+  padding: 17px 0px;
+  height: 256px;
   border-radius: 4px;
   margin: 50px auto;
   background-color: #f5f5f5;
 }
-.qudao-items{
-  width: 550px;
+.qudao-items {
+  width: 570px;
   margin: 0 auto;
 }
-.qudao-item{
+.qudao-item {
   width: 90px;
   height: 90px;
   margin: 10px;
+  display: inline-block;
   border-radius: 2px;
   padding-top: 15px;
 }
-.qudao-item:hover{
+.qudao-item:hover {
   cursor: pointer;
-  background: #E8E8E8;
+  background: #e8e8e8;
 }
-.qudao-item img{
+.qudao-item img {
   width: 44px;
   height: 44px;
   display: block;
   margin: 0 auto 5px;
   position: relative;
 }
-.qudao-item span{
+.qudao-item span {
   width: 100%;
   text-align: center;
   font-size: 14px;
@@ -154,46 +149,47 @@ export default {
   display: inline-block;
   overflow: hidden;
 }
-.create-step{
-  .el-steps{
-    width:960px;
+.create-step {
+  .el-steps {
+    width: 960px;
     position: relative;
     left: 10px;
-    margin:0 auto;
+    margin: 0 auto;
   }
-  .el-step__title.is-process,.el-step__title.is-wait{
+  .el-step__title.is-process,
+  .el-step__title.is-wait {
     color: #dddddd;
   }
-  .el-step__head.is-finish{
-    background-color: rgba(0,0,0,0) !important;
-    border-color: rgba(0,0,0,0) !important;
+  .el-step__head.is-finish {
+    background-color: rgba(0, 0, 0, 0) !important;
+    border-color: rgba(0, 0, 0, 0) !important;
   }
-  .el-step__icon.is-text{
+  .el-step__icon.is-text {
     border: 0px;
   }
-  .is-finish .el-step__icon{
+  .is-finish .el-step__icon {
     background: #dd2525;
   }
-  .el-step.is-horizontal .el-step__line{
+  .el-step.is-horizontal .el-step__line {
     top: 19px;
     background-color: #ddd;
   }
-  .el-step__icon{
+  .el-step__icon {
     width: 40px;
     height: 40px;
     background: #ddd;
   }
-  .el-step__icon-inner{
+  .el-step__icon-inner {
     color: #fff;
   }
-  .is-finish .el-step__line-inner{
+  .is-finish .el-step__line-inner {
     border-color: #dd2525;
   }
-  .el-step__title.is-finish{
+  .el-step__title.is-finish {
     color: #333333 !important;
-    font-weight:bold;
+    font-weight: bold;
   }
-  .el-step__title{
+  .el-step__title {
     line-height: 56px;
   }
 }
@@ -209,24 +205,24 @@ export default {
 .margin-auto-1200-box {
   width: 1200px;
   margin: 0 auto;
-  background:#fff;
+  background: #fff;
 }
 
-.create-title{
-  font-size:21px;
-  line-height:1;
-  padding-left:39px;
-  font-weight:bold;
-  margin:30px 0px;
+.create-title {
+  font-size: 21px;
+  line-height: 1;
+  padding-left: 39px;
+  font-weight: bold;
+  margin: 30px 0px;
 }
-.create-title::before{
-  content:"";
-  display:inline-block;
+.create-title::before {
+  content: "";
+  display: inline-block;
   position: relative;
-  top:2px;
-  width:4px;
+  top: 2px;
+  width: 4px;
   height: 21px;
-  background:#dd2525;
+  background: #dd2525;
 }
 </style>
 
