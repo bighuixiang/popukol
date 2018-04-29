@@ -28,3 +28,6 @@ export const getTfActiveIndex = state => {
 export const getAdminType = state => {
 	return state.adminType
 }
+export const getXhLeftList = state => {
+	return state.leftNavList
+}

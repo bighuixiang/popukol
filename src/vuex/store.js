@@ -14,6 +14,43 @@ const state = {
 	adminType: 1, //1 投放需求   2.放开  3.
 	releaseObj:{},
 	tfActiveIndex: '1',
+	leftNavList: [{
+		"name": "微信",
+		"url": "/wechat",
+		"isCur": true,
+	}, {
+		"name": "微博",
+		"url": "/weibo",
+		"isCur": false,
+	}, {
+		"name": "小红书",
+		"url": "/redbook",
+		"isCur": false,
+	}, {
+		"name": "淘宝/京东达人",
+		"url": "/talent",
+		"isCur": false,
+	}, {
+		"name": "直播/短视频",
+		"url": "/shortvideo",
+		"isCur": false,
+	}, {
+		"name": "头条/知乎/豆瓣",
+		"url": "/headlines",
+		"isCur": false,
+	}, {
+		"name": "Facebook/Twitter",
+		"url": "/facebook",
+		"isCur": false,
+	}, {
+		"name": "新闻网站",
+		"url": "/newswebxhtg",
+		"isCur": false,
+	}, {
+		"name": "论坛贴吧",
+		"url": "/forumbarxhtg",
+		"isCur": false,
+	}],
 	tfLeftList: [{
 		"name": "微信投放需求",
 		"url": "/wechattfxq",
@@ -116,19 +153,24 @@ const mutations = {
 				case 3:
 					state.tfActiveIndex = index + '';
 					break;
-
+				case 4:
+					for(let i = 0; i < state.leftNavList.length; i++) {
+						if(i == index)
+							state.leftNavList[i].isCur = true
+						else
+							state.leftNavList[i].isCur = false
+					}
+					break;
 				default:
 					break;
 			}
 		} else {
-			//			for(let i = 0; i < state.navList.length; i++) {
-			//				console.log(i)
-			//				console.log(obj)
-			//				if(i == obj)
-			//					state.navList[i].isCur = true
-			//				else
-			//					state.navList[i].isCur = false
-			//			}
+			for(let i = 0; i < state.navList.length; i++) {
+				if(i == obj)
+					state.navList[i].isCur = true
+				else
+					state.navList[i].isCur = false
+			}
 		}
 
 	},

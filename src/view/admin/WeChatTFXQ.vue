@@ -280,7 +280,7 @@
 			let self = this
 			self.SLS();
 			self.increment({val:"1",type: 2}) //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
-			self.increment({val:"1",type: 3}) //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
+			self.increment({val:"2",type: 3}) //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
 			self.increment({val:"0",type: 1}) //设置左边导航
 			self.addRecordType();
 			await self.addProvinceAndCity();

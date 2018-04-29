@@ -73,6 +73,20 @@
 						<router-view></router-view>
 					</transition>
 				</div>
+				<div class="center" v-if="getAdminType==3">
+					<div class="leftMenu">
+						<ul class="ul">
+							<li v-for="item in getXhLeftList" :class="{active:item.isCur}">
+								<div @click="goToUrl(item)" v-if="item.url!=''">{{item.name}}</div>
+							</li>
+						</ul>
+					</div>
+					<div class="rightMenu">
+						<transition name="fade">
+							<router-view></router-view>
+						</transition>
+					</div>
+				</div>
 				<!--<section class="panel-c-c">
 					<div class="grid-content bg-purple-light">
 						<el-col  style="background-color:#fff;box-sizing: border-box;">
@@ -113,45 +127,18 @@
 			</div>
 			<!-- end 底部信息 -->
 
-			<!-- start 侧边栏信息 -->
-			<div class="cebianlan">
-				<div class="yuyuetoufang">
-					<img src="../../static/icon/wangzhan/toufang.png" />
-					<span>预约投放</span>
-				</div>
-				<div class="zimeitiruzhu bottomjuli" @click.stop="showZiMeiTi">
-					<img src="../../static/icon/wangzhan/zimeiti.png" />
-					<span>自媒体入驻</span>
-
-					<div class="info" v-show="isShowZiMeiTi">
-						<div class="item">
-							<div class="ico email"></div>
-							<div class="detail">
-								<p>售前咨询电话</p>
-								<span class="red">400-123-0111</span>
-							</div>
+			<!-- start 侧边栏购物车信息 -->
+			<div class="buycar" v-if="getAdminType==3">
+				<div class="menu">
+					<div class="btns">
+						<div class="car">
+							<span>...</span>
 						</div>
-						<div class="item">
-							<div class="ico email"></div>
-							<div class="detail">
-								<p>售前咨询QQ</p>
-								<span>4001230111</span>
-							</div>
-						</div>
-						<div class="item">
-							<div class="ico email"></div>
-							<div class="detail">
-								<p>售前咨询邮箱</p>
-								<span>4001230111@qq.com</span>
-							</div>
-						</div>
-
-						<div class="close" @click.stop="closeZiMeiTi"></div>
+						<div class="customer"></div>
 					</div>
 				</div>
-				<div class="backTop" @click.stop="toTop"></div>
 			</div>
-			<!-- end 侧边栏信息 -->
+			<!-- end 侧边栏购物车信息 -->
 		</div>
 	</el-row>
 </template>
@@ -192,6 +179,7 @@
 				'getNavList',
 				'getUserInfo',
 				'getTfLeftList',
+				'getXhLeftList',
 				'getTfActiveIndex',
 				'getAdminType',
 
@@ -373,6 +361,74 @@
 </script>
 
 <style lang="scss" scoped>
+	.buycar {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: 286px;
+		background-color: #FFFFFF;
+		z-index: 999;
+		right: -250px;
+		-webkit-transition: all 0.5s; 
+		-ms-transition: all 0.5s; 
+		-moz-transition: all 0.5s; 
+		transition: all 0.5s; 
+		.menu {
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			width: 36px;
+			background-color: #666666;
+			.btns {
+				cursor: pointer;
+				width: 36px;
+				height: 250px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				-webkit-transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				-moz-transform: translate(-50%, -50%);
+				transform: translate( -50%, -50%);
+				.customer {
+					position: relative;
+					height: 36px;
+					width: 36px;
+					background: url(../../static/icon/cebianlan/kefu.png) center center no-repeat;
+					background-size: 20px;
+				}
+				.car {
+					position: relative;
+					height: 36px;
+					width: 36px;
+					background: url(../../static/icon/cebianlan/buycar.png) center center no-repeat;
+					background-size: 22px;
+					span {
+						width: 18px;
+						height: 18px;
+						text-align: center;
+						line-height: 18px;
+						font-size: 12px;
+						color: #FFFFFF;
+						background-color: #D41A20;
+						display: block;
+						border-radius: 50px;
+						right: 6px;
+						top: 6px;
+						position: absolute;
+					}
+				}
+				.car:hover,
+				.cur,
+				.customer:hover {
+					background-color: rgba(0, 0, 0, 0.6);
+				}
+			}
+		}
+	}
+	
 	.leftMenu {
 		width: 268px;
 		margin-left: 12px;
@@ -477,6 +533,9 @@
 				background-color: #DE1A20;
 			}
 		}
+		.message:hover{
+			color: #DE1A20;
+		}
 		.helper {
 			color: #999999;
 			float: left;
@@ -538,131 +597,6 @@
 				z-index: -1;
 			}
 		}
-	}
-	
-	.cebianlan {
-		position: fixed;
-		right: 12px;
-		bottom: 144px;
-		z-index: 999;
-	}
-	
-	.backTop {
-		position: relative;
-		right: 0;
-		/*bottom: 128px;*/
-		width: 36px;
-		height: 36px;
-		background: url(../../static/icon/wangzhan/fanhuidingbu.png) no-repeat center center;
-		background-size: 18px auto;
-		border-radius: 4px;
-		box-shadow: 1px 1px 1px 1px #999999;
-		-webkit-box-shadow: 1px 1px 1px 1px #999999;
-		-ms-box-shadow: 1px 1px 1px 1px #999999;
-		-moz-box-shadow: 1px 1px 1px 1px #999999;
-		margin-top: 186px;
-		background-color: #FFFFFF;
-		cursor: pointer;
-	}
-	
-	.yuyuetoufang,
-	.zimeitiruzhu {
-		position: relative;
-		width: 36px;
-		height: 116px;
-		right: 0;
-		padding: 5px;
-		background-color: #DD2025;
-		color: #FFFFFF;
-		box-shadow: 0 0 5px rgba(0, 0, 0, .1);
-		cursor: pointer;
-		user-select: none;
-		-moz-user-select: none;
-		font-size: 14px;
-		/*top: 400px;*/
-		.info {
-			position: absolute;
-			right: 54px;
-			top: -25px;
-			background-color: #FFFFFF;
-			z-index: 999;
-			width: 300px;
-			height: 200px;
-			border-radius: 4px;
-			box-shadow: 1px 1px 1px 1px #999999;
-			-webkit-box-shadow: 1px 1px 1px 1px #999999;
-			-ms-box-shadow: 1px 1px 1px 1px #999999;
-			-moz-box-shadow: 1px 1px 1px 1px #999999;
-			font-size: 14px;
-			color: #333333;
-			padding-top: 18px;
-			padding-left: 12px;
-			.close {
-				position: absolute;
-				right: 12px;
-				top: 12px;
-				width: 32px;
-				height: 32px;
-				background: url(../../static/icon/guanggaozhu/clear.png) no-repeat center center;
-				background-size: 22px auto;
-			}
-			.item {
-				clear: both;
-				.ico {
-					width: 32px;
-					height: 32px;
-					border: 1px solid #999999;
-					border-radius: 50%;
-					margin: 12px;
-					float: left;
-				}
-				.email {
-					background: url(../../static/icon/admin/email.png) no-repeat center center;
-					background-size: 16px auto;
-				}
-				.detail {
-					width: 160px;
-					text-align: left;
-					float: left;
-					p {
-						margin-top: 3px;
-					}
-					span {
-						text-align: left;
-						padding: 0;
-						color: #999999;
-					}
-					.red {
-						color: #DE1A20;
-					}
-				}
-			}
-		}
-		img {
-			width: 16px;
-			height: auto;
-			margin: 12px auto 0;
-			display: block;
-		}
-		span {
-			margin: auto;
-			display: block;
-			text-align: center;
-			padding: 12px 0;
-			font-size: 12px;
-			padding: 12px 6px;
-			text-align: center;
-			line-height: 1.2;
-		}
-	}
-	
-	.zimeitiruzhu {
-		height: 132px;
-	}
-	
-	.bottomjuli {
-		/*top: 680px;*/
-		margin-top: 102px;
 	}
 	
 	.footer {
