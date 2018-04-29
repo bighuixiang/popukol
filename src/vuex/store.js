@@ -12,7 +12,7 @@ const state = {
 	userInfo: {},
 	tfActiveIndex: "1",
 	adminType: 1, //1 投放需求   2.放开  3.
-	releaseNum:1,
+	releaseObj:{},
 	tfActiveIndex: '1',
 	tfLeftList: [{
 		"name": "微信投放需求",
@@ -141,8 +141,8 @@ const mutations = {
 	SETLOGINFLAG(state, loginFlag) {
 		state.loginFlag = loginFlag
 	},
-	SETRELEASENUM(state, releaseNum) {
-		state.releaseNum = releaseNum
+	SETRELEASEOBJ(state, releaseObj) {
+		state.releaseObj = releaseObj
 	},
 	SETTFACTIVEINFO(state, index) {
 		state.tfActiveIndex = index

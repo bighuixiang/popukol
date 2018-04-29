@@ -1,14 +1,13 @@
 <template>
-<div class="content">
+<div class="content m-t-20">
   <div class="margin-auto-1200-box">
     <div class="create-title">
       创建投放需求
     </div>
     <div class="create-step">
-        <el-steps :active="getReleaseNum" :align-center="true" :space="360">
-          <el-step title="选择投放平台"></el-step>
-          <el-step title="天谢谢活动内容"></el-step>
-          <el-step title="选择账号"></el-step>
+        <el-steps :active="getReleaseObj.index" :align-center="true" :space="360">
+          <el-step title="选择投放渠道"></el-step>
+          <el-step title="填写活动内容"></el-step>
           <el-step title="提交活动"></el-step>
         </el-steps>
     </div>
@@ -35,6 +34,12 @@ export default {
     let self = this;
     self.SLS();
     self.language = self.getLanguage();
+    self.setReleaseObj({
+      index: 2,
+      platformName: "",
+      contentForm: {},
+      items: []
+    });
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
@@ -42,7 +47,7 @@ export default {
       "getLoginFlag",
       "getNavList",
       "getUserInfo",
-      "getReleaseNum",
+      "getReleaseObj",
       // ...
     ])
   },
@@ -52,7 +57,7 @@ export default {
       "decrement",
       "setloginflag",
       "setuserinfo",
-      "setReleaseNum",
+      "setReleaseObj",
     ]),
     submitForm(formName) {
       //提交按钮
@@ -109,6 +114,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.m-t-20{
+  margin-top: 20px;
+}
 .qudao-box {
   width: 800px;
   padding: 17px 0px;
@@ -214,6 +222,7 @@ export default {
   padding-left: 39px;
   font-weight: bold;
   margin: 30px 0px;
+  padding-top:30px;
 }
 .create-title::before {
   content: "";

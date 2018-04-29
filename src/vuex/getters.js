@@ -15,8 +15,8 @@ export const getLoginFlag = state => {
     return state.loginFlag
 }
 
-export const getReleaseNum = state => {
-    return state.releaseNum 
+export const getReleaseObj = state => {
+    return state.releaseObj 
 }
 
 export const getTfLeftList = state => {

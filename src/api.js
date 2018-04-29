@@ -1,6 +1,17 @@
 //http://myshowbusiness.nullwei.com
 const IP = '/web'
 
+
+//GET   ===> 产品行业分类
+export const busCategoryList = `${IP}/manage/category/record/list`
+//GET   ===> 投放需求列表分页
+export const xuqiuList = `${IP}/manage/pop/platform/1/record/page`
+//GET   ===> 投放需求详情
+export const xuqiuInfo = `${IP}/manage/pop/record/2/info`
+//POST   ===> 投放需求创建
+export const xuqiuCreate = `${IP}/manage/pop/record/add`
+//POST   ===> 上传图片
+export const uploadImg = `${IP}/manage/file/image/upload?`
 //GET   ===> 首页轮播图片
 export const sliderList = `${IP}/slider/pic/list`
 //GET   ===> 首页优质资源分类列表

@@ -19,6 +19,8 @@ const languageZN = {
 	"signUpOk": "注册成功",
 	"loginInfoE": "请将登陆信息填写完整",
 	"sendOk": "发送成功",
+	"writeOk": "请填写完整",
+	"fenleiNotOk": "先选择分类",
 	
 	
 	
@@ -44,6 +46,8 @@ const languageTW = {
 	"signUpOk": "註冊成功",
 	"loginInfoE": "請將登陸信息填寫完整",
 	"sendOk": "發送成功",
+	"writeOk": "請填寫完整",
+	"fenleiNotOk": "先選擇分類",
 	
 	
 	
