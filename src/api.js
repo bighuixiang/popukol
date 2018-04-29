@@ -70,3 +70,8 @@ export const subPlatformListAPI = `${IP}/platform/sub/record/list`
 export const topNavListAPI = `${IP}/platform/record/list`
 //GET   ===> 首页头部导航列表
 export const langAPI = `${IP}/lang/type/`
+
+//GET   ===> 广告主后台  预约单个投放
+export const addAccountAPI = `${IP}/manage/pop/account/single/submit`
+//GET   ===> 广告主后台  非正常流程-添加选号车
+export const addAccountCarAPI = `${IP}/manage/pop/account/add`

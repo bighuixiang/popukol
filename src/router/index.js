@@ -91,8 +91,12 @@ export default new Router({
 		children: [{
 			path: '/wechattfxq',
 			component: resolve => require(['../view/admin/WeChatTFXQ.vue'], resolve),
-			name: '微信'
-		}]
+			name: '微信投放需求'
+		}, {
+			path: '/wechatxhtg',
+			component: resolve => require(['../view/admin/WeChatxhtg.vue'], resolve),
+			name: '微信选号推广'
+		}, ]
 	}, {
 		path: '*',
 		name: 'Home',
