@@ -126,29 +126,19 @@
 				</div>
 			</div>
 			<!-- end 底部信息 -->
-
-			<!-- start 侧边栏购物车信息 -->
-			<div class="buycar" v-if="getAdminType==3">
-				<div class="menu">
-					<div class="btns">
-						<div class="car">
-							<span>...</span>
-						</div>
-						<div class="customer"></div>
-					</div>
-				</div>
-			</div>
-			<!-- end 侧边栏购物车信息 -->
 		</div>
 	</el-row>
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
+ 	import { mapGetters } from 'vuex'
 	import { mapActions } from 'vuex'
 	export default {
+		
 		data() {
 			return {
+				checkedAll: false,
+				isShowBuycar: false,
 				isShowI18n: false,
 				isShowZiMeiTi: false,
 				isShowMore: false,
@@ -361,74 +351,7 @@
 </script>
 
 <style lang="scss" scoped>
-	.buycar {
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		width: 286px;
-		background-color: #FFFFFF;
-		z-index: 999;
-		right: -250px;
-		-webkit-transition: all 0.5s; 
-		-ms-transition: all 0.5s; 
-		-moz-transition: all 0.5s; 
-		transition: all 0.5s; 
-		.menu {
-			position: absolute;
-			left: 0;
-			top: 0;
-			bottom: 0;
-			width: 36px;
-			background-color: #666666;
-			.btns {
-				cursor: pointer;
-				width: 36px;
-				height: 250px;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				-webkit-transform: translate(-50%, -50%);
-				-ms-transform: translate(-50%, -50%);
-				-moz-transform: translate(-50%, -50%);
-				transform: translate( -50%, -50%);
-				.customer {
-					position: relative;
-					height: 36px;
-					width: 36px;
-					background: url(../../static/icon/cebianlan/kefu.png) center center no-repeat;
-					background-size: 20px;
-				}
-				.car {
-					position: relative;
-					height: 36px;
-					width: 36px;
-					background: url(../../static/icon/cebianlan/buycar.png) center center no-repeat;
-					background-size: 22px;
-					span {
-						width: 18px;
-						height: 18px;
-						text-align: center;
-						line-height: 18px;
-						font-size: 12px;
-						color: #FFFFFF;
-						background-color: #D41A20;
-						display: block;
-						border-radius: 50px;
-						right: 6px;
-						top: 6px;
-						position: absolute;
-					}
-				}
-				.car:hover,
-				.cur,
-				.customer:hover {
-					background-color: rgba(0, 0, 0, 0.6);
-				}
-			}
-		}
-	}
-	
+
 	.leftMenu {
 		width: 268px;
 		margin-left: 12px;
@@ -533,7 +456,7 @@
 				background-color: #DE1A20;
 			}
 		}
-		.message:hover{
+		.message:hover {
 			color: #DE1A20;
 		}
 		.helper {

@@ -3,8 +3,27 @@
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
+	import { mapActions } from 'vuex'
 	export default {
-		name: 'App'
+		name: 'App',
+		created() {
+			let self = this;
+			self.$http.get(self.API.userInfoApi).then((response) => { // 响应成功回调
+				if(response.data.status == 0&&response.data.loginFlag) {
+					self.setloginflag(true);
+					self.setuserinfo(response.data.data);
+				}
+			}, (response) => {
+
+			});
+		},
+		methods: {
+			...mapActions([
+				'setloginflag',
+				'setuserinfo',
+			]),
+		}
 	}
 </script>
 
@@ -16,6 +35,7 @@
 		font-weight: normal;
 		font-style: normal;
 	}
+	
 	.el-table .cell,
 	.el-table th div {
 		overflow: visible !important;
@@ -268,7 +288,7 @@
 		/*background: url(assets/bg1.jpg) center !important;
 		background-size: cover;*/
 		/*background: #1F2D3D;*/
-		font-family: 'HiraginoSansGBW3',"微软雅黑", Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif!important;
+		font-family: 'HiraginoSansGBW3', "微软雅黑", Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif!important;
 		/*font-weight: 400;*/
 		-webkit-font-smoothing: antialiased;
 	}

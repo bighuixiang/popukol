@@ -177,7 +177,7 @@
 								<p>头条:￥{{scope.row.mainPrice}}</p>
 								<p>次条:￥{{scope.row.subPrice}}</p>
 							</div>
-							<div>
+							<div v-else>
 								登录广告主账号可查看更多报价
 							</div>
 						</div>

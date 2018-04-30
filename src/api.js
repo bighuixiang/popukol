@@ -90,3 +90,11 @@ export const langAPI = `${IP}/lang/type/`
 export const addAccountAPI = `${IP}/manage/pop/account/single/submit`
 //GET   ===> 广告主后台  非正常流程-添加选号车
 export const addAccountCarAPI = `${IP}/manage/pop/account/add`
+//GET   ===> 广告主后台  非正常流程-加载选号车数据
+export const addAccountCarListAPI = `${IP}/manage/pop/account/record/list`
+//GET   ===> 广告主后台  非正常流程-选号车更改广告位类型
+export const editAccountCarAPI = `${IP}/manage/pop/account/ad/edit`
+//GET   ===> 广告主后台  非正常流程-删除选号
+export const removeAccountCarAPI = `${IP}/manage/pop/account/remove`
+//GET   ===> 广告主后台  非正常流程-清空选号车
+export const removeAllAccountCarAPI = `${IP}/manage/pop/account/all/delete`
