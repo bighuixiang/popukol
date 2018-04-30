@@ -8,17 +8,6 @@
 		<!-- end 搜索 -->
 		<!-- start 账号分类 -->
 		<div class="condition">
-			<div class="item">
-				<div class="title"><span style="margin-right: 26px;">平</span>台</div>
-				<div class="right">
-					<div class="buxian" :class="{'cur':platfromIndex==0}" @click="setPlatform(0,0)">
-						<span>不限</span>
-					</div>
-					<div class="list">
-						<div @click="setPlatform(index+1,item.id)" :class="{'cur':platfromIndex==index+1}" v-for="(item,index) in platformList"><span>{{item.name}}</span></div>
-					</div>
-				</div>
-			</div>
 			<div class="item kuozhan">
 				<div class="title">账号分类</div>
 				<div class="right">
@@ -54,20 +43,20 @@
 					<div class="buxian" :class="{'cur':priceIndex==0}" @click="setPrice(0)">
 						<span>不限</span>
 					</div>
-					<div class="list">
+					<div class="list" style="width: 586px;padding-right: 148px;">
 						<div @click="setPrice(index+1,item.id)" :class="{'cur':priceIndex==index+1}" v-for="(item,index) in ['1000元以下','1000-3000元','3000-5000元','5000-10000元','10000元以上']"><span>{{item}}</span></div>
 					</div>
 					<div class="filter">
-						<!--<el-dropdown @command="bjtype" trigger="click" class="xiala">
+						<el-dropdown @command="bjtype" trigger="click" class="xiala">
 							<span class="el-dropdown-link type">
    								 {{bjtypeobj.name}}
    								 <i class="el-icon-arrow-down el-icon--right"></i>
   							</span>
 							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item command="{'id':'1','name':'头条'}">淘宝头条</el-dropdown-item>
-								<el-dropdown-item command="{'id':'0','name':'次条'}">淘宝次条</el-dropdown-item>
+								<el-dropdown-item command="{'id':'1','name':'直发'}">直发</el-dropdown-item>
+								<el-dropdown-item command="{'id':'0','name':'转发'}">转发</el-dropdown-item>
 							</el-dropdown-menu>
-						</el-dropdown>-->
+						</el-dropdown>
 						<el-input class="inputwidth" size="mini" v-model="params.prices.min" placeholder="元"></el-input>
 						<div class="hengxian"></div>
 						<el-input class="inputwidth" size="mini" v-model="params.prices.max" placeholder="元"></el-input>
@@ -108,7 +97,9 @@
 					</div>
 					<div class="list">
 						<el-checkbox-group @change="officalChange" class="checkList" v-model="checkList">
-							<el-checkbox label="认证"></el-checkbox>
+							<el-checkbox label="黄V认证" :key="1"></el-checkbox>
+							<el-checkbox label="蓝V认证" :key="2"></el-checkbox>
+							<el-checkbox label="金V认证" :key="3"></el-checkbox>
 						</el-checkbox-group>
 					</div>
 				</div>
@@ -129,17 +120,17 @@
 					<el-dropdown-item command="2">粉丝数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<!--<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
+			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
-			    按观看次数
+			    按阅读数
 			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
 			    <i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
 			  </span>
 				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item command="3">观看次数由高到低</el-dropdown-item>
-					<el-dropdown-item command="4">观看次数由低到高</el-dropdown-item>
+					<el-dropdown-item command="3">阅读数由高到低</el-dropdown-item>
+					<el-dropdown-item command="4">阅读数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
-			</el-dropdown>-->
+			</el-dropdown>
 			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
 		</div>
 		<!-- end 排序 -->
@@ -154,18 +145,18 @@
 							<el-col :span="6" class="tableZh">
 								<div class="left">
 									<img class="userImg" :src="scope.row.headImg" />
-									<!--<img v-if="scope.row.officalStatus==1" class="ico" src="/static/icon/meitirenzhen/wxrz.png" />-->
+									<img v-if="scope.row.authLevel==1" class="ico" src="/static/icon/meitirenzhen/wbhrz.png" />
+									<img v-if="scope.row.authLevel==2" class="ico" src="/static/icon/meitirenzhen/wblrz.png" />
+									<img v-if="scope.row.authLevel==3" class="ico" src="/static/icon/meitirenzhen/wbjrz.png" />
 								</div>
 							</el-col>
 							<el-col :span="18" class="tableZh">
 								<div class="right">
 									<div class="name">{{scope.row.name}}
-										<div class="erweima">
-											<img v-if="scope.row.platformId==17" class="erweimamin" src="../../../static/icon/meitirenzhen/tt.png"/>
-											<img v-if="scope.row.platformId==26" class="erweimamin " src="../../../static/icon/meitirenzhen/douban.png" />
-											<img v-if="scope.row.platformId==25" class="erweimamin " src=" ../../../static/icon/meitirenzhen/zhihu.png" />
-											<!--<img class="erweimaMax" :src="scope.row.headImg" />-->
-										</div>
+										<!--<div class="erweima">
+											<img class="erweimamin" src="../../../static/icon/meitirenzhen/erweima.png" />
+											<img class="erweimaMax" :src="scope.row.headImg" />
+										</div>-->
 									</div>
 									<span class="tag">原创</span>
 								</div>
@@ -173,22 +164,14 @@
 						</el-row>
 					</template>
 				</el-table-column>
-				<el-table-column prop="fans" label="粉丝数">
+				<el-table-column prop="fans" label="转发数" width="168">
 				</el-table-column>
-				<!--<el-table-column label="阅读数">
-					<template slot-scope="scope">
-						<div>
-							<p>头条:{{ scope.row.extra.viewCount }}+</p>
-							<p>次条:{{ scope.row.extra.subViewCount}}+</p>
-						</div>
-					</template>
-				</el-table-column>-->
 				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">
 						<div>
 							<div v-if="getLoginFlag">
-								<p>头条:￥{{scope.row.mainPrice}}</p>
-								<p>次条:￥{{scope.row.subPrice}}</p>
+								<p>直发:￥{{scope.row.mainPrice}}</p>
+								<p>转发:￥{{scope.row.subPrice}}</p>
 							</div>
 							<div v-else>
 								登录广告主账号可查看更多报价
@@ -196,9 +179,9 @@
 						</div>
 					</template>
 				</el-table-column>
-				<!--<el-table-column prop="categoryModel" label="账号分类">
-				</el-table-column>-->
-				<el-table-column label="操作">
+				<el-table-column prop="categoryModel" label="账号分类" width="138">
+				</el-table-column>
+				<el-table-column label="操作" width="138">
 					<template slot-scope="scope">
 						<div>
 							<el-button @click="yytoufang(scope.row)" class="btnred" plain size="mini">预约投放</el-button>
@@ -218,6 +201,81 @@
 		</div>
 		<!-- end 列表 -->
 
+		<!-- start 侧边栏购物车信息 -->
+		<el-dialog :title="title" :visible.sync="dialogFormVisible">
+			<el-form>
+				<el-form-item label="请选择广告位">
+					<el-select v-model="adType" placeholder="请选择广告位">
+						<el-option label="直发" :value="1"></el-option>
+						<el-option label="转发" :value="2"></el-option>
+					</el-select>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="dialogFormVisible = false">取 消</el-button>
+				<el-button type="primary" @click="comfig">确 定</el-button>
+			</div>
+		</el-dialog>
+
+		<div class="buycar" :class="{'buycarhidde':isShowBuycar}">
+			<div class="menu" @click.stop="isShowBuycar=false">
+				<div class="btns">
+					<div class="car" :class="{'cur':!isShowBuycar}">
+						<span v-if="buyCarList.length>0">{{buyNumStr}}</span>
+					</div>
+					<div class="customer" @click.stop="kefu"></div>
+				</div>
+			</div>
+			<div class="top">
+				<div class="checkedall">选号车</div>
+				<div class="close" @click="close"></div>
+			</div>
+			<div class="list">
+				<div class="item" v-for="(item,index) in buyCarList" :key="index">
+					<div class="left">
+						<img class="userImg" :src="item.headImg" />
+						<img v-if="item.authLevel==1" class="ico" src="/static/icon/meitirenzhen/wbhrz.png" />
+						<img v-if="item.authLevel==2" class="ico" src="/static/icon/meitirenzhen/wblrz.png" />
+						<img v-if="item.authLevel==3" class="ico" src="/static/icon/meitirenzhen/wbjrz.png" />
+					</div>
+					<div class="center">
+						<p>{{item.name}}</p>
+						<span>{{item.fans}}</span>
+						<el-select class="selected" size="mini" @change="changeAdType(item)" v-model="item.adType" placeholder="请选择">
+							<el-option v-for="(item,index) in ['直发','转发']" :key="item" :label="item" :value="index+1">
+							</el-option>
+						</el-select>
+					</div>
+					<div class="right">
+						<div class="delete" @click="deleteBuyCar(item)"></div>
+						<div class="price">
+							￥{{item.popPrice.toFixed(2)}}
+						</div>
+					</div>
+				</div>
+
+				<div class="clearAllBuyCar" v-if="buyCarList.length>0" @click="clearAllBuyCar()">清空选号车</div>
+				<div class="empty" v-if="buyCarList.length==0">
+					<img src="../../../static/icon/tipico/notinfo.png" />
+					<p>还未添加任何账号，</p>
+					<span>快去选择心仪的账号加入选号车吧</span>
+				</div>
+			</div>
+			<div class="footer">
+				<div class="left">
+					<div>
+						已选数量: <span>{{buyCarList.length}}</span>
+					</div>
+					<div>
+						金额: <span>￥{{sumPrice.toFixed(2)}}</span>
+					</div>
+				</div>
+				<div class="right" @click="yytf">
+					预约投放
+				</div>
+			</div>
+		</div>
+		<!-- end 侧边栏购物车信息 -->
 	</div>
 </template>
 
@@ -228,11 +286,17 @@
 	export default {
 		data() {
 			return {
+				isShowBuycar: true,
+				platformId: 2, //2  微博平台
+				buyCarList: [],
+				title: "预约投放",
+				adType: 1,
+				dialogFormVisible: false,
+				yytfParams: {},
 				params: {
 					//入参	
 					page: 1,
 					keywords: "", //搜索关键字
-					platformId: 0, //平台
 					regionId: 0, //地区
 					categoryId: 0, //账号分类
 					fanss: { //粉丝数区间	
@@ -244,12 +308,10 @@
 						min: "",
 						max: ""
 					},
-					offical: 0, //官方   0 未选中   1 已选择
+					offical: [0, 0, 0], //官方   0 未选中   1 已选择
 				},
-				platformId: "", //平台ID
 				provinveId: "", //省ID
 				cityId: "", //区ID
-				platfromIndex: 0, //平台   当前索引
 				recordIndex: 0, //账号分类   当前索引
 				fansIndex: 0, //粉丝数   当前索引
 				priceIndex: 0, //价格   当前索引
@@ -258,14 +320,13 @@
 
 				total: 0, //当前分页总数
 
-				platformList: [], //平台列表
 				recordTypeList: [], //账号分类列表
 				checkList: [], //官方认证
 				provinveDataList: [], //省
 				cityDataList: [], //市区
 				bjtypeobj: {
 					id: "1",
-					name: "头条"
+					name: "直发"
 				},
 				areaList: [{
 					id: 1,
@@ -295,12 +356,23 @@
 		},
 		async mounted() {
 			let self = this
-			self.increment(6)
 			self.SLS();
-			await self.addPlatform();
+			self.increment({
+				val: "3",
+				type: 2
+			}) //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
+			self.increment({
+				val: "1",
+				type: 3
+			}) //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
+			self.increment({
+				val: "1",
+				type: 4
+			}) //设置左边导航
 			await self.addRecordType();
 			await self.addProvinceAndCity();
 			await self.addWechatList();
+			await self.addAccountCarList();
 		},
 		computed: {
 			// 使用对象展开运算符将 getters 混入 computed 对象中
@@ -309,14 +381,185 @@
 				"getLoginFlag",
 				'getUserInfo',
 				// ...
-			])
+			]),
+			buyNumStr: function() {
+				return this.buyCarList.length < 10 ? this.buyCarList.length : "..."
+			},
+			sumPrice() {
+				let sumprice = 0;
+				this.buyCarList.forEach((item) => {
+					sumprice += item.popPrice - 0
+				})
+				return sumprice
+			}
 		},
 		methods: {
 			...mapActions([
 				'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
 				'decrement',
+				"setloginflag",
 				'setuserinfo'
 			]),
+			kefu() {
+				let self = this;
+				console.log("点击了客服")
+			},
+			clearAllBuyCar() {
+				let self = this;
+				self.$confirm('确认清空选号车吗?', '提示', {
+					//type: 'warning'
+				}).then(() => {
+					self.$http.post(self.API.removeAllAccountCarAPI, {
+						platformId: self.platformId
+					}).then((response) => { // 响应成功回调
+						if(response.data.status == 0) {
+							self.$message({
+								message: "清空选号车成功",
+								type: 'success'
+							})
+							self.addAccountCarList();
+						} else {
+							self.$message.error('清空选号车失败');
+						}
+					}, (response) => {
+
+					});
+				}).catch(() => {
+
+				});
+			},
+			deleteBuyCar(item) {
+				let self = this;
+				self.$confirm('确认删除吗?', '提示', {
+					//type: 'warning'
+				}).then(() => {
+					self.$http.post(self.API.removeAccountCarAPI, {
+						platformId: self.platformId,
+						accountId: item.id
+					}).then((response) => { // 响应成功回调
+						if(response.data.status == 0) {
+							self.$message({
+								message: "删除成功",
+								type: 'success'
+							})
+							self.addAccountCarList();
+						} else {
+							self.$message.error('删除失败');
+						}
+					}, (response) => {
+
+					});
+				}).catch(() => {
+
+				});
+			},
+			changeAdType(item) {
+				let self = this;
+				self.$http.post(self.API.editAccountCarAPI, {
+					platformId: self.platformId,
+					adType: item.adType,
+					accountId: item.id
+				}).then((response) => { // 响应成功回调
+					if(response.data.status == 0) {
+						self.$message({
+							message: "更改广告位类型成功",
+							type: 'success'
+						})
+					} else {
+						self.$message.error('更改广告位类型失败');
+					}
+				}, (response) => {});
+			},
+			addAccountCarList() {
+				let self = this;
+				self.$http.get(self.API.addAccountCarListAPI, {
+					params: {
+						platformId: self.platformId,
+					}
+				}).then((response) => { // 响应成功回调
+					if(response.data.status == 0) {
+						self.buyCarList = response.data.data;
+					}
+				}, (response) => {});
+
+			},
+			close() {
+				this.isShowBuycar = true
+			},
+			addCar(row) {
+				//加入选号车
+				let self = this;
+				self.title = "加入选号车"
+				self.dialogFormVisible = true;
+				self.yytfParams = {
+					type: 2,
+					platformId: self.platformId,
+					accountId: row.id,
+					adType: 1,
+				}
+			},
+			yytf() {
+				//预约投放
+				let self = this;
+				if(self.buyCarList.length <= 0) {
+					self.$message.error('请先添加心仪的账号到选号车');
+					return false
+				}
+				self.$router.push({
+					path: "/Activities",
+					query: {
+						platformId: self.platformId,
+						singlePopKey: ''
+					}
+				});
+			},
+			zhDetail(row) {
+				//账号详情
+				let self = this;
+				console.log(row)
+			},
+			comfig() {
+				//预约投放
+				let self = this;
+				self.yytfParams.adType = self.adType;
+				self.$http.post(self.yytfParams.type == 1 ? self.API.addAccountAPI : self.API.addAccountCarAPI, self.yytfParams).then((response) => { // 响应成功回调
+					self.dialogFormVisible = false;
+					if(response.data.status == 0) {
+						if(self.yytfParams.type == 1) {
+							self.$router.push({
+								path: "/Activities",
+								query: {
+									singlePopKey: response.data.data,
+									platformId: self.platformId
+								}
+							});
+						} else {
+							//添加购物车成功
+							self.$message({
+								message: '加入选号车成功！',
+								type: 'success'
+							});
+							self.addAccountCarList();
+						}
+					} else {
+						self.$message.error(response.data.msg);
+					}
+				}, (response) => {
+					self.dialogFormVisible = false;
+				});
+			},
+			yytoufang(row) {
+				//预约投放
+				let self = this;
+				self.title = "预约投放"
+				self.dialogFormVisible = true;
+				self.yytfParams = {
+					type: 1,
+					platformId: self.platformId,
+					accountId: row.id,
+					adType: 1,
+				}
+			},
 			addWechatList() {
 				let self = this;
 				let fansSort = 0,
@@ -326,9 +569,9 @@
 					case 1:
 						fansSort = 1;
 						break;
-						//					case 3:
-						//						viewSort = 1;
-						//						break;
+					case 3:
+						viewSort = 1;
+						break;
 					case 5:
 						priceSort = 1;
 						break;
@@ -420,15 +663,14 @@
 					self.params.regionId = self.cityId;
 				}
 				let str = [];
-				str.push(self.params.platformId + "/")
 				str.push(self.params.categoryId + "/")
 				str.push(fansMin + "-" + fansMax + "/")
-				//				str.push(self.bjtypeobj.id + "/")
+				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
-				str.push(fansSort + "-" + priceSort + "/")
-				str.push(self.params.offical)
-				self.$http.get(self.API.headlinesListAPI + str.join(''), {
+				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
+				str.push(self.params.offical.join("-"))
+				self.$http.get(self.API.weiboAccountListAPI + str.join(''), {
 					params: {
 						page: self.params.page,
 						limit: 10,
@@ -464,20 +706,16 @@
 				this.addWechatList();
 			},
 			buxianCheck() {
+				//说明新增了
+				let self = this;
 				this.checkList = [];
-				this.params.offical = 0;
+				this.params.offical = [0, 0, 0];
 				this.params.page = 1;
 				this.addWechatList();
 			},
 			setRecord(val, id) {
 				this.recordIndex = val - 0;
 				this.params.categoryId = id;
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			setPlatform(val, id) {
-				this.platfromIndex = val - 0;
-				this.params.platformId = id;
 				this.params.page = 1;
 				this.addWechatList();
 			},
@@ -541,7 +779,24 @@
 				this.cityId = val;
 			},
 			officalChange(val) {
-				this.params.offical = val.length === 0 ? 0 : 1;
+				//说明新增了
+				let self = this;
+				this.params.offical = [0, 0, 0];
+				val.forEach(item => {
+					switch(item) {
+						case "黄V认证":
+							self.params.offical[0] = 1;
+							break;
+						case "蓝V认证":
+							self.params.offical[1] = 1;
+							break;
+						case "金V认证":
+							self.params.offical[2] = 1;
+							break;
+						default:
+							break;
+					}
+				})
 				this.params.page = 1;
 				this.addWechatList();
 			},
@@ -549,24 +804,6 @@
 				this.sortIndex = val - 0;
 				this.params.page = 1;
 				this.addWechatList();
-			},
-			addCar(row) {
-				//加入选号车
-				let self = this;
-				console.log(row)
-				//				if(row.isFl){
-				//					
-				//				}
-			},
-			zhDetail(row) {
-				//账号详情
-				let self = this;
-				console.log(row)
-			},
-			yytoufang(row) {
-				//预约投放
-				let self = this;
-				console.log(row)
 			},
 			bjtype(val) { //				参考报价类型
 				val = val.replace(/'/g, '"');
@@ -586,27 +823,12 @@
 				}, (response) => {});
 
 			},
-			addPlatform() {
-				let self = this;
-				//				12 微信   13微博  14 小红书
-				self.$http.get(self.API.subPlatformListAPI, {
-					params: {
-						pid: 6,
-					}
-				}).then((response) => { // 响应成功回调
-					if(response.data.status == 0) {
-						self.platformList = response.data.data
-					}
-				}, (response) => {
-
-				});
-			},
 			addRecordType() {
 				let self = this;
 				//				12 微信   13微博  14 小红书
 				self.$http.get(self.API.recordList, {
 					params: {
-						platformId: 6,
+						platformId: 2,
 					}
 				}).then((response) => { // 响应成功回调
 					if(response.data.status == 0) {
@@ -620,6 +842,252 @@
 	}
 </script>
 <style lang="scss" scoped>
+	.buycar {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: 286px;
+		background-color: #FFFFFF;
+		z-index: 999;
+		-webkit-transition: all 0.5s;
+		-ms-transition: all 0.5s;
+		-moz-transition: all 0.5s;
+		transition: all 0.5s;
+		.footer {
+			position: absolute;
+			bottom: 0;
+			width: 250px;
+			right: 0;
+			padding: 12px;
+			background-color: #EFEFEF;
+			.left {
+				div {
+					font-size: 14px;
+					color: #666666;
+					span {
+						color: #DD2025;
+					}
+				}
+			}
+			.right {
+				position: absolute;
+				right: 12px;
+				top: 50%;
+				-ms-transform: translateY(-50%);
+				-webkit-transform: translateY(-50%);
+				-moz-transform: translateY(-50%);
+				transform: translateY(-50%);
+				background-color: #dd2025;
+				padding: 4px 16px;
+				color: #FFFFFF;
+				font-size: 14px;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+		}
+		.top {
+			position: absolute;
+			top: 0;
+			right: 0;
+			height: 36px;
+			line-height: 36px;
+			background-color: #eeeeee;
+			width: 100%;
+			z-index: 88;
+			width: 250px;
+			.checkedall {
+				margin-left: 12px;
+			}
+			.close {
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: 36px;
+				height: 36px;
+				background: url(../../../static/icon/admin/close.png) center center no-repeat;
+				background-size: 12px;
+				cursor: pointer;
+			}
+		}
+		.list {
+			position: absolute;
+			top: 0;
+			left: 36px;
+			right: 0;
+			bottom: 0;
+			width: 250px;
+			overflow: auto;
+			padding-top: 36px;
+			padding-bottom: 66px;
+			clear: both;
+			.empty {
+				color: #666666;
+				font-size: 12px;
+				text-align: center;
+				img {
+					width: 80px;
+					display: block;
+					margin: 128px auto 24px;
+				}
+			}
+			.clearAllBuyCar {
+				float: right;
+				margin: 24px 12px;
+				color: #888888;
+				font-size: 12px;
+				padding: 4px 12px;
+				border-radius: 4px;
+				cursor: pointer;
+				background: url(../../../static/icon/guanggaozhu/clear.png) no-repeat 12px center;
+				background-size: 12px;
+				background-color: #EEEEEE;
+				padding-left: 28px;
+			}
+			.item {
+				position: relative;
+				overflow: hidden;
+				padding: 12px;
+				border-bottom: 1px solid #e8e8e8;
+				.left {
+					width: 44px;
+					position: relative;
+					float: left;
+					.userImg {
+						width: 44px;
+						height: 44px;
+						border-radius: 50%;
+						display: block;
+					}
+					.ico {
+						position: absolute;
+						right: 0;
+						bottom: 0;
+						width: 12px;
+						height: auto;
+						display: block;
+					}
+				}
+				.center {
+					width: 128px;
+					position: relative;
+					margin-left: 12px;
+					float: left;
+					p {
+						font-weight: bold;
+						color: #333333;
+						font-size: 14px;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+					}
+					span {
+						font-size: 12px;
+						color: #666666;
+						padding-left: 14px;
+						background: url(../../../static/icon/wangzhan/finas.png) no-repeat left center;
+						background-size: 12px;
+					}
+					.selected {
+						display: block;
+						width: 88px;
+					}
+				}
+				.right {
+					position: absolute;
+					right: 0;
+					top: 0;
+					bottom: 0;
+					width: 128px;
+					text-align: right;
+					color: #dd2025;
+					font-size: 14px;
+					.delete {
+						position: absolute;
+						right: 0;
+						bottom: 0;
+						width: 32px;
+						height: 32px;
+						cursor: pointer;
+						background: url(../../../static/icon/guanggaozhu/clear.png) no-repeat center center;
+						background-size: 16px;
+					}
+					.price {
+						position: absolute;
+						top: 50%;
+						right: 12px;
+						-ms-transform: translateY(-50%);
+						-webkit-transform: translateY(-50%);
+						-moz-transform: translateY(-50%);
+						transform: translateY(-50%);
+						margin-top: -6px;
+					}
+				}
+			}
+		}
+		.menu {
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			width: 36px;
+			background-color: #666666;
+			.btns {
+				cursor: pointer;
+				width: 36px;
+				height: 250px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				-webkit-transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				-moz-transform: translate(-50%, -50%);
+				transform: translate( -50%, -50%);
+				.customer {
+					position: relative;
+					height: 36px;
+					width: 36px;
+					background: url(../../../static/icon/cebianlan/kefu.png) center center no-repeat;
+					background-size: 20px;
+				}
+				.car {
+					position: relative;
+					height: 36px;
+					width: 36px;
+					background: url(../../../static/icon/cebianlan/buycar.png) center center no-repeat;
+					background-size: 22px;
+					span {
+						width: 18px;
+						height: 18px;
+						text-align: center;
+						line-height: 18px;
+						font-size: 12px;
+						color: #FFFFFF;
+						background-color: #D41A20;
+						display: block;
+						border-radius: 50px;
+						right: 2px;
+						top: 2px;
+						position: absolute;
+						-webkit-transform: scale(0.7);
+						-ms-transform: scale(0.7);
+						-moz-transform: scale(0.7);
+						transform: scale(0.7);
+					}
+				}
+				.car:hover,
+				.cur,
+				.customer:hover {
+					background-color: rgba(0, 0, 0, 0.6);
+				}
+			}
+		}
+	}
+	
+	.buycarhidde {
+		right: -250px;
+	}
+	
 	.addCar {
 		margin-top: 6px;
 		padding-left: 22px;
@@ -717,9 +1185,6 @@
 	}
 	
 	.content {
-		width: 1200px;
-		margin: auto;
-		display: table;
 		.condition {
 			.filter {
 				position: absolute;
@@ -768,6 +1233,7 @@
 					width: 10px;
 					height: 1px;
 					background-color: #aaaaaa;
+					display: inline-block;
 					margin-left: 6px;
 					margin-right: 6px;
 					margin-top: 22px;
@@ -777,6 +1243,7 @@
 					width: 66px;
 					height: 24px;
 					border-radius: 2px;
+					display: inline-block;
 					padding: 0;
 					float: left;
 				}
@@ -792,7 +1259,7 @@
 				}
 			}
 			.right {
-				width: 1100px;
+				/*width: 1100px;*/
 				/*padding-left: 12px;*/
 				color: #888888;
 				font-size: 12px;
@@ -832,7 +1299,7 @@
 					float: left;
 					padding-left: 86px;
 					padding-bottom: 12px;
-					padding-right: 148px;
+					/*padding-right: 148px;*/
 					.checkList {
 						padding-left: 12px;
 					}
@@ -895,6 +1362,7 @@
 			border: 1px solid #e8e8e8;
 			.defult {
 				background-color: #FFFFFF;
+				display: inline-block;
 				padding: 0px 16px;
 				border: 1px solid #e8e8e8;
 				border-left: none;

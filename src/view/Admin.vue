@@ -14,7 +14,7 @@
 					<!-- 右侧  start-->
 					<div class="header-right">
 						<div class="userinfo">
-							广告主:<span>{{getUserInfo.name}}</span>
+							广告主:<span>{{getUserInfo.username}}</span>
 						</div>
 						<div class="logout" @click="logout">
 							[退出]
@@ -60,8 +60,8 @@
 				<div class="center" v-if="getAdminType==1">
 					<div class="leftMenu">
 						<ul class="ul">
-							<li v-for="item in getTfLeftList" :class="{active:item.isCur}">
-								<div @click="goToUrl(item)" v-if="item.url!=''">{{item.name}}</div>
+							<li v-for="item in getTfLeftList"  @click="goToUrl(item)" :class="{active:item.isCur}">
+								<div v-if="item.url!=''">{{item.name}}</div>
 							</li>
 						</ul>
 					</div>
@@ -79,8 +79,8 @@
 				<div class="center" v-if="getAdminType==3">
 					<div class="leftMenu">
 						<ul class="ul">
-							<li v-for="item in getXhLeftList" :class="{active:item.isCur}">
-								<div @click="goToUrl(item)" v-if="item.url!=''">{{item.name}}</div>
+							<li v-for="item in getXhLeftList" @click="goToUrl(item)" :class="{active:item.isCur}">
+								<div v-if="item.url!=''">{{item.name}}</div>
 							</li>
 						</ul>
 					</div>
@@ -186,7 +186,8 @@
 			...mapActions([
 				'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
 				'decrement',
-				'setuserinfo'
+				'setuserinfo',
+				'setloginflag',
 			]),
 			language() {
 				let self = this;
@@ -301,6 +302,28 @@
 				//				});
 			},
 			handleSelect(key, keyPath) {
+				let self = this
+				key -= 0
+				switch(key) {
+					case 1:
+						console.log(key)
+						self.$router.push({
+							path: '/wechatxhtg'
+						})
+						break;
+					case 2:
+						self.$router.push({
+							path: '/wechattfgl'
+						})
+						break;
+					case 3:
+						self.$router.push({	
+							path: '/usercenter'
+						})
+						break;
+					default:
+						break;
+				}
 
 			},
 			//退出登录
@@ -311,6 +334,7 @@
 				}).then(() => {
 					self.$http.post(self.API.loginOutApi).then((response) => { // 响应成功回调 
 						if(response.data.status == 0) {
+							self.setloginflag(false)
 							self.setuserinfo({})
 							self.$router.replace('/');
 						} else {

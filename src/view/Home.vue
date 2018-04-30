@@ -99,7 +99,7 @@
 
 			<!-- start 侧边栏信息 -->
 			<div class="cebianlan">
-				<div class="yuyuetoufang">
+				<div class="yuyuetoufang" @click="yuyuetoufang">
 					<img src="../../static/icon/wangzhan/toufang.png" />
 					<span>预约投放</span>
 				</div>
@@ -185,7 +185,8 @@
 			...mapActions([
 				'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
 				'decrement',
-				'setuserinfo'
+				'setuserinfo',
+				'loginFlag',
 			]),
 			language() {
 				let self = this;
@@ -203,6 +204,12 @@
 				self.SLS(type);
 				self.languageSwitching(type);
 				self.isShowI18n = false;
+			},
+			yuyuetoufang() {
+				let self = this
+				self.$router.push({
+					path: "/wechatxhtg"
+				})
 			},
 			languageSwitching(type) {
 				let self = this;

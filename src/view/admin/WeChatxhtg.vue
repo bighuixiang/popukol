@@ -502,6 +502,10 @@
 			yytf() {
 				//预约投放
 				let self = this;
+				if(self.buyCarList.length <= 0) {
+					self.$message.error('请先添加心仪的账号到选号车');
+					return false
+				}
 				self.$router.push({
 					path: "/Activities",
 					query: {
