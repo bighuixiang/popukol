@@ -138,6 +138,13 @@ export default new Router({
 			},
 			component: resolve => require(['../view/Admin.vue'], resolve),
 			children: [{
+				path: '/UserCenter',
+				component: resolve => require(['../view/admin/UserCenter.vue'], resolve),
+				meta: {
+					requiresAuth: true
+				},
+				name: '个人中心'
+			},{
 				path: '/Release',
 				name: 'Release',
 				meta: {

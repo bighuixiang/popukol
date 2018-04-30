@@ -1,7 +1,8 @@
 //http://myshowbusiness.nullwei.com
 const IP = '/web'
 
-
+//GET   ===> 广告主个人信息接口
+export const userInfoGGZ = `${IP}/manage/user/info`
 //GET   ===> 产品行业分类
 export const busCategoryList = `${IP}/manage/category/record/list`
 //GET   ===> 投放需求列表分页
@@ -16,6 +17,10 @@ export const xuqiuAllInfo = `${IP}/manage/pop/record/account/detail`
 export const xuqiuSend = `${IP}/manage/pop/record/confirm`
 //POST   ===> 上传图片
 export const uploadImg = `${IP}/manage/file/image/upload?`
+//POST   ===> 编辑公司信息
+export const companyInfo = `${IP}/manage/account/info/edit`
+//POST   ===> 编辑联系人信息
+export const peopleInfo = `${IP}/manage/account/info/extra/edit`
 //GET   ===> 首页轮播图片
 export const sliderList = `${IP}/slider/pic/list`
 //GET   ===> 首页优质资源分类列表

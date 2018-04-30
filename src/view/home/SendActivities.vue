@@ -45,7 +45,7 @@
     </div>
     <div class="qy-form">
       <el-form ref="form" :label-position="'right'"  :rules="rules" :model="form" label-width="114px">
-        <el-form-item label="联系方式" prop="phone">
+        <el-form-item label="联系方式:" prop="phone">
             <el-input v-model="form.phone" placeholder="请填写您的手机号，以便我们的投放人员与您联系，完成推广计划"></el-input>
         </el-form-item>
       </el-form>
@@ -69,7 +69,6 @@ export default {
       language: "",
       busCategoryList: "",
       imageUrl: "",
-      popKey: "",
       xuqiuInfo: "",
       form: {
         popKey: "",
@@ -134,7 +133,7 @@ export default {
         self.submitForm("form");
       }
     };
-    self.popKey = self.$route.query.popKey;
+    self.form.popKey = self.$route.query.popKey;
     self.getXuqiuInfo();
   },
   computed: {
@@ -163,10 +162,6 @@ export default {
     },
     submitForm(formName) {
       //提交按钮
-      var popDate = this.form.popDate;
-      if (typeof popDate == "object") {
-        this.form.popDate = this.dateFn(this.form.popDate);
-      }
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.sendPhone();
@@ -181,7 +176,7 @@ export default {
       this.$http
         .get(self.API.xuqiuAllInfo, {
           params: {
-            popKey: self.popKey
+            popKey: self.form.popKey
           }
         })
         .then(response => {
@@ -197,9 +192,11 @@ export default {
     },
     sendPhone() {
       var self = this;
-      this.$http.get(self.API.busCategoryList).then(response => {
+      this.$http.post(self.API.xuqiuSend,
+        this.form
+      ).then(response => {
         if (response.data.status == 0) {
-          self.busCategoryList = response.data.data;
+          this.goToUrl('/WeChatxhtg')
         } else {
           self.$message({
             type: "error",
