@@ -64,15 +64,6 @@ export default new Router({
 			}
 		]
 	}, {
-		path: '/Release',
-		name: 'Release',
-		component: resolve => require(['../view/Home/Release.vue'], resolve),
-		children: [{
-			path: '/Check',
-			name: '选择渠道',
-			component: resolve => require(['../view/Home/Check.vue'], resolve)
-		}]
-	}, {
 		path: '/signUp',
 		name: 'signUp',
 		component: resolve => require(['../view/Home/signUp.vue'], resolve)
@@ -88,7 +79,20 @@ export default new Router({
 		path: '/admin',
 		name: 'Admin',
 		component: resolve => require(['../view/Admin.vue'], resolve),
-		children: [{
+		children: [ {
+			path: '/Release',
+			name: 'Release',
+			component: resolve => require(['../view/Home/Release.vue'], resolve),
+			children: [{
+				path: '/Check',
+				name: '选择渠道',
+				component: resolve => require(['../view/Home/Check.vue'], resolve)
+			},{
+				path: '/Activities',
+				name: '填写活动内容',
+				component: resolve => require(['../view/Home/Activities.vue'], resolve)
+			}]
+		},{
 			path: '/wechattfxq',
 			component: resolve => require(['../view/admin/WeChatTFXQ.vue'], resolve),
 			name: '微信投放需求'

@@ -14,8 +14,8 @@ export const setloginflag = ({commit},loginFlag) => {
     commit('SETLOGINFLAG',loginFlag)
 }
 
-export const setReleaseNum = ({commit},releaseNum) => {
-    commit('SETRELEASENUM',releaseNum)
+export const setReleaseObj = ({commit},releaseObj) => {
+    commit('SETRELEASEOBJ',releaseObj)
 }
 export const setTfActiveInfo = ({commit},activeIndex) => {
     commit('SETTFACTIVEINFO',activeIndex)

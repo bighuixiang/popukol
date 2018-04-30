@@ -2,35 +2,35 @@
 <div class="content">
     <div class="qudao-box">
       <div class="qudao-items">
-        <div class="qudao-item" @click="checkThis('1')">
+        <div class="qudao-item" @click="checkThis('微信')">
             <img src="../../../static/icon/meitirenzhen/weatch.png" alt="">
             <span>微信</span>
         </div>
-        <div class="qudao-item" @click="checkThis('1')">
+        <div class="qudao-item" @click="checkThis('微博')">
             <img src="../../../static/icon/meitirenzhen/sinawb.png" alt="">
             <span>微博</span>
         </div>
-        <div class="qudao-item" @click="checkThis('1')">
+        <div class="qudao-item" @click="checkThis('小红书')">
             <img src="../../../static/icon/meitirenzhen/xhs.png" alt="">
             <span>小红书</span>
         </div>
-        <div class="qudao-item" @click="checkThis('1')">
+        <div class="qudao-item" @click="checkThis('淘宝/京东达人')">
             <img src="../../../static/icon/meitirenzhen/tbdr.png" alt="">
             <span>淘宝/京东达人</span>
         </div>
-        <div class="qudao-item" @click="checkThis('1')">
+        <div class="qudao-item" @click="checkThis('直播/短视频')">
             <img src="../../../static/icon/meitirenzhen/zhiboduanshiping.png" alt="">
             <span>直播/短视频</span>
         </div>
-        <div class="qudao-item" @click="checkThis('1')">
+        <div class="qudao-item" @click="checkThis('头条/知乎/豆瓣')">
             <img src="../../../static/icon/meitirenzhen/tt.png" alt="">
             <span>头条/知乎/豆瓣</span>
         </div>
-        <div class="qudao-item" @click="checkThis('1')">
+        <div class="qudao-item" @click="checkThis('Facebook/Twitter')">
             <img src="../../../static/icon/meitirenzhen/Facebook.png" alt="">
             <span>Facebook/Twitter</span>
         </div>
-        <div class="qudao-item" @click="checkThis('1')">
+        <div class="qudao-item" @click="checkThis('贴吧/论坛')">
             <img src="../../../static/icon/meitirenzhen/tblt.png" alt="">
             <span>贴吧/论坛</span>
         </div>
@@ -51,7 +51,14 @@ export default {
   mounted() {
     let self = this;
     self.SLS();
-    self.setReleaseNum(1);
+    self.setReleaseObj({
+      index: 1,
+      platformName: "",
+      contentForm: {},
+      items: []
+    });
+    self.increment({ val: "2", type: 2 }); //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
+    self.increment({ val: "2", type: 3 }); //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
@@ -59,7 +66,7 @@ export default {
       "getLoginFlag",
       "getNavList",
       "getUserInfo",
-      "getReleaseNum",
+      "getReleaseObj"
       // ...
     ])
   },
@@ -69,7 +76,7 @@ export default {
       "decrement",
       "setloginflag",
       "setuserinfo",
-      "setReleaseNum",
+      "setReleaseObj"
     ]),
     goToUrl(url) {
       let self = this;
@@ -77,8 +84,15 @@ export default {
         path: url
       });
     },
-    checkThis(id){
-
+    checkThis(name) {
+      let self = this;
+      self.setReleaseObj({
+        index: 2,
+        platformName: name,
+        contentForm: {},
+        items: []
+      });
+      self.goToUrl('/activities')
     }
   }
 };
@@ -127,5 +141,6 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+
 </style>
 
