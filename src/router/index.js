@@ -5,114 +5,198 @@ Vue.use(Router)
 
 export default new Router({
 	routes: [{
-		path: '/',
-		name: 'Home',
-		component: resolve => require(['../view/Home.vue'], resolve),
-		children: [{
-				path: '/dsp',
-				name: 'DSP广告页面',
-				component: resolve => require(['../view/Home/Dsp.vue'], resolve)
+			path: '/',
+			name: 'Home',
+			meta: {
+				requiresAuth: false
+			},
+			component: resolve => require(['../view/Home.vue'], resolve),
+			children: [{
+					path: '/dsp',
+					name: 'DSP广告页面',
+					meta: {
+						requiresAuth: false
+					},
+					component: resolve => require(['../view/Home/Dsp.vue'], resolve)
+				}, {
+					path: '/',
+					component: resolve => require(['../view/Home/Index.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: '首页'
+				}, {
+					path: '/wechat',
+					component: resolve => require(['../view/Home/WeChat.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: '微信'
+				}, {
+					path: '/weibo',
+					component: resolve => require(['../view/Home/Weibo.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: '微博'
+				}, {
+					path: '/redbook',
+					component: resolve => require(['../view/Home/RedBook.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: '小红书'
+				}, {
+					path: '/talent',
+					component: resolve => require(['../view/Home/Talent.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: '淘宝/京东达人'
+				}, {
+					path: '/headlines',
+					component: resolve => require(['../view/Home/Headlines.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: '头条/知乎/豆瓣'
+				}, {
+					path: '/facebook',
+					component: resolve => require(['../view/Home/Facebook.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: 'Facebook/twitter'
+				}, {
+					path: '/shortvideo',
+					component: resolve => require(['../view/Home/ShortVideo.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: '直播/短视频'
+				}, {
+					path: '/newsweb',
+					component: resolve => require(['../view/Home/Newsweb.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: '新闻网站'
+				}, {
+					path: '/forumbar',
+					component: resolve => require(['../view/Home/Forumbar.vue'], resolve),
+					meta: {
+						requiresAuth: false
+					},
+					name: '论坛贴吧'
+				},
+				{
+					path: '/cases',
+					name: 'cases',
+					meta: {
+						requiresAuth: false
+					},
+					component: resolve => require(['../view/Home/cases.vue'], resolve)
+				}, {
+					path: '/helper',
+					name: 'helper',
+					meta: {
+						requiresAuth: false
+					},
+					component: resolve => require(['../view/Home/help.vue'], resolve)
+				}
+			]
+		},
+		{
+			path: '/signUp',
+			name: 'signUp',
+			meta: {
+				requiresAuth: false
+			},
+			component: resolve => require(['../view/Home/signUp.vue'], resolve)
+		},
+		{
+			path: '/Login',
+			name: 'Login',
+			meta: {
+				requiresAuth: false
+			},
+			component: resolve => require(['../view/Home/Login.vue'], resolve)
+		},
+		{
+			path: '/reSetPwd',
+			name: 'reSetPwd',
+			meta: {
+				requiresAuth: false
+			},
+			component: resolve => require(['../view/Home/reSetPwd.vue'], resolve)
+		},
+		{
+			path: '/admin',
+			name: 'Admin',
+			meta: {
+				requiresAuth: true
+			},
+			component: resolve => require(['../view/Admin.vue'], resolve),
+			children: [{
+				path: '/Release',
+				name: 'Release',
+				meta: {
+					requiresAuth: true
+				},
+				component: resolve => require(['../view/Home/Release.vue'], resolve),
+				children: [{
+					path: '/Check',
+					name: '选择渠道',
+					meta: {
+						requiresAuth: true
+					},
+					component: resolve => require(['../view/Home/Check.vue'], resolve)
+				}, {
+					path: '/Activities',
+					name: '填写活动内容',
+					meta: {
+						requiresAuth: true
+					},
+					component: resolve => require(['../view/Home/Activities.vue'], resolve)
+				}, {
+					path: '/SendActivities',
+					name: '提交活动',
+					meta: {
+						requiresAuth: true
+					},
+					component: resolve => require(['../view/Home/SendActivities.vue'], resolve)
+				}]
 			}, {
+				path: '/wechattfxq',
+				component: resolve => require(['../view/admin/WeChatTFXQ.vue'], resolve),
+				meta: {
+					requiresAuth: true
+				},
+				name: '微信投放需求'
+			}, {
+				path: '/wechatxhtg',
+				component: resolve => require(['../view/admin/WeChatxhtg.vue'], resolve),
+				meta: {
+					requiresAuth: true
+				},
+				name: '微信选号推广'
+			}, ]
+		},
+		{
+			path: '*',
+			name: 'Home',
+			component: resolve => require(['../view/Home.vue'], resolve),
+			meta: {
+				requiresAuth: false
+			},
+			children: [{
 				path: '/',
 				component: resolve => require(['../view/Home/Index.vue'], resolve),
+				meta: {
+					requiresAuth: false
+				},
 				name: '首页'
-			}, {
-				path: '/wechat',
-				component: resolve => require(['../view/Home/WeChat.vue'], resolve),
-				name: '微信'
-			}, {
-				path: '/weibo',
-				component: resolve => require(['../view/Home/Weibo.vue'], resolve),
-				name: '微博'
-			}, {
-				path: '/redbook',
-				component: resolve => require(['../view/Home/RedBook.vue'], resolve),
-				name: '小红书'
-			}, {
-				path: '/talent',
-				component: resolve => require(['../view/Home/Talent.vue'], resolve),
-				name: '淘宝/京东达人'
-			}, {
-				path: '/headlines',
-				component: resolve => require(['../view/Home/Headlines.vue'], resolve),
-				name: '头条/知乎/豆瓣'
-			}, {
-				path: '/facebook',
-				component: resolve => require(['../view/Home/Facebook.vue'], resolve),
-				name: 'Facebook/twitter'
-			}, {
-				path: '/shortvideo',
-				component: resolve => require(['../view/Home/ShortVideo.vue'], resolve),
-				name: '直播/短视频'
-			}, {
-				path: '/newsweb',
-				component: resolve => require(['../view/Home/Newsweb.vue'], resolve),
-				name: '新闻网站'
-			}, {
-				path: '/forumbar',
-				component: resolve => require(['../view/Home/Forumbar.vue'], resolve),
-				name: '论坛贴吧'
-			},
-			{
-				path: '/cases',
-				name: 'cases',
-				component: resolve => require(['../view/Home/cases.vue'], resolve)
-			}, {
-				path: '/helper',
-				name: 'helper',
-				component: resolve => require(['../view/Home/help.vue'], resolve)
-			}
-		]
-	}, {
-		path: '/signUp',
-		name: 'signUp',
-		component: resolve => require(['../view/Home/signUp.vue'], resolve)
-	}, {
-		path: '/Login',
-		name: 'Login',
-		component: resolve => require(['../view/Home/Login.vue'], resolve)
-	}, {
-		path: '/reSetPwd',
-		name: 'reSetPwd',
-		component: resolve => require(['../view/Home/reSetPwd.vue'], resolve)
-	}, {
-		path: '/admin',
-		name: 'Admin',
-		component: resolve => require(['../view/Admin.vue'], resolve),
-		children: [ {
-			path: '/Release',
-			name: 'Release',
-			component: resolve => require(['../view/Home/Release.vue'], resolve),
-			children: [{
-				path: '/Check',
-				name: '选择渠道',
-				component: resolve => require(['../view/Home/Check.vue'], resolve)
-			},{
-				path: '/Activities',
-				name: '填写活动内容',
-				component: resolve => require(['../view/Home/Activities.vue'], resolve)
-			},{
-				path: '/SendActivities',
-				name: '提交活动',
-				component: resolve => require(['../view/Home/SendActivities.vue'], resolve)
 			}]
-		},{
-			path: '/wechattfxq',
-			component: resolve => require(['../view/admin/WeChatTFXQ.vue'], resolve),
-			name: '微信投放需求'
-		}, {
-			path: '/wechatxhtg',
-			component: resolve => require(['../view/admin/WeChatxhtg.vue'], resolve),
-			name: '微信选号推广'
-		}, ]
-	}, {
-		path: '*',
-		name: 'Home',
-		component: resolve => require(['../view/Home.vue'], resolve),
-		children: [{
-			path: '/',
-			component: resolve => require(['../view/Home/Index.vue'], resolve),
-			name: '首页'
-		}]
-	}]
+		}
+	]
 })

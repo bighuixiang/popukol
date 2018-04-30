@@ -14,7 +14,10 @@
 					<!-- 右侧  start-->
 					<div class="header-right">
 						<div class="userinfo">
-							广告主:<span>1546465465</span>
+							广告主:<span>{{getUserInfo.name}}</span>
+						</div>
+						<div class="logout" @click="logout">
+							[退出]
 						</div>
 						<div class="message">
 							消息
@@ -131,10 +134,10 @@
 </template>
 
 <script>
- 	import { mapGetters } from 'vuex'
+	import { mapGetters } from 'vuex'
 	import { mapActions } from 'vuex'
 	export default {
-		
+
 		data() {
 			return {
 				checkedAll: false,
@@ -306,18 +309,17 @@
 				self.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
-					//					self.$http.post(logout).then((response) => { // 响应成功回调 
-					//						if(response.data.code == 0) {
-					//							window.localStorage.removeItem('userInfo')
-					//							self.setuserinfo({})
-					//							self.$router.replace('/');
-					//						} else {
-					//							self.$message({
-					//								message: response.data.msg,
-					//								type: 'warning'
-					//							})
-					//						}
-					//					}, (response) => {});
+					self.$http.post(self.API.loginOutApi).then((response) => { // 响应成功回调 
+						if(response.data.status == 0) {
+							self.setuserinfo({})
+							self.$router.replace('/');
+						} else {
+							self.$message({
+								message: response.data.msg,
+								type: 'warning'
+							})
+						}
+					}, (response) => {});
 				}).catch(() => {
 
 				});
@@ -351,7 +353,16 @@
 </script>
 
 <style lang="scss" scoped>
-
+	.logout {
+		float: left;
+		cursor: pointer;
+		margin-left: 6px;
+	}
+	
+	.logout:hover {
+		color: #DE1A20;
+	}
+	
 	.leftMenu {
 		width: 268px;
 		margin-left: 12px;
