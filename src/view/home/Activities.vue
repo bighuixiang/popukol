@@ -18,7 +18,7 @@
                         </el-form-item>
                         <el-form-item label="推广产品" prop="productName">
                             <el-select class="width-150" v-model="form.categoryId" placeholder="推广活动所属行业">
-                              <el-option v-for="item in busCategoryList" :label="item.name" :value="item.id"></el-option>
+                              <el-option :key="item.id" v-for="item in busCategoryList" :label="item.name" :value="item.id"></el-option>
                             </el-select>
                             <el-input class="width-150"  v-model="form.productName" ></el-input>
                         </el-form-item>
@@ -67,17 +67,31 @@ export default {
       language: "",
       busCategoryList: "",
       imageUrl: "",
+      // form: {
+      //   platformId: "",
+      //   topic: "",
+      //   brand: "",
+      //   categoryId: "",
+      //   companyUrl: "",
+      //   productName: "",
+      //   productUrl: "",
+      //   popCondition: "",
+      //   popDate: "",
+      //   relationUrl: "",
+      //   singlePopKey:""
+      // },
       form: {
-        platformId: "1",
-        topic: "",
-        brand: "",
-        categoryId: "",
-        companyUrl: "",
-        productName: "",
-        productUrl: "",
-        popCondition: "",
-        popDate: "",
-        relationUrl: ""
+        platformId: "",
+        topic: "双11推广",
+        brand: "联想",
+        categoryId: "1",
+        companyUrl: "http://www.haida.com",
+        productName: "产品名",
+        productUrl: "http://www.haida.com",
+        popCondition: "活动描述活动描述活动描述活动描述活动描述活动描述活动描述活动描述活动描述",
+        popDate: "2012-12-12",
+        relationUrl: "http://popukol.oss-cn-beijing.aliyuncs.com/201805/01/657de2de333d4d1799c5dbfe9ea2096f.jpg",
+        singlePopKey:""
       },
       rules: {
         topic: [
@@ -148,7 +162,7 @@ export default {
    },
   created() {
     //创建虚拟dom后
-     var self =this;
+    var self =this;
     self.increment({ val: "2", type: 2 }); //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
     self.increment({ val: "2", type: 3 }); //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
   },
@@ -157,7 +171,6 @@ export default {
   
   },
   mounted() {
-    alert(1)
     let self = this;
     self.SLS();
     self.language = self.getLanguage();
@@ -174,23 +187,17 @@ export default {
         self.submitForm("form");
       }
     };
-   self.$http.post('http://localhost:8081/web/manage/pop/account/single/submit?platformId=1&accountId=2&adType=1', self.form).then(
-        response => {
-          // 响应成功回调
-          if (response.data.status == 0) {
-            self.$message({
-              type: "success",
-              message: self.language.sendOk
-            });
-          } else {
-            self.$message({
-              type: "error",
-              message: response.data.msg
-            });
-          }
-        },
-        response => {}
-      );
+    let singlePopKey = this.$route.query.singlePopKey
+    let platformId = this.$route.query.platformId
+    if(singlePopKey){
+      this.form.singlePopKey = singlePopKey;
+    }
+    if(platformId){
+      this.form.platformId = platformId;
+    }
+    self.setReleaseObj({
+      index: 2,
+    });
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
@@ -230,7 +237,6 @@ export default {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       this.form.relationUrl = res.data.src;
-      console.log(this.form.relationUrl);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -294,6 +300,7 @@ export default {
               type: "success",
               message: self.language.sendOk
             });
+            self.$router.push({path:'/SendActivities',query:{popKey:response.data.data.popKey}})
           } else {
             self.$message({
               type: "error",

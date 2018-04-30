@@ -91,6 +91,10 @@ export default new Router({
 				path: '/Activities',
 				name: '填写活动内容',
 				component: resolve => require(['../view/Home/Activities.vue'], resolve)
+			},{
+				path: '/SendActivities',
+				name: '提交活动',
+				component: resolve => require(['../view/Home/SendActivities.vue'], resolve)
 			}]
 		},{
 			path: '/wechattfxq',

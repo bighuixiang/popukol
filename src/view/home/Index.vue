@@ -30,7 +30,7 @@
               <span class="user-box-title">您好，欢迎来到POPUKOL平台</span>
               <img class="user-box-img" :src="userInfo.headImg" alt="">
               <span class="user-box-span">{{userInfo.username}}</span>
-							 <button class="login-btn canClick"  @click="goToUrl('/index')">进入广告主中心</button>
+							 <button class="login-btn canClick"  @click="goToUrl('/wechatxhtg')">进入广告主中心</button>
               
 						</div>
 					</div>

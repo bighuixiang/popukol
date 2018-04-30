@@ -10,6 +10,10 @@ export const xuqiuList = `${IP}/manage/pop/platform/1/record/page`
 export const xuqiuInfo = `${IP}/manage/pop/record/2/info`
 //POST   ===> 投放需求创建
 export const xuqiuCreate = `${IP}/manage/pop/record/add`
+//GET   ===> 预览投放信息
+export const xuqiuAllInfo = `${IP}/manage/pop/record/account/detail`
+//POST   ===> 确认投放
+export const xuqiuSend = `${IP}/manage/pop/record/confirm`
 //POST   ===> 上传图片
 export const uploadImg = `${IP}/manage/file/image/upload?`
 //GET   ===> 首页轮播图片
