@@ -16,31 +16,31 @@ const state = {
 	tfActiveIndex: '1',
 	leftNavList: [{
 		"name": "微信",
-		"url": "/wechat",
+		"url": "/wechatxhtg",
 		"isCur": true,
 	}, {
 		"name": "微博",
-		"url": "/weibo",
+		"url": "/weiboxhtg",
 		"isCur": false,
 	}, {
 		"name": "小红书",
-		"url": "/redbook",
+		"url": "/redbookxhtg",
 		"isCur": false,
 	}, {
 		"name": "淘宝/京东达人",
-		"url": "/talent",
+		"url": "/talentxhtg",
 		"isCur": false,
 	}, {
 		"name": "直播/短视频",
-		"url": "/shortvideo",
+		"url": "/shortvideoxhtg",
 		"isCur": false,
 	}, {
 		"name": "头条/知乎/豆瓣",
-		"url": "/headlines",
+		"url": "/headlinesxhtg",
 		"isCur": false,
 	}, {
-		"name": "Facebook/Twitter",
-		"url": "/facebook",
+		"name": "Facebook/Twitterxhtg",
+		"url": "/facebookxhtg",
 		"isCur": false,
 	}, {
 		"name": "新闻网站",
