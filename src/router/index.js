@@ -138,6 +138,13 @@ export default new Router({
 			},
 			component: resolve => require(['../view/Admin.vue'], resolve),
 			children: [{
+				path: '/messgeList',
+				component: resolve => require(['../view/admin/messgeList.vue'], resolve),
+				meta: {
+					requiresAuth: true
+				},
+				name: '消息列表'
+			},{
 				path: '/UserCenter',
 				component: resolve => require(['../view/admin/UserCenter.vue'], resolve),
 				meta: {

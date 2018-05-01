@@ -209,7 +209,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .avatar-img-box {
   overflow: hidden;
   text-align: left;

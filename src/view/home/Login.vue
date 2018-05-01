@@ -205,7 +205,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .text-btn-12{
   font-size: 12px!important;
 }
@@ -258,6 +258,7 @@ export default {
 }
 
 .from-bottom {
+  margin: 60px 0px 5px;
   text-align: center;
   .el-button--primary {
     display: inline;
