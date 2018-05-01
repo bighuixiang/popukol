@@ -97,7 +97,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .qudao-box {
   width: 800px;
   padding: 17px 0px;

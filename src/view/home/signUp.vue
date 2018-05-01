@@ -45,7 +45,7 @@
 								</el-input>
 							</el-form-item>
 
-							<el-form-item label="" prop="type">
+							<el-form-item label="" class="more-m-t" prop="type">
 								<el-checkbox-group v-model="form.type">
 								<el-checkbox label="我已阅读并同意《POPUKOL平台服务协议》" name="type"></el-checkbox>
 								</el-checkbox-group>
@@ -272,7 +272,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.more-m-t{
+  margin: 20px 0px!important;
+}
 .login-logo{
   cursor: pointer;
 }
@@ -326,6 +329,9 @@ export default {
 .login-from {
   .el-input__inner {
     height: 40px;
+  }
+  .el-form-item{
+    margin-bottom: 10px;
   }
   .el-form-item__label {
     font-size: 14px;

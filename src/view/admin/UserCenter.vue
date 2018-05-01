@@ -92,7 +92,8 @@
                             <el-col :span="15" :offset="0">
                                 <el-form class="m-t-b-50" ref="form2" :rules="rules2" :model="form2" label-width="120px">
                                     <el-form-item label="注册邮箱" prop="email">
-                                        <el-input v-model="form2.email" :disabled="btn3=='编辑'" placeholder="请输入邮箱地址"></el-input>
+                                        <span class="email-show">{{form2.email}}</span>
+                                        <el-input v-model="form2.email" style="display:none" :disabled="btn3=='编辑'" placeholder="请输入邮箱地址"></el-input>
                                     </el-form-item>
                                     <el-form-item label="验证码" prop="code">
                                         <el-input v-model="form2.code" :disabled="btn3=='编辑'" placeholder="请输入验证码" ref="code" class="send-code-input"></el-input>
@@ -182,14 +183,6 @@ export default {
         wechat: ruleArr
       },
       rules2: {
-        email: [
-          { required: true, message: "请填写正确邮箱地址", trigger: "blur" },
-          {
-            type: "email",
-            message: "请填写正确邮箱地址",
-            trigger: ["blur", "change"]
-          }
-        ],
         code: [
           { required: true, validator: this.emailIsTrue, trigger: "blur" }
         ],
@@ -298,8 +291,19 @@ export default {
         .then(
           response => {
             // 响应成功回调
-            if (response.data.status == 0) {
+            if (response.data.status != -1) {
               self.userInfoGGZ = response.data.data;
+              self.form.company = response.data.data.extra.company;
+              self.form.address = response.data.data.extra.address;
+              self.form.companyUrl = response.data.data.extra.companyUrl;
+              self.form.weibo = response.data.data.extra.weibo;
+              self.form.description = response.data.data.extra.description;
+              self.form1.contactName = response.data.data.extra.contactName;
+              self.form1.contactPhone = response.data.data.extra.contactPhone;
+              self.form1.email = response.data.data.extra.email;
+              self.form1.qq = response.data.data.extra.qq;
+              self.form1.wechat = response.data.data.extra.wechat;
+              self.form2.email = response.data.data.account;
             } else {
               self.$message({
                 type: "error",
@@ -385,7 +389,7 @@ export default {
       var reg = new RegExp(
         "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
       );
-      if (!reg.test(self.form.email)) {
+      if (!reg.test(self.form2.email)) {
         this.$alert(self.language.rightEmail, self.language.notSend, {
           confirmButtonText: self.language.yes,
           closeOnClickModal: true
@@ -394,7 +398,7 @@ export default {
         self.$http
           .get(self.API.reSetEmailApi, {
             params: {
-              email: self.form.email
+              email: self.form2.email
             }
           })
           .then(
@@ -403,7 +407,7 @@ export default {
               if (response.data.status == 0) {
                 self.$message({
                   type: "success",
-                  message: `${self.language.yzsSendOk}>>>${self.form.email}`
+                  message: `${self.language.yzsSendOk}>>>${self.form2.email}`
                 });
                 console.log(response.data);
               } else {
@@ -422,7 +426,7 @@ export default {
       if (value === "") {
         callback(new Error(self.language.rightYzm));
       } else {
-        if (self.form.email !== "") {
+        if (self.form2.email !== "") {
           callback();
         } else {
           callback(new Error(self.language.firstEmail));
@@ -435,7 +439,7 @@ export default {
         callback(new Error(self.language.rightPwd));
       } else {
         if (this.rules.confirmPwd !== "") {
-          this.$refs.form.validateField("confirmPwd");
+          this.$refs.form2.validateField("confirmPwd");
         }
         callback();
       }
@@ -444,7 +448,7 @@ export default {
       var self = this;
       if (value === "") {
         callback(new Error(self.language.rightPwdAegin));
-      } else if (value !== this.form.pwd) {
+      } else if (value !== this.form2.pwd) {
         callback(new Error(self.language.rightPwdAeginError));
       } else {
         callback();
@@ -454,7 +458,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .text-btn-12 {
   font-size: 12px !important;
 }
@@ -548,6 +552,11 @@ height: 34px !important;
 }
 .login-logo {
   cursor: pointer;
+}
+.email-show{
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
 }
 .login-head-box {
   .login-page-tag {

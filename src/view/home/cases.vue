@@ -137,7 +137,7 @@ if (argsStr.length > 0) {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .el-tabs--left .el-tabs__active-bar.is-left,
 .el-tabs--left .el-tabs__nav-wrap.is-left::after {
   right: auto;
