@@ -57,7 +57,7 @@
 					<div class="buxian" :class="{'cur':fansIndex==0}" @click="setFans(0)">
 						<span>不限</span>
 					</div>
-					<div class="list">
+					<div class="list" style="width: 568px;padding-right:0;">
 						<div @click="setFans(index+1,item.id)" :class="{'cur':fansIndex==index+1}" v-for="(item,index) in ['1万以下','1万-5万','5万-10万','10万-20万','20万-50万','50万-100万','100万以上']"><span>{{item}}</span></div>
 					</div>
 					<div class="filter">

@@ -4,7 +4,7 @@ import App from './App'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import Router from './router'
-import { setLanguageSwitching } from './filters.js'
+import { setLanguageSwitching,dateFormat } from './filters.js'
 import { getLanguage } from './language.js'
 import Store from './vuex/store'
 import Vuex from 'vuex'
@@ -178,6 +178,7 @@ Axios.interceptors.response.use(function(response) {
 Vue.prototype.API = APIS;
 Vue.prototype.$http = Axios;
 Vue.prototype.SLS = setLanguageSwitching;
+Vue.prototype.dateFormat = dateFormat;
 Vue.prototype.getLanguage = getLanguage;
 
 //Vue.filter('timeToNow', filters.timeToNow);

@@ -19,9 +19,9 @@
 						<div class="logout" @click="logout">
 							[退出]
 						</div>
-						<div class="message">
+						<div class="message" @click="goToMessage">
 							消息
-							<span></span>
+							<span v-if="getIsShowRed"></span>
 						</div>
 						<router-link class="helper" to="/helper">帮助中心</router-link>
 					</div>
@@ -60,7 +60,7 @@
 				<div class="center" v-if="getAdminType==1">
 					<div class="leftMenu">
 						<ul class="ul">
-							<li v-for="item in getTfLeftList"  @click="goToUrl(item)" :class="{active:item.isCur}">
+							<li v-for="item in getTfLeftList" @click="goToUrl(item)" :class="{active:item.isCur}">
 								<div v-if="item.url!=''">{{item.name}}</div>
 							</li>
 						</ul>
@@ -158,6 +158,7 @@
 				self.languageText1 = "語言:繁體中文";
 				self.languageText2 = "简体中文";
 			}
+			self.getMessage()
 			//			self.getNavsList()
 		},
 		//		watch: {
@@ -175,6 +176,7 @@
 				'getXhLeftList',
 				'getTfActiveIndex',
 				'getAdminType',
+				'getIsShowRed',
 
 				// ...mapGetters
 			]),
@@ -189,6 +191,22 @@
 				'setuserinfo',
 				'setloginflag',
 			]),
+			goToMessage() {
+				this.$router.push({
+					path: '/messgelist'
+				})
+			},
+			getMessage() {
+				let self = this
+				self.$http.get(self.API.newMessageListAPI).then((response) => { // 响应成功回调
+					if(response.data.status == 0) {
+						self.increment({
+							val: response.data.data > 0,
+							type: 5
+						}) //设置消息是否显示红点
+					}
+				}, (response) => {});
+			},
 			language() {
 				let self = this;
 				let languageRef = self.$refs.languageRef;
@@ -313,11 +331,11 @@
 						break;
 					case 2:
 						self.$router.push({
-							path: '/wechattfxq'
+							path: '/publictfxq?pid=1'
 						})
 						break;
 					case 3:
-						self.$router.push({	
+						self.$router.push({
 							path: '/usercenter'
 						})
 						break;
@@ -388,7 +406,7 @@
 	}
 	
 	.leftMenu {
-		width: 200px;
+		width: 216px;
 		margin-left: 12px;
 		float: left;
 		.ul {

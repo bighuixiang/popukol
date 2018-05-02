@@ -174,8 +174,8 @@ export default new Router({
 					component: resolve => require(['../view/Home/SendActivities.vue'], resolve)
 				}]
 			}, {
-				path: '/wechattfxq',
-				component: resolve => require(['../view/admin/WeChattfxq.vue'], resolve),
+				path: '/publictfxq',
+				component: resolve => require(['../view/admin/Publictfxq.vue'], resolve),
 				meta: {
 					requiresAuth: true
 				},

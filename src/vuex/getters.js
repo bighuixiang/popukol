@@ -31,3 +31,7 @@ export const getAdminType = state => {
 export const getXhLeftList = state => {
 	return state.leftNavList
 }
+export const getIsShowRed = state => {
+	return state.isShowRed
+}
+

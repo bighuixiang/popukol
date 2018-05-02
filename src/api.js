@@ -103,3 +103,13 @@ export const editAccountCarAPI = `${IP}/manage/pop/account/ad/edit`
 export const removeAccountCarAPI = `${IP}/manage/pop/account/remove`
 //GET   ===> 广告主后台  非正常流程-清空选号车
 export const removeAllAccountCarAPI = `${IP}/manage/pop/account/all/delete`
+//GET   ===> 广告主后台   产品行业分类
+export const productListAPI = `${IP}/manage/category/record/list`
+//GET   ===> 广告主后台  投放需求列表分页
+export const productPageListAPI = `${IP}/manage/pop/platform/`
+//GET   ===> 广告主后台  投放需求详情
+export const productInfoListAPI = `${IP}/manage/pop/record/2/info`
+//GET   ===> 广告主后台  投放需求详情-账号列表
+export const productAccountListAPI = `${IP}/manage/pop/2/account/list`
+//GET   ===> 广告主后台  投放需求详情-账号列表
+export const newMessageListAPI = `${IP}/manage/message/new`

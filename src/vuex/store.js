@@ -8,11 +8,12 @@ Vue.use(Vuex)
 // 应用初始状态
 const state = {
 	loginFlag: false,
+	isShowRed: false,
 	pcMainIndex: 0,
 	userInfo: {},
 	tfActiveIndex: "1",
 	adminType: 1, //1 投放需求   2.放开  3.
-	releaseObj:{},
+	releaseObj: {},
 	tfActiveIndex: '1',
 	leftNavList: [{
 		"name": "微信",
@@ -53,39 +54,39 @@ const state = {
 	}],
 	tfLeftList: [{
 		"name": "微信投放需求",
-		"url": "/wechattfxq",
+		"url": "/publictfxq?pid=1",
 		"isCur": true,
 	}, {
 		"name": "微博投放需求",
-		"url": "/weibotfxq",
+		"url": "/publictfxq?pid=2",
 		"isCur": false,
 	}, {
 		"name": "小红书投放需求",
-		"url": "/redbooktfxq",
+		"url": "/publictfxq?pid=3",
 		"isCur": false,
 	}, {
 		"name": "淘宝/京东达人投放需求",
-		"url": "/talentfxq",
+		"url": "/publictfxq?pid=4",
 		"isCur": false,
 	}, {
 		"name": "直播/短视频投放需求",
-		"url": "/shortvideotfxq",
+		"url": "/publictfxq?pid=5",
 		"isCur": false,
 	}, {
 		"name": "头条/知乎/豆瓣投放需求",
-		"url": "/headlinestfxq",
+		"url": "/publictfxq?pid=6",
 		"isCur": false,
 	}, {
 		"name": "Facebook/Twitter投放需求",
-		"url": "/facebooktfxq",
+		"url": "/publictfxq?pid=7",
 		"isCur": false,
 	}, {
 		"name": "新闻网站投放需求",
-		"url": "/newswebtfxq",
+		"url": "/publictfxq?pid=9",
 		"isCur": false,
 	}, {
 		"name": "论坛贴吧投放需求",
-		"url": "/forumbartfxq",
+		"url": "/publictfxq?pid=10",
 		"isCur": false,
 	}],
 	navList: [{
@@ -161,6 +162,10 @@ const mutations = {
 							state.leftNavList[i].isCur = false
 					}
 					break;
+				case 5:
+					state.isShowRed = index
+					break;
+
 				default:
 					break;
 			}
