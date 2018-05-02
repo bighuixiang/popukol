@@ -175,7 +175,7 @@ export default new Router({
 				}]
 			}, {
 				path: '/wechattfxq',
-				component: resolve => require(['../view/admin/WeChatTFXQ.vue'], resolve),
+				component: resolve => require(['../view/admin/WeChattfxq.vue'], resolve),
 				meta: {
 					requiresAuth: true
 				},

@@ -313,7 +313,7 @@
 						break;
 					case 2:
 						self.$router.push({
-							path: '/wechattfgl'
+							path: '/wechattfxq'
 						})
 						break;
 					case 3:
