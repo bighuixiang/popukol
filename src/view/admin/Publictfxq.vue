@@ -3,8 +3,6 @@
 		<div class="biaoge">
 			<div class="mr6">
 				<el-select v-model="activitiyValue" placeholder="请选择">
-					<el-option :key="-1" label="全部" :value="''">
-					</el-option>
 					<el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id">
 					</el-option>
 				</el-select>
@@ -42,14 +40,14 @@
 				<el-date-picker class="pickerOverflow" v-model="startTime" type="date" placeholder="选择日期">
 				</el-date-picker>
 			</div>
-			<div class="mr6" style="margin-left: 18px;">
+			<div class="mr6" style="margin-left: 22px;">
 				<span>至</span>
 			</div>
 			<div class="mr6">
 				<el-date-picker class="pickerOverflow" v-model="endTime" type="date" placeholder="选择日期">
 				</el-date-picker>
 			</div>
-			<div class="mr6" style="float: right;margin-top: 12px;margin-bottom: 12px;">
+			<div class="mr6"  style="margin-left: 26px;">
 				<el-button type="primary" @click="addProductPageList">查询</el-button>
 			</div>
 		</div>
@@ -104,7 +102,7 @@
 				productList: [],
 				dataList: [],
 				input: "",
-				activitiyValue: "",
+				activitiyValue: "topic",
 				industryValue: '',
 				activitiyStatusValue: '',
 				startTime: '',
@@ -163,7 +161,7 @@
 				self.params.page = 1
 				self.total = 0
 				self.input = ""
-				self.activitiyValue = ""
+				self.activitiyValue = "topic"
 				self.industryValue = ''
 				self.activitiyStatusValue = ''
 				self.startTime = ''
@@ -256,9 +254,9 @@
 		}
 		.biaoge {
 			.mr6 {
-				margin-right: 6px;
+				/*margin-right: 6px;*/
 				display: inline-block;
-				max-width: 110px;
+				max-width: 106px;
 				color: #999999;
 				;
 			}
