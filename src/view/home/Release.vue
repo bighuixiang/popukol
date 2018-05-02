@@ -1,5 +1,5 @@
 <template>
-<div class="content m-t-20">
+<div class="content m-t-20 Release">
   <div class="margin-auto-1200-box">
     <div class="create-title">
       创建投放需求
@@ -107,7 +107,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+.Release{
 .m-t-20{
   margin-top: 20px;
 }
@@ -194,6 +195,7 @@ export default {
   .el-step__title {
     line-height: 56px;
   }
+}
 }
 </style>
 

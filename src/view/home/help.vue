@@ -1,5 +1,5 @@
 <template>
-	<div class="content">
+	<div class="content help">
     <div class="margin-auto-1200-box">
       <el-container>
           <el-aside width="260px">
@@ -113,6 +113,7 @@ export default {
 </script>
 
 <style lang="scss">
+.help{
 .el-tabs--left .el-tabs__active-bar.is-left,
 .el-tabs--left .el-tabs__nav-wrap.is-left::after {
   right: auto;
@@ -186,7 +187,7 @@ export default {
       padding:20px; 
     }
   }
-  
+  }
 </style>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 <template>
-	<div class="margin-auto-1200-box">
+	<div class="margin-auto-1200-box Activities">
     <!-- <div class="pt-title">
       投放平台：{{getReleaseObj.platformName}}
     </div> -->
@@ -20,7 +20,7 @@
                             <el-select class="width-150" v-model="form.categoryId" placeholder="推广活动所属行业">
                               <el-option :key="item.id" v-for="item in busCategoryList" :label="item.name" :value="item.id"></el-option>
                             </el-select>
-                            <el-input class="width-150"  v-model="form.productName" ></el-input>
+                            <el-input class="width-150 fl-r"  v-model="form.productName" ></el-input>
                         </el-form-item>
                         <el-form-item label="产品链接" prop="productUrl">
                             <el-input v-model="form.productUrl" ></el-input>
@@ -67,32 +67,32 @@ export default {
       language: "",
       busCategoryList: "",
       imageUrl: "",
-      // form: {
-      //   platformId: "",
-      //   topic: "",
-      //   brand: "",
-      //   categoryId: "",
-      //   companyUrl: "",
-      //   productName: "",
-      //   productUrl: "",
-      //   popCondition: "",
-      //   popDate: "",
-      //   relationUrl: "",
-      //   singlePopKey:""
-      // },
       form: {
         platformId: "",
-        topic: "双11推广",
-        brand: "联想",
-        categoryId: "1",
-        companyUrl: "http://www.haida.com",
-        productName: "产品名",
-        productUrl: "http://www.haida.com",
-        popCondition: "活动描述活动描述活动描述活动描述活动描述活动描述活动描述活动描述活动描述",
-        popDate: "2012-12-12",
-        relationUrl: "http://popukol.oss-cn-beijing.aliyuncs.com/201805/01/657de2de333d4d1799c5dbfe9ea2096f.jpg",
+        topic: "",
+        brand: "",
+        categoryId: "",
+        companyUrl: "",
+        productName: "",
+        productUrl: "",
+        popCondition: "",
+        popDate: "",
+        relationUrl: "",
         singlePopKey:""
       },
+      // form: {
+      //   platformId: "",
+      //   topic: "双11推广",
+      //   brand: "联想",
+      //   categoryId: "1",
+      //   companyUrl: "http://www.haida.com",
+      //   productName: "产品名",
+      //   productUrl: "http://www.haida.com",
+      //   popCondition: "活动描述活动描述活动描述活动描述活动描述活动描述活动描述活动描述活动描述",
+      //   popDate: "2012-12-12",
+      //   relationUrl: "http://popukol.oss-cn-beijing.aliyuncs.com/201805/01/657de2de333d4d1799c5dbfe9ea2096f.jpg",
+      //   singlePopKey:""
+      // },
       rules: {
         topic: [
           {
@@ -316,6 +316,10 @@ export default {
 </script>
 
 <style lang="scss">
+.Activities{
+.fl-r{
+  float: right;
+}
 .qy-form {
   .position-ab {
     position: absolute;
@@ -376,6 +380,8 @@ export default {
   margin: 40px 0px;
   font-weight: bold;
 }
+}
+
 </style>
 
 <style lang="scss" scoped>

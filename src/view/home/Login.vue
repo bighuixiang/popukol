@@ -1,5 +1,5 @@
 <template>
-	<div class="content">
+	<div class="content login">
 		<div class="login-head-box">
 			<div class="margin-auto-1200-box">
 				<img class="login-logo" @click="goToUrl('/home')" src="../../../static/icon/topandbottomlogo/toplogo.png" alt="">
@@ -12,9 +12,9 @@
 			</div>
 		</div>
 
-		<div class="margin-auto-1200-box login-from">
+		<div class="margin-auto-1200-box">
 			<div class="page-title">
-				<div class="margin-auto-1200-box login-from">
+				<div class="margin-auto-1200-box login-from-login">
 					<div class="page-title">
 						广告主登录
 					</div>
@@ -205,7 +205,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.login{
 .text-btn-12{
   font-size: 12px!important;
 }
@@ -270,7 +271,7 @@ export default {
   }
 }
 
-.login-from {
+.login-from-login {
   .el-input__inner {
     height: 40px;
   }
@@ -288,7 +289,7 @@ export default {
     color: #fff;
     top: 4px;
     padding: 10px 20px;
-    left: 380px;
+    left: 380px!important;
     white-space: nowrap;
     border-radius: 4px;
   }
@@ -304,6 +305,7 @@ export default {
     border-right: 16px solid red;
     border-bottom: 8px solid transparent;
   }
+}
 }
 </style>
 

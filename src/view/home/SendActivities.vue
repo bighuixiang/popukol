@@ -1,5 +1,5 @@
 <template>
-	<div class="margin-auto-1200-box">
+	<div class="margin-auto-1200-box SendActivities">
     <!-- <div class="pt-title">
       投放平台：{{getReleaseObj.platformName}}
     </div> -->
@@ -209,7 +209,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.SendActivities{
 .avatar-img-box {
   overflow: hidden;
   text-align: left;
@@ -358,6 +359,7 @@ export default {
   .tabal-box {
     border: 1px solid #e8e8e8;
   }
+}
 }
 </style>
 

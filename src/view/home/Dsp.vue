@@ -1,5 +1,5 @@
 <template>
-	<div class="content">
+	<div class="content dsp">
         <div class="top-box">
             <div class="margin-auto-1600-box h-350">
                 <img src="../../../static/icon/wangzhan/home.png" alt="">
@@ -167,6 +167,7 @@ export default {
 </script>
 
 <style lang="scss">
+.dsp{
 .qy-form {
   .el-form-item.is-required .el-form-item__label:before {
     display: none;
@@ -197,6 +198,7 @@ export default {
     width: 206px;
     margin: 35px auto;
   }
+}
 }
 </style>
 

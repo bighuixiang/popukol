@@ -1,5 +1,5 @@
 <template>
-<div class="content">
+<div class="content signUp">
 			<div class="login-head-box">
 				<div class="margin-auto-1200-box">
 					<img class="login-logo" @click="goToUrl('/home')"  src="../../../static/icon/topandbottomlogo/toplogo.png" alt="">
@@ -272,7 +272,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.signUp{
 .more-m-t{
   margin: 20px 0px!important;
 }
@@ -366,6 +367,7 @@ export default {
     border-right: 16px solid red;
     border-bottom: 8px solid transparent;
   }
+}
 }
 </style>
 

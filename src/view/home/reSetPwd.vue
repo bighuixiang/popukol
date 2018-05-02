@@ -1,5 +1,5 @@
 <template>
-<div class="content">
+<div class="content reSetPwd">
 			<div class="login-head-box">
 				<div class="margin-auto-1200-box">
 					<img class="login-logo" @click="goToUrl('/home')"  src="../../../static/icon/topandbottomlogo/toplogo.png" alt="">
@@ -254,7 +254,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.reSetPwd{
 .login-logo{
   cursor: pointer;
 }
@@ -339,6 +340,7 @@ export default {
     border-right: 16px solid red;
     border-bottom: 8px solid transparent;
   }
+}
 }
 </style>
 

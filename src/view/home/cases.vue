@@ -1,5 +1,5 @@
 <template>
-	<div class="content">
+	<div class="content cases">
     <div class="margin-auto-1200-box">
       <el-container>
           <el-aside width="260px">
@@ -137,7 +137,8 @@ if (argsStr.length > 0) {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.cases{
 .el-tabs--left .el-tabs__active-bar.is-left,
 .el-tabs--left .el-tabs__nav-wrap.is-left::after {
   right: auto;
@@ -210,6 +211,7 @@ if (argsStr.length > 0) {
   .main-content-body {
     padding: 20px;
   }
+}
 }
 </style>
 

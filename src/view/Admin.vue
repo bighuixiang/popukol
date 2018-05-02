@@ -388,7 +388,7 @@
 	}
 	
 	.leftMenu {
-		width: 268px;
+		width: 200px;
 		margin-left: 12px;
 		float: left;
 		.ul {
@@ -458,7 +458,7 @@
 	}
 	
 	.rightMenu {
-		width: 900px;
+		width: 960px;
 		float: right;
 	}
 	

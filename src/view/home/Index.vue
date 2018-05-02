@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="index">
 	<div class="max-content-box">
 		<div class="content-box">
 			<div class="slider-box">
@@ -481,6 +481,7 @@ export default {
 </script>
 
 <style lang="scss">
+.index{
 .bottom-slide-box{
   .el-carousel__arrow--right,.el-carousel__arrow--left{
     display: none;
@@ -902,6 +903,7 @@ export default {
       overflow: hidden;
     }
   }
+}
 }
 </style>
 

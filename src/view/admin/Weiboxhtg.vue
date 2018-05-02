@@ -139,7 +139,7 @@
 			<el-table ref="multipleTable" :data="dataList" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
 				<el-table-column type="selection" width="55">
 				</el-table-column>
-				<el-table-column label="账号信息" width="286">
+				<el-table-column label="账号信息" width="220">
 					<template slot-scope="scope">
 						<el-row>
 							<el-col :span="6" class="tableZh">
@@ -164,7 +164,7 @@
 						</el-row>
 					</template>
 				</el-table-column>
-				<el-table-column prop="fans" label="转发数" width="168">
+				<el-table-column prop="fans" label="转发数">
 				</el-table-column>
 				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">

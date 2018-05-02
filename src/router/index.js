@@ -159,13 +159,6 @@ export default new Router({
 				},
 				component: resolve => require(['../view/Home/Release.vue'], resolve),
 				children: [{
-					path: '/Check',
-					name: '选择渠道',
-					meta: {
-						requiresAuth: true
-					},
-					component: resolve => require(['../view/Home/Check.vue'], resolve)
-				}, {
 					path: '/Activities',
 					name: '填写活动内容',
 					meta: {

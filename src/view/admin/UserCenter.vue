@@ -1,5 +1,5 @@
 <template>
-	<div class="content">
+	<div class="content UserCenter">
 
 		<div class="margin-auto-1200-box login-from m-t-20">
             <el-container>
@@ -458,7 +458,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.UserCenter{
 .text-btn-12 {
   font-size: 12px !important;
 }
@@ -649,6 +650,7 @@ height: 34px !important;
     border-right: 16px solid red;
     border-bottom: 8px solid transparent;
   }
+}
 }
 </style>
 

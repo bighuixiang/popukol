@@ -39,7 +39,7 @@ const state = {
 		"url": "/headlinesxhtg",
 		"isCur": false,
 	}, {
-		"name": "Facebook/Twitterxhtg",
+		"name": "Facebook/Twitter",
 		"url": "/facebookxhtg",
 		"isCur": false,
 	}, {

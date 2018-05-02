@@ -137,7 +137,7 @@
 			<el-table ref="multipleTable" :data="dataList" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
 				<el-table-column type="selection" width="55">
 				</el-table-column>
-				<el-table-column label="账号信息" width="286">
+				<el-table-column label="账号信息" width="220">
 					<template slot-scope="scope">
 						<el-row>
 							<el-col :span="6" class="tableZh">
@@ -160,9 +160,9 @@
 						</el-row>
 					</template>
 				</el-table-column>
-				<el-table-column prop="fans" label="粉丝数" width="168">
+				<el-table-column prop="fans" label="粉丝数">
 				</el-table-column>
-				<el-table-column label="阅读数" width="168">
+				<el-table-column label="阅读数" width="140">
 					<template slot-scope="scope">
 						<div>
 							<p>头条:{{ scope.row.extra.viewCount }}+</p>
@@ -170,7 +170,7 @@
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column label="报价" width="220">
+				<el-table-column label="报价" width="140">
 					<template slot-scope="scope">
 						<div>
 							<div v-if="getLoginFlag">
@@ -183,9 +183,9 @@
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column prop="categoryModel" label="账号分类" width="138">
+				<el-table-column prop="categoryModel" label="账号分类" width="120">
 				</el-table-column>
-				<el-table-column label="操作" width="138">
+				<el-table-column label="操作"  width="138">
 					<template slot-scope="scope">
 						<div>
 							<el-button @click="yytoufang(scope.row)" class="btnred" plain size="mini">预约投放</el-button>
