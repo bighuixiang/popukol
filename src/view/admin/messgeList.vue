@@ -4,34 +4,29 @@
          <span class="xiaoxi-head">消息</span>
         <div class="xiaoxi-list">
             <ul>
-                <li>
-                  <img src="../../../static/icon/meitirenzhen/tblt.png" alt="">
+                <li v-for="item in messageList" @click='openlist(item.id,item)'>
+                  <img :src="item.viewStatus==0?'./../../static/icon/wangzhan/unread.png':'./../../static/icon/wangzhan/read.png'" alt="">
                   <div class="xx-content">
                     <p class="xx-title">
-                      <span class="xx-title-content">平台最新公告</span>
-                      <span class="xx-title-time">2018-03-03 11：06:47</span>
+                      <span class="xx-title-content">{{item.title}}</span>
                     </p>
                     <p class="xx-miaos">
-                      <span>POPOKOL:做一个主播最需要的特质</span>
+                      <span>{{item.sendTime}}</span>
                     </p>
                   </div>
                   <span class="right-jt el-icon-arrow-right">
                   </span>
                 </li>
-                <li>
-                  <img src="../../../static/icon/cebianlan/kefu.png" alt="">
-                  <p class="xx-title">
-                    <span>平台最新公告</span>
-                    <span>2018-03-03 11：06:47</span>
-                  </p>
-                  <p class="xx-miaos">
-                    <span>POPOKOL:做一个主播最需要的特质</span>
-                  </p>
-                  <span class="right-jt el-icon-arrow-right">
-                  </span>
-                </li>
             </ul>
         </div>
+<el-pagination
+  class="xx-fanye"
+  background
+  ref="xx_fy"
+  layout="prev, pager, next"
+  @current-change="handleCurrentChange"
+  :total="count">
+</el-pagination>
       </div>
   </div>
 </template>
@@ -41,7 +36,10 @@ import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 export default {
   data() {
-    return {};
+    return {
+      messageList:"",
+      count:1,
+    };
   },
   created() {
     //创建虚拟dom后
@@ -49,7 +47,9 @@ export default {
     self.increment({ val: "2", type: 2 }); //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
     self.increment({ val: "3", type: 3 }); //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
   },
-  mounted() {},
+  mounted() {
+    this.getmessageList(1)
+  },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
     ...mapGetters([
@@ -65,13 +65,99 @@ export default {
       "decrement",
       "setloginflag",
       "setuserinfo"
-    ])
+    ]),
+    handleCurrentChange(val){
+      this.getmessageList(val);
+    },
+    getmessageList(pageNum){
+      this.$http.get(this.API.messageList,{
+        params:{
+          page:pageNum,
+          limit:10
+        }
+      }).then(
+        response =>{
+          if(response.data.status == 0){
+              this.messageList = response.data.data;
+              this.count = response.data.count;
+          }
+        }
+      )
+    },
+    openlist(id,item){
+      item.viewStatus=1;
+      this.$http.get(this.API.messageInfo+id+'/info').then(
+        response =>{
+          if(response.data.status == 0){
+              this.messageItem = response.data.data;
+              this.$alert(`<p class="tck-xx"><span class="xx-tc"><span class="red-xx">消息 </span><span class="xx-jt3"> >> </span> ${this.messageItem.title}</span>${this.messageItem.content}</p>`, '　', {
+                dangerouslyUseHTMLString: true,
+                closeOnClickModal: true,
+                closeOnPressEscape: true,
+                customClass:"xx-tx-box",
+                showConfirmButton:false
+              });
+          }
+        }
+      )
+    }
   }
 };
 </script>
+<style lang="scss" >
+.xx-tx-box{
+  width: 580px!important;
+  .el-message-box__header{
+padding:20px 10px 20px;
+  }
+  .el-message-box__content{
+    padding: 20px;
+  }
+  .el-message-box__message{
+    background: #fafafa;
+    padding: 20px;
+  }
+  .el-message-box__headerbtn{
+    top: 24px;
+  }
+  .el-message-box__header::after{
+    content:"";
+    width: 100%;
+    height: 1px;
+    left: 0px;
+    bottom:0px;
+    background: #e8e8e8;
+    position: absolute;
+  }
+}
+.tck-xx{
+  max-height:360px; 
+  overflow-y: auto;
+}
+.xx-tc{
+  font-size: 18px;
+  font-weight: bold;
+  color: #666;
+  position: absolute;
+  top: -36px;
+  left: 26px;
+}
+.red-xx{
+  color: #dd2025;
+}
+.xx-jt3{
+  display: inline-block;
+  position: relative;
+  top: -1px;
+}
+</style>
 
 <style lang="scss" scoped>
 .messgeList {
+  .xx-fanye{
+    margin-bottom:90px;
+    float: right;
+  }
   .xiaoxi-head {
     font-size: 16px;
     font-weight: bold;
@@ -79,13 +165,15 @@ export default {
     display:block;
   }
   .xiaoxi-list {
-    margin-bottom: 90px;
+    margin-bottom: 30px;
     ul li {
       width: 1200px;
       height: 70px;
       mix-blend-mode: undefined;
       border-radius: 4px;
       background-color: #fff;
+      border: solid 1px #fff;
+      transition: all 0.2s;
       margin-bottom: 10px;
       img {
         width: 40px;
@@ -102,10 +190,6 @@ export default {
           .xx-title-content {
             font-size: 14px;
             color: #666;
-          }
-          .xx-title-time {
-            font-size: 12px;
-            color: #999;
           }
         }
         .xx-miaos {

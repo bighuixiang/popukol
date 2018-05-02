@@ -1,6 +1,10 @@
 //http://myshowbusiness.nullwei.com
 const IP = '/web'
 
+//GET   ===> 消息列表分页
+export const messageList = `${IP}/manage/message/log/page`
+//GET   ===> 消息列表详情，url拼接id/info
+export const messageInfo = `${IP}/manage/message/log/`
 //GET   ===> 广告主个人信息接口
 export const userInfoGGZ = `${IP}/manage/user/info`
 //GET   ===> 产品行业分类
