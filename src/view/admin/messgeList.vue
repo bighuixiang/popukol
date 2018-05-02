@@ -19,14 +19,11 @@
                 </li>
             </ul>
         </div>
-<el-pagination
-  class="xx-fanye"
-  background
-  ref="xx_fy"
-  layout="prev, pager, next"
-  @current-change="handleCurrentChange"
-  :total="count">
-</el-pagination>
+
+<div class="pagination">
+			<el-pagination class="xx-fanye" @current-change="handleCurrentChange" background layout="total, prev, pager, next, jumper" :total="count">
+			</el-pagination>
+		</div>
       </div>
   </div>
 </template>
@@ -37,8 +34,8 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      messageList:"",
-      count:1,
+      messageList: "",
+      count: 1
     };
   },
   created() {
@@ -48,7 +45,7 @@ export default {
     self.increment({ val: "3", type: 3 }); //type:1 设置左边导航  type:2 设置后台加载哪种模块  type:3  设置头部导航
   },
   mounted() {
-    this.getmessageList(1)
+    this.getmessageList(1);
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
@@ -66,75 +63,93 @@ export default {
       "setloginflag",
       "setuserinfo"
     ]),
-    handleCurrentChange(val){
+    handleCurrentChange(val) {
       this.getmessageList(val);
     },
-    getmessageList(pageNum){
-      this.$http.get(this.API.messageList,{
-        params:{
-          page:pageNum,
-          limit:10
-        }
-      }).then(
-        response =>{
-          if(response.data.status == 0){
-              this.messageList = response.data.data;
-              this.count = response.data.count;
+    getmessageList(pageNum) {
+      this.$http
+        .get(this.API.messageList, {
+          params: {
+            page: pageNum,
+            limit: 10
           }
-        }
-      )
+        })
+        .then(response => {
+          if (response.data.status == 0) {
+            this.messageList = response.data.data;
+            this.count = response.data.count;
+          }
+        });
     },
-    openlist(id,item){
-      item.viewStatus=1;
-      this.$http.get(this.API.messageInfo+id+'/info').then(
-        response =>{
-          if(response.data.status == 0){
-              this.messageItem = response.data.data;
-              this.$alert(`<p class="tck-xx"><span class="xx-tc"><span class="red-xx">消息 </span><span class="xx-jt3"> >> </span> ${this.messageItem.title}</span>${this.messageItem.content}</p>`, '　', {
-                dangerouslyUseHTMLString: true,
-                closeOnClickModal: true,
-                closeOnPressEscape: true,
-                customClass:"xx-tx-box",
-                showConfirmButton:false
-              });
-          }
+    openlist(id, item) {
+      item.viewStatus = 1;
+      this.$http.get(this.API.messageInfo + id + "/info").then(response => {
+        if (response.data.status == 0) {
+          this.messageItem = response.data.data;
+          this.$alert(
+            `<p class="tck-xx"><span class="xx-tc"><span class="red-xx">消息 </span><span class="xx-jt3"> >> </span> ${
+              this.messageItem.title
+            }</span>${this.messageItem.content}</p>`,
+            "　",
+            {
+              dangerouslyUseHTMLString: true,
+              closeOnClickModal: true,
+              closeOnPressEscape: true,
+              customClass: "xx-tx-box",
+              showConfirmButton: false
+            }
+          );
+          this.checkmessageNum();
         }
-      )
+      });
+    },
+    checkmessageNum() {
+      var self =this;
+      this.$http.get(this.API.newMessageListAPI).then(response => {
+        if (response.data.status == 0) {
+          if(response.data.data=0){
+            self.increment({
+              val: false,
+              type: 5
+            }) //设置消息是否显示红点
+              }
+        }
+      });
     }
   }
 };
 </script>
 <style lang="scss" >
-.xx-tx-box{
-  width: 580px!important;
-  .el-message-box__header{
-padding:20px 10px 20px;
+.xx-tx-box {
+  width: 580px !important;
+  .el-message-box__header {
+    padding: 20px 10px 20px;
   }
-  .el-message-box__content{
+  .el-message-box__content {
     padding: 20px;
   }
-  .el-message-box__message{
+  .el-message-box__message {
     background: #fafafa;
     padding: 20px;
   }
-  .el-message-box__headerbtn{
+  .el-message-box__headerbtn {
     top: 24px;
   }
-  .el-message-box__header::after{
-    content:"";
+  .el-message-box__header::after {
+    content: "";
     width: 100%;
     height: 1px;
     left: 0px;
-    bottom:0px;
+    bottom: 0px;
     background: #e8e8e8;
     position: absolute;
   }
 }
-.tck-xx{
-  max-height:360px; 
+.tck-xx {
+  max-height: 360px;
   overflow-y: auto;
 }
-.xx-tc{
+.xx-tc {
   font-size: 18px;
   font-weight: bold;
   color: #666;
@@ -142,10 +157,10 @@ padding:20px 10px 20px;
   top: -36px;
   left: 26px;
 }
-.red-xx{
+.red-xx {
   color: #dd2025;
 }
-.xx-jt3{
+.xx-jt3 {
   display: inline-block;
   position: relative;
   top: -1px;
@@ -154,15 +169,15 @@ padding:20px 10px 20px;
 
 <style lang="scss" scoped>
 .messgeList {
-  .xx-fanye{
-    margin-bottom:90px;
+  .xx-fanye {
+    margin-bottom: 90px;
     float: right;
   }
   .xiaoxi-head {
     font-size: 16px;
     font-weight: bold;
     margin: 20px 0px;
-    display:block;
+    display: block;
   }
   .xiaoxi-list {
     margin-bottom: 30px;
@@ -198,11 +213,11 @@ padding:20px 10px 20px;
         }
       }
     }
-    ul li:hover{
+    ul li:hover {
       border: solid 1px #bbbbbb;
       cursor: pointer;
     }
-    .right-jt{
+    .right-jt {
       font-size: 14px;
       color: #999;
       font-weight: bold;
