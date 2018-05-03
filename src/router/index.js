@@ -243,7 +243,15 @@ export default new Router({
 					requiresAuth: true
 				},
 				name: '论坛贴吧选号推广'
-			}, ]
+			}, 
+			{
+				path: '/details',
+				component: resolve => require(['../view/admin/PublicDetilstfxq.vue'], resolve),
+				meta: {
+					requiresAuth: true
+				},
+				name: '论坛贴吧选号推广'
+			},]
 		},
 		{
 			path: '*',

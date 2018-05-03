@@ -112,8 +112,8 @@ export const productListAPI = `${IP}/manage/category/record/list`
 //GET   ===> 广告主后台  投放需求列表分页
 export const productPageListAPI = `${IP}/manage/pop/platform/`
 //GET   ===> 广告主后台  投放需求详情
-export const productInfoListAPI = `${IP}/manage/pop/record/2/info`
+export const productInfoListAPI = `${IP}/manage/pop/record/`
 //GET   ===> 广告主后台  投放需求详情-账号列表
-export const productAccountListAPI = `${IP}/manage/pop/2/account/list`
-//GET   ===> 广告主后台  投放需求详情-账号列表
+export const productAccountListAPI = `${IP}/manage/pop/`
+//GET   ===> 广告主后台  新消息总数
 export const newMessageListAPI = `${IP}/manage/message/new`

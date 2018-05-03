@@ -47,7 +47,7 @@
 				<el-date-picker class="pickerOverflow" v-model="endTime" type="date" placeholder="选择日期">
 				</el-date-picker>
 			</div>
-			<div class="mr6"  style="margin-left: 26px;">
+			<div class="mr6" style="margin-left: 26px;">
 				<el-button type="primary" @click="addProductPageList">查询</el-button>
 			</div>
 		</div>
@@ -156,6 +156,18 @@
 				'decrement',
 				'setuserinfo'
 			]),
+			zhDetail(row) {
+				//				console.log(row)
+				const {
+					href
+				} = this.$router.resolve({
+					path: '/details',
+					query: {
+						pid: row.id
+					}
+				})
+				window.open(href, '_blank')
+			},
 			initData() {
 				let self = this;
 				self.params.page = 1
