@@ -152,16 +152,27 @@
 			</el-dropdown>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
-			    按阅读数
+			    按播放次数
 			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
 			    <i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
 			  </span>
 				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item command="3">阅读数由高到低</el-dropdown-item>
-					<el-dropdown-item command="4">阅读数由低到高</el-dropdown-item>
+					<el-dropdown-item command="3">播放次数由高到低</el-dropdown-item>
+					<el-dropdown-item command="4">播放次数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
+			<!-- <div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div> -->
+			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
+				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='5'||sortIndex=='6'}">
+					按报价
+						<i v-if="sortIndex=='5'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='6'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
+				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item command="5">报价由高到低</el-dropdown-item>
+					<el-dropdown-item command="6">报价由低到高</el-dropdown-item>
+				</el-dropdown-menu>
+			</el-dropdown>
 		</div>
 		<!-- end 排序 -->
 		<!-- start 列表 -->
@@ -188,7 +199,9 @@
 											<!--<img class="erweimaMax" :src="scope.row.headImg" />-->
 										</div>
 									</div>
-									<span class="tag">原创</span>
+									<div>
+										<span style="display: inline-block;margin-right: 3px;" v-for="(item,index) in scope.row.tags" v-if="index<=1" class="tag">{{item.tagName}}</span>
+									</div>
 								</div>
 							</el-col>
 						</el-row>
@@ -196,14 +209,15 @@
 				</el-table-column>
 				<el-table-column prop="fans" label="粉丝数">
 				</el-table-column>
-				<!--<el-table-column label="阅读数">
+				<el-table-column label="播放次数">
 					<template slot-scope="scope">
 						<div>
-							<p>头条:{{ scope.row.extra.viewCount }}+</p>
-							<p>次条:{{ scope.row.extra.subViewCount}}+</p>
+							{{scope.row.extra.viewCount}}
+							<!-- <p>头条:{{ scope.row.extra.viewCount }}</p>
+							<p>次条:{{ scope.row.extra.subViewCount}}</p> -->
 						</div>
 					</template>
-				</el-table-column>-->
+				</el-table-column>
 				<el-table-column label="报价" width="220">
 					<template slot-scope="scope">
 						<div>
@@ -212,13 +226,13 @@
 								<p>次条:￥{{scope.row.subPrice}}</p>
 							</div>
 							<div v-else>
-								登录广告主账号可查看更多报价
+								<a href="#/login">登录广告主账号可查看更多报价</a>
 							</div>
 						</div>
 					</template>
 				</el-table-column>
-				<!--<el-table-column prop="categoryModel" label="账号分类">
-				</el-table-column>-->
+				<el-table-column prop="categoryModel" label="账号分类">
+				</el-table-column>
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<div>
@@ -369,8 +383,8 @@
 						if(self.params.fanss.max + ''.trim() == "")
 							self.params.fanss.max = 0;
 
-						fansMin = self.params.fanss.min;
-						fansMax = self.params.fanss.max;
+						fansMin = this.params.fanss.min * 10000;
+						fansMax = this.params.fanss.max * 10000;
 						break;
 					case 1:
 						fansMin = 0;
@@ -617,22 +631,37 @@
 				this.addWechatList();
 			},
 			addCar(row) {
-				//加入选号车
-				let self = this;
-				console.log(row)
-				//				if(row.isFl){
-				//					
-				//				}
+					//加入选号车
+					let self = this;
+					console.log(row);
+					self.toAdmin();
+					//				if(row.isFl){
+					//
+					//				}
 			},
 			zhDetail(row) {
-				//账号详情
+					//账号详情
+					let self = this;
+					console.log(row);
+					self.toAdmin();
+			},
+			toAdmin(){
 				let self = this;
-				console.log(row)
+				if(self.getLoginFlag){
+					//已登录调到后台
+					self.$router.push({
+							path: '/shortvideoxhtg'
+					});
+				}else{
+					// 提示登录
+					self.$message.error("登录后享受更多功能！");
+				}
 			},
 			yytoufang(row) {
-				//预约投放
-				let self = this;
-				console.log(row)
+					//预约投放
+					let self = this;
+					console.log(row);
+					self.toAdmin();
 			},
 			bjtype(val) { //				参考报价类型
 				val = val.replace(/'/g, '"');

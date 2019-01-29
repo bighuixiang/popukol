@@ -121,6 +121,19 @@
 				</el-dropdown-menu>
 			</el-dropdown>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
+				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'||sortIndex=='5'||sortIndex=='6'}">
+					按报价
+						<i v-if="sortIndex=='3'||sortIndex=='5'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='4'||sortIndex=='6'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
+				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item command="3">直发价由高到低</el-dropdown-item>
+					<el-dropdown-item command="4">直发价由低到高</el-dropdown-item>
+					<el-dropdown-item command="5">转发价由高到低</el-dropdown-item>
+					<el-dropdown-item command="6">转发价由低到高</el-dropdown-item>
+				</el-dropdown-menu>
+			</el-dropdown>
+			<!-- <el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
 			    按阅读数
 			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
@@ -130,8 +143,8 @@
 					<el-dropdown-item command="3">阅读数由高到低</el-dropdown-item>
 					<el-dropdown-item command="4">阅读数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
-			</el-dropdown>
-			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
+			</el-dropdown> -->
+			<!-- <div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div> -->
 		</div>
 		<!-- end 排序 -->
 		<!-- start 列表 -->
@@ -158,7 +171,9 @@
 											<img class="erweimaMax" :src="scope.row.headImg" />
 										</div>-->
 									</div>
-									<span class="tag">原创</span>
+									<div>
+										<span style="display: inline-block;margin-right: 3px;" v-for="(item,index) in scope.row.tags" v-if="index<=1" class="tag">{{item.tagName}}</span>
+									</div>
 								</div>
 							</el-col>
 						</el-row>
@@ -182,7 +197,7 @@
 								<p>次条:￥{{scope.row.subPrice}}</p>
 							</div>
 							<div v-else>
-								登录广告主账号可查看更多报价
+								<a href="#/login">登录广告主账号可查看更多报价</a>
 							</div>
 						</div>
 					</template>
@@ -308,19 +323,24 @@
 				let self = this;
 				let fansSort = 0,
 					viewSort = 0,
-					priceSort = 0;
+					priceSort = 0,
+					sortPriceType = 1;
 				switch(self.sortIndex) {
 					case 1:
 						fansSort = 1;
 						break;
+// 					case 3:
+// 						viewSort = 1;
+// 						break;
 					case 3:
-						viewSort = 1;
-						break;
 					case 5:
 						priceSort = 1;
 						break;
 					default:
 						break;
+				}
+				if (self.sortIndex == 5 || self.sortIndex == 6) {
+						sortPriceType = 0;
 				}
 				let fansMin = 0,
 					fansMax = 0;
@@ -332,8 +352,8 @@
 						if(self.params.fanss.max + ''.trim() == "")
 							self.params.fanss.max = 0;
 
-						fansMin = self.params.fanss.min;
-						fansMax = self.params.fanss.max;
+						fansMin = this.params.fanss.min * 10000;
+						fansMax = this.params.fanss.max * 10000;
 						break;
 					case 1:
 						fansMin = 0;
@@ -403,6 +423,7 @@
 					default:
 						break;
 				}
+				
 				if(self.regionIndex == -1) {
 					self.params.regionId = self.cityId;
 				}
@@ -412,7 +433,7 @@
 				str.push(self.bjtypeobj.id + "/")
 				str.push(priceMin + "-" + priceMax + "/")
 				str.push(self.params.regionId + "/")
-				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
+				str.push(fansSort + "-" + sortPriceType + "-" + priceSort + "/")
 				str.push(self.params.offical.join("-"))
 				self.$http.get(self.API.weiboAccountListAPI + str.join(''), {
 					params: {
@@ -550,22 +571,37 @@
 				this.addWechatList();
 			},
 			addCar(row) {
-				//加入选号车
-				let self = this;
-				console.log(row)
-				//				if(row.isFl){
-				//					
-				//				}
+					//加入选号车
+					let self = this;
+					console.log(row);
+					self.toAdmin();
+					//				if(row.isFl){
+					//
+					//				}
 			},
 			zhDetail(row) {
-				//账号详情
+					//账号详情
+					let self = this;
+					console.log(row);
+					self.toAdmin();
+			},
+			toAdmin(){
 				let self = this;
-				console.log(row)
+				if(self.getLoginFlag){
+					//已登录调到后台
+					self.$router.push({
+							path: '/weiboxhtg'
+					});
+				}else{
+					// 提示登录
+					self.$message.error("登录后享受更多功能！");
+				}
 			},
 			yytoufang(row) {
-				//预约投放
-				let self = this;
-				console.log(row)
+					//预约投放
+					let self = this;
+					console.log(row);
+					self.toAdmin();
 			},
 			bjtype(val) { //				参考报价类型
 				val = val.replace(/'/g, '"');

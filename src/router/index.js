@@ -138,120 +138,135 @@ export default new Router({
 			},
 			component: resolve => require(['../view/Admin.vue'], resolve),
 			children: [{
-				path: '/messgeList',
-				component: resolve => require(['../view/admin/messgeList.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '消息列表'
-			},{
-				path: '/UserCenter',
-				component: resolve => require(['../view/admin/UserCenter.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '个人中心'
-			},{
-				path: '/Release',
-				name: 'Release',
-				meta: {
-					requiresAuth: true
-				},
-				component: resolve => require(['../view/Home/Release.vue'], resolve),
-				children: [{
-					path: '/Activities',
-					name: '填写活动内容',
+					path: '/messgeList',
+					component: resolve => require(['../view/admin/messgeList.vue'], resolve),
 					meta: {
 						requiresAuth: true
 					},
-					component: resolve => require(['../view/Home/Activities.vue'], resolve)
+					name: '消息列表'
 				}, {
-					path: '/SendActivities',
-					name: '提交活动',
+					path: '/adminhelper',
+					name: '广告主帮助',
+					meta: {
+						requiresAuth: false
+					},
+					component: resolve => require(['../view/admin/help.vue'], resolve)
+				}, {
+					path: '/accoutdetails',
+					component: resolve => require(['../view/admin/AccoutDetail.vue'], resolve),
 					meta: {
 						requiresAuth: true
 					},
-					component: resolve => require(['../view/Home/SendActivities.vue'], resolve)
-				}]
-			}, {
-				path: '/publictfxq',
-				component: resolve => require(['../view/admin/Publictfxq.vue'], resolve),
-				meta: {
-					requiresAuth: true
+					name: '账号信息'
+				}, {
+					path: '/UserCenter',
+					component: resolve => require(['../view/admin/UserCenter.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '个人中心'
+				}, {
+					path: '/Release',
+					name: 'Release',
+					meta: {
+						requiresAuth: true
+					},
+					component: resolve => require(['../view/Home/Release.vue'], resolve),
+					children: [{
+						path: '/Activities',
+						name: '填写活动内容',
+						meta: {
+							requiresAuth: true
+						},
+						component: resolve => require(['../view/Home/Activities.vue'], resolve)
+					}, {
+						path: '/SendActivities',
+						name: '提交活动',
+						meta: {
+							requiresAuth: true
+						},
+						component: resolve => require(['../view/Home/SendActivities.vue'], resolve)
+					}]
+				}, {
+					path: '/publictfxq',
+					component: resolve => require(['../view/admin/Publictfxq.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '微信投放需求'
+				}, {
+					path: '/wechatxhtg',
+					component: resolve => require(['../view/admin/WeChatxhtg.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '微信选号推广'
+				}, {
+					path: '/weiboxhtg',
+					component: resolve => require(['../view/admin/Weiboxhtg.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '微博选号推广'
+				}, {
+					path: '/redbookxhtg',
+					component: resolve => require(['../view/admin/RedBookxhtg.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '小红书选号推广'
+				}, {
+					path: '/talentxhtg',
+					component: resolve => require(['../view/admin/Talentxhtg.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '淘宝/京东达人选号推广'
+				}, {
+					path: '/headlinesxhtg',
+					component: resolve => require(['../view/admin/Headlinesxhtg.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '头条/知乎/豆瓣选号推广'
+				}, {
+					path: '/facebookxhtg',
+					component: resolve => require(['../view/admin/Facebookxhtg.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: 'Facebook/twitter选号推广'
+				}, {
+					path: '/shortvideoxhtg',
+					component: resolve => require(['../view/admin/ShortVideoxhtg.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '直播/短视频选号推广'
+				}, {
+					path: '/newswebxhtg',
+					component: resolve => require(['../view/admin/Newswebxhtg.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '新闻网站选号推广'
+				}, {
+					path: '/forumbarxhtg',
+					component: resolve => require(['../view/admin/Forumbarxhtg.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '论坛贴吧选号推广'
 				},
-				name: '微信投放需求'
-			}, {
-				path: '/wechatxhtg',
-				component: resolve => require(['../view/admin/WeChatxhtg.vue'], resolve),
-				meta: {
-					requiresAuth: true
+				{
+					path: '/details',
+					component: resolve => require(['../view/admin/PublicDetilstfxq.vue'], resolve),
+					meta: {
+						requiresAuth: true
+					},
+					name: '论坛贴吧选号推广'
 				},
-				name: '微信选号推广'
-			}, {
-				path: '/weiboxhtg',
-				component: resolve => require(['../view/admin/Weiboxhtg.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '微博选号推广'
-			}, {
-				path: '/redbookxhtg',
-				component: resolve => require(['../view/admin/RedBookxhtg.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '小红书选号推广'
-			}, {
-				path: '/talentxhtg',
-				component: resolve => require(['../view/admin/Talentxhtg.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '淘宝/京东达人选号推广'
-			}, {
-				path: '/headlinesxhtg',
-				component: resolve => require(['../view/admin/Headlinesxhtg.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '头条/知乎/豆瓣选号推广'
-			}, {
-				path: '/facebookxhtg',
-				component: resolve => require(['../view/admin/Facebookxhtg.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: 'Facebook/twitter选号推广'
-			}, {
-				path: '/shortvideoxhtg',
-				component: resolve => require(['../view/admin/ShortVideoxhtg.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '直播/短视频选号推广'
-			}, {
-				path: '/newswebxhtg',
-				component: resolve => require(['../view/admin/Newswebxhtg.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '新闻网站选号推广'
-			}, {
-				path: '/forumbarxhtg',
-				component: resolve => require(['../view/admin/Forumbarxhtg.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '论坛贴吧选号推广'
-			}, 
-			{
-				path: '/details',
-				component: resolve => require(['../view/admin/PublicDetilstfxq.vue'], resolve),
-				meta: {
-					requiresAuth: true
-				},
-				name: '论坛贴吧选号推广'
-			},]
+			]
 		},
 		{
 			path: '*',

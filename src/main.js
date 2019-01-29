@@ -4,8 +4,13 @@ import App from './App'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import Router from './router'
-import { setLanguageSwitching,dateFormat } from './filters.js'
-import { getLanguage } from './language.js'
+import {
+	setLanguageSwitching,
+	dateFormat
+} from './filters.js'
+import {
+	getLanguage
+} from './language.js'
 import Store from './vuex/store'
 import Vuex from 'vuex'
 import Axios from 'axios'
@@ -14,6 +19,7 @@ import './nprogress/nprogress.css'
 import qs from 'qs'; //使用qs模块转换payload参数为formdata请求参数
 import * as APIS from './api.js'
 import editor from "vue-html5-editor";
+import { JSEncrypt } from 'jsencrypt';
 
 let options = {
 	// 全局组件名称，使用new VueHtml5Editor(options)时该选项无效  
@@ -66,7 +72,7 @@ let options = {
 		uploadHandler(responseText) {
 			//default accept json data like  {ok:false,msg:"unexpected"} or {ok:true,data:"image url"} 
 			var json = JSON.parse(responseText)
-			if(!json.ok) {
+			if (!json.ok) {
 				alert(json.msg)
 			} else {
 				return json.data
@@ -180,6 +186,16 @@ Vue.prototype.$http = Axios;
 Vue.prototype.SLS = setLanguageSwitching;
 Vue.prototype.dateFormat = dateFormat;
 Vue.prototype.getLanguage = getLanguage;
+let PublicKey =
+	"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCfOEhSTd/og0TcE+nVLn/BDV47R8+7AcfEru8G1zOyjZfr4PlGmGCYNVdnOG/TKISzZU4FAzasIBE2V0NPfNLAy2lbiNODD8n7rCTN3kzUGJi7k5qdUD/ODzEiQ6CrQVin/V2Z+RNvGpfiSGZTNJTtJX2xBHNW0BzuUBvV219wlwIDAQAB"
+//加密字段
+var encrypt = new JSEncrypt();
+Vue.prototype.$encrypt = (str) => {
+	encrypt.setPublicKey(PublicKey);
+	var encrypted = encrypt.encrypt(str);
+	return encrypted;
+};
+
 
 //Vue.filter('timeToNow', filters.timeToNow);
 //Vue.config.productionTip = false
@@ -188,20 +204,20 @@ Vue.prototype.getLanguage = getLanguage;
 Router.beforeResolve((to, from, next) => {
 	NProgress.start();
 	//to即将进入的目标路由对象，from当前导航正要离开的路由， next : 下一步执行的函数钩子
-	if(to.path === '/login') {
+	if (to.path === '/login') {
 		next()
 	} // 如果即将进入登录路由，则直接放行
 	else { //进入的不是登录路由
 		let vm = Router.app.$root
 		let lastTime = window.localStorage.getItem('lastTime')
 		let curTime = new Date().getTime()
-		if(to.meta.requiresAuth && !vm.$store.getters.getLoginFlag) {
+		if (to.meta.requiresAuth && !vm.$store.getters.getLoginFlag) {
 			//下一跳路由需要登录验证，并且还未登录，则路由定向到 登录路由
 			//			此处加入  二次判断  是否登录
 			window.localStorage.setItem('lastTime', curTime)
 			vm.$http.get(vm.API.userInfoApi).then((response) => { // 响应成功回调
 				NProgress.done();
-				if(response.data.status == 0 && response.data.loginFlag) {
+				if (response.data.status == 0 && response.data.loginFlag) {
 					next()
 				} else {
 					next({
@@ -215,14 +231,14 @@ Router.beforeResolve((to, from, next) => {
 				})
 			});
 		} else {
-			if(lastTime != null && lastTime != null && (curTime - lastTime) <= 60 * 1000 * 25) {
+			if (lastTime != null && lastTime != null && (curTime - lastTime) <= 60 * 1000 * 25) {
 				window.localStorage.setItem('lastTime', curTime)
 				next()
 			} else {
 				window.localStorage.setItem('lastTime', curTime)
 				vm.$http.get(vm.API.userInfoApi).then((response) => { // 响应成功回调
 					NProgress.done();
-					if(response.data.status == 0 && response.data.loginFlag) {
+					if (response.data.status == 0 && response.data.loginFlag) {
 						next()
 					} else {
 						next({

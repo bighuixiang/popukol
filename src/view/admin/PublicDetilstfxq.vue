@@ -1,6 +1,8 @@
 <template>
 	<div class="content">
-		<div class="kuang">投放活动状态：<span class="red">{{details.popStatusStr}}</span></div>
+		<div class="kuang">投放活动状态：<span class="red">{{details.popStatusStr}}</span>
+			<el-button style="margin-left: 920px;" v-if="details.popStatus==0" type="primary" class="reset-login-btn" @click="continueCreate">继续创建</el-button>
+		</div>
 		<div class="kuang">
 			<h1 class="title">投放活动信息</h1>
 			<div class="info">
@@ -172,8 +174,16 @@
 				'decrement',
 				'setuserinfo'
 			]),
+			//继续创建
+			continueCreate(){
+				let self = this;
+				// self.$route.query.pid
+				self.$router.push({path:'/SendActivities',query:{popKey:self.$route.query.pid}})
+			},
 			initData() {
 				let self = this;
+				self.details = {};
+				self.dataList = [];
 				self.pid = self.$route.query.pid
 				self.increment({
 					val: "2",

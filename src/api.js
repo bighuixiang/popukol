@@ -52,9 +52,9 @@ export const emailApi = `${IP}/user/register/code`
 //GET   ===> 验证码邮箱重置密码用
 export const reSetEmailApi = `${IP}/user/reset/code`
 //POST  ===> 注册
-export const signUpApi = `${IP}/user/register`
+export const signUpApi = `${IP}/user/register2`
 //POST  ===> 登录
-export const loginApi = `${IP}/user/login`
+export const loginApi = `${IP}/user/login2`
 //POST  ===> 退出登录
 export const loginOutApi = `${IP}/user/logout`
 //POST  ===> 重置密码
@@ -117,3 +117,8 @@ export const productInfoListAPI = `${IP}/manage/pop/record/`
 export const productAccountListAPI = `${IP}/manage/pop/`
 //GET   ===> 广告主后台  新消息总数
 export const newMessageListAPI = `${IP}/manage/message/new`
+
+//GET   ===> 广告主后台  查询微信账号信息
+export const wechatProfileInfoAPI = `${IP}/wechat/profile/info/`
+//GET   ===> 广告主后台  查询微信账号信息
+export const analysisListAPI = `${IP}/wechat/`

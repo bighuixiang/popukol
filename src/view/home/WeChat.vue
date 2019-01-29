@@ -119,17 +119,32 @@
 				</el-dropdown-menu>
 			</el-dropdown>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
-				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
+				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'||sortIndex=='5'||sortIndex=='6'}">
 			    按阅读数
-			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
-			    <i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+			      <i v-if="sortIndex=='3'||sortIndex=='5'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+			    <i v-if="sortIndex=='4'||sortIndex=='6'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
 			  </span>
 				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item command="3">阅读数由高到低</el-dropdown-item>
-					<el-dropdown-item command="4">阅读数由低到高</el-dropdown-item>
+					<el-dropdown-item command="3">头条阅读量由高到低</el-dropdown-item>
+					<el-dropdown-item command="4">头条阅读量由低到高</el-dropdown-item>
+					<el-dropdown-item command="5">次条阅读量由高到低</el-dropdown-item>
+					<el-dropdown-item command="6">次条阅读量由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
+			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
+				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='7'||sortIndex=='8'||sortIndex=='9'||sortIndex=='10'}">
+					按报价
+						<i v-if="sortIndex=='7'||sortIndex=='9'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='8'||sortIndex=='10'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
+				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item command="7">头条报价由高到低</el-dropdown-item>
+					<el-dropdown-item command="8">头条报价由低到高</el-dropdown-item>
+					<el-dropdown-item command="9">次条报价由高到低</el-dropdown-item>
+					<el-dropdown-item command="10">次条报价由低到高</el-dropdown-item>
+				</el-dropdown-menu>
+			</el-dropdown>
+			<!-- <div class="defult" :class="{'cur' :sortIndex=='7'}" @click="dropdownchanage(5)">按报价</div> -->
 		</div>
 		<!-- end 排序 -->
 		<!-- start 列表 -->
@@ -149,12 +164,14 @@
 							<el-col :span="18" class="tableZh">
 								<div class="right">
 									<div class="name">{{scope.row.name}}
-										<div class="erweima">
+										<div v-if="scope.row.qrCode" class="erweima">
 											<img class="erweimamin" src="../../../static/icon/meitirenzhen/erweima.png" />
-											<img class="erweimaMax" :src="scope.row.headImg" />
+											<img class="erweimaMax" :src="scope.row.qrCode" />
 										</div>
 									</div>
-									<span class="tag">原创</span>
+									<div>
+										<span style="display: inline-block;margin-right: 3px;" v-for="(item,index) in scope.row.tags" v-if="index<=1" class="tag">{{item.tagName}}</span>
+									</div>
 								</div>
 							</el-col>
 						</el-row>
@@ -165,8 +182,8 @@
 				<el-table-column label="阅读数">
 					<template slot-scope="scope">
 						<div>
-							<p>头条:{{ scope.row.extra.viewCount }}+</p>
-							<p>次条:{{ scope.row.extra.subViewCount}}+</p>
+							<p>头条:{{ scope.row.extra.viewCount ||0 }}</p>
+							<p>次条:{{ scope.row.extra.subViewCount||0 }}</p>
 						</div>
 					</template>
 				</el-table-column>
@@ -178,11 +195,18 @@
 								<p>次条:￥{{scope.row.subPrice}}</p>
 							</div>
 							<div v-else>
-								登录广告主账号可查看更多报价
+									<a href="#/login">登录广告主账号可查看更多报价</a>
 							</div>
 						</div>
 					</template>
 				</el-table-column>
+				<!-- <el-table-column label="二维码">
+					<template slot-scope="scope">
+						<div>
+							<img style="width: 80px;" :src="scope.row.qrCode" />
+						</div>
+					</template>
+				</el-table-column> -->
 				<el-table-column prop="categoryModel" label="账号分类">
 				</el-table-column>
 				<el-table-column label="操作">
@@ -209,703 +233,774 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
-	import { mapActions } from 'vuex'
+import { mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
-	export default {
-		data() {
-			return {
-				params: {
-					//入参	
-					page: 1,
-					keywords: "", //搜索关键字
-					regionId: 0, //地区
-					categoryId: 0, //账号分类
-					fanss: { //粉丝数区间	
-						min: "",
-						max: ""
-					},
-					prices: { //价格区间
-						type: 0,
-						min: "",
-						max: ""
-					},
-					offical: 0, //官方   0 未选中   1 已选择
+export default {
+    data() {
+        return {
+            params: {
+                //入参
+                page: 1,
+                keywords: '', //搜索关键字
+                regionId: 0, //地区
+                categoryId: 0, //账号分类
+                fanss: {
+                    //粉丝数区间
+                    min: '',
+                    max: ''
+                },
+                prices: {
+                    //价格区间
+                    type: 0,
+                    min: '',
+                    max: ''
+                },
+                offical: 0 //官方   0 未选中   1 已选择
+            },
+            provinveId: '', //省ID
+            cityId: '', //区ID
+            recordIndex: 0, //账号分类   当前索引
+            fansIndex: 0, //粉丝数   当前索引
+            priceIndex: 0, //价格   当前索引
+            sortIndex: 0, //排序   当前索引
+            regionIndex: 0, //地区   当前索引
+
+            total: 0, //当前分页总数
+
+            recordTypeList: [], //账号分类列表
+            checkList: [], //官方认证
+            provinveDataList: [], //省
+            cityDataList: [], //市区
+            bjtypeobj: {
+                id: '1',
+                name: '头条'
+            },
+            areaList: [
+                {
+                    id: 1,
+                    name: '北京'
+                },
+                {
+                    id: 8,
+                    name: '上海'
+                },
+                {
+                    id: 205,
+                    name: '广州'
+                },
+                {
+                    id: 207,
+                    name: '深圳'
+                },
+                {
+                    id: 237,
+                    name: '成都'
+                },
+                {
+                    id: 87,
+                    name: '杭州'
+                },
+                {
+                    id: 175,
+                    name: '武汉'
+                }
+            ],
+            dataList: [],
+            multipleSelection: []
+        };
+    },
+    async mounted() {
+        let self = this;
+        self.SLS();
+        self.increment(1);
+        self.addRecordType();
+        await self.addProvinceAndCity();
+        await self.addWechatList();
+    },
+    computed: {
+        // 使用对象展开运算符将 getters 混入 computed 对象中
+        ...mapGetters([
+            'getNavList',
+            'getLoginFlag',
+            'getUserInfo'
+            // ...
+        ])
+    },
+    methods: {
+        ...mapActions([
+            'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
+            'decrement',
+            'setuserinfo'
+        ]),
+        addWechatList() {
+            let self = this;
+            let fansSort = 0,
+                viewSort = 0,
+                priceSort = 0,
+                sortPriceType = 1,
+                sortViewType = 1;
+            switch (self.sortIndex) {
+                case 1:
+                    fansSort = 1;
+                    break;
+                case 3:
+								case 5:
+                    viewSort = 1;
+                    break;
+                case 7:
+                case 9:
+                    priceSort = 1;
+                    break;
+                default:
+                    break;
+            }
+            if (self.sortIndex == 5 || self.sortIndex == 6) {
+                sortViewType = 0;
+            }
+            if (self.sortIndex == 9 || self.sortIndex == 10) {
+                sortPriceType = 0;
+            }
+            let fansMin = 0,
+                fansMax = 0;
+            switch (self.fansIndex) {
+                case -1:
+                    if (self.params.fanss.min + ''.trim() == '') self.params.fanss.min = 0;
+
+                    if (self.params.fanss.max + ''.trim() == '') self.params.fanss.max = 0;
+                    fansMin = this.params.fanss.min * 10000;
+                    fansMax = this.params.fanss.max * 10000;
+                    break;
+                case 1:
+                    fansMin = 0;
+                    fansMax = 10000;
+                    break;
+                case 2:
+                    fansMin = 10000;
+                    fansMax = 50000;
+                    break;
+                case 3:
+                    fansMin = 50000;
+                    fansMax = 100000;
+                    break;
+                case 4:
+                    fansMin = 100000;
+                    fansMax = 200000;
+                    break;
+                case 5:
+                    fansMin = 200000;
+                    fansMax = 500000;
+                    break;
+                case 6:
+                    fansMin = 500000;
+                    fansMax = 1000000;
+                    break;
+                case 7:
+                    fansMin = 1000000;
+                    fansMax = 0;
+                    break;
+                default:
+                    break;
+            }
+
+            let priceMin = 0,
+                priceMax = 0;
+            switch (self.priceIndex) {
+                case -1:
+                    if (self.params.prices.min + ''.trim() == '') self.params.prices.min = 0;
+
+                    if (self.params.prices.max + ''.trim() == '') self.params.prices.max = 0;
+
+                    priceMin = self.params.prices.min;
+                    priceMax = self.params.prices.max;
+                    break;
+                case 1:
+                    priceMin = 0;
+                    priceMax = 1000;
+                    break;
+                case 2:
+                    priceMin = 1000;
+                    priceMax = 3000;
+                    break;
+                case 3:
+                    priceMin = 3000;
+                    priceMax = 5000;
+                    break;
+                case 4:
+                    priceMin = 5000;
+                    priceMax = 10000;
+                    break;
+                case 5:
+                    priceMin = 10000;
+                    priceMax = 0;
+                    break;
+                default:
+                    break;
+            }
+            if (self.regionIndex == -1) {
+                self.params.regionId = self.cityId;
+            }
+            let str = [];
+            str.push(self.params.categoryId + '/');
+            str.push(fansMin + '-' + fansMax + '/');
+            str.push(self.bjtypeobj.id + '/');
+            str.push(priceMin + '-' + priceMax + '/');
+            str.push(self.params.regionId + '/');
+            str.push(
+                fansSort +
+                    '-' +
+                    sortViewType +
+                    '-' +
+                    viewSort +
+                    '-' +
+                    sortPriceType +
+                    '-' +
+                    priceSort +
+                    '/'
+            );
+            str.push(self.params.offical);
+            self.$http
+                .get(self.API.wechatAccountListAPI + str.join(''), {
+                    params: {
+                        page: self.params.page,
+                        limit: 10,
+                        query: encodeURIComponent(self.params.keywords)
+                    }
+                })
+                .then(
+                    response => {
+                        // 响应成功回调
+                        if (response.data.status == 0) {
+                            self.dataList = response.data.data;
+                            self.total = response.data.count;
+                        }
+                    },
+                    response => {}
+                );
+        },
+        async addProvinceAndCity() {
+            let self = this;
+            await self.$http.get(self.API.provinceList).then(
+                response => {
+                    // 响应成功回调
+                    if (response.data.status == 0) {
+                        self.provinveDataList = response.data.data;
+                    }
+                },
+                response => {}
+            );
+
+            await self.$http
+                .get(self.API.cityList, {
+                    params: {
+                        pid: self.provinveDataList[0].id
+                    }
+                })
+                .then(
+                    response => {
+                        // 响应成功回调
+                        if (response.data.status == 0) {
+                            self.cityDataList = response.data.data;
+                        }
+                    },
+                    response => {}
+                );
+        },
+        currentChange(index) {
+            this.params.page = index;
+            this.addWechatList();
+        },
+        buxianCheck() {
+            this.checkList = [];
+            this.params.offical = 0;
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        setRecord(val, id) {
+            this.recordIndex = val - 0;
+            this.params.categoryId = id;
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        setFans(val) {
+            this.fansIndex = val - 0;
+            this.params.fanss.min = '';
+            this.params.fanss.max = '';
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        searchFans() {
+            this.fansIndex = -1;
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        setPrice(val) {
+            this.priceIndex = val - 0;
+            this.params.prices.min = '';
+            this.params.prices.max = '';
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        searchPrice() {
+            this.priceIndex = -1;
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        setRegion(val, id) {
+            this.regionIndex = val - 0;
+            this.params.regionId = id;
+            this.cityId = '';
+            this.provinveId = '';
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        searchRegion() {
+            this.regionIndex = -1;
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        search() {
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        provinveChange(val) {
+            let self = this;
+            this.cityId = '';
+            this.provinveId = val;
+            self.$http
+                .get(self.API.cityList, {
+                    params: {
+                        pid: val
+                    }
+                })
+                .then(
+                    response => {
+                        // 响应成功回调
+                        if (response.data.status == 0) {
+                            self.cityDataList = response.data.data;
+                            self.cityId = self.cityDataList[0].id;
+                        }
+                    },
+                    response => {}
+                );
+        },
+        cityChange(val) {
+            this.cityId = val;
+        },
+        officalChange(val) {
+            this.params.offical = val.length === 0 ? 0 : 1;
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        dropdownchanage(val) {
+            this.sortIndex = val - 0;
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        addCar(row) {
+            //加入选号车
+            let self = this;
+            console.log(row);
+						self.toAdmin();
+            //				if(row.isFl){
+            //
+            //				}
+        },
+        zhDetail(row) {
+            //账号详情
+            let self = this;
+            console.log(row);
+						self.toAdmin();
+        },
+				toAdmin(){
+					let self = this;
+					if(self.getLoginFlag){
+						//已登录调到后台
+						self.$router.push({
+								path: '/wechatxhtg'
+						});
+					}else{
+						// 提示登录
+						self.$message.error("登录后享受更多功能！");
+					}
 				},
-				provinveId: "", //省ID
-				cityId: "", //区ID
-				recordIndex: 0, //账号分类   当前索引
-				fansIndex: 0, //粉丝数   当前索引
-				priceIndex: 0, //价格   当前索引
-				sortIndex: 0, //排序   当前索引
-				regionIndex: 0, //地区   当前索引
-
-				total: 0, //当前分页总数
-
-				recordTypeList: [], //账号分类列表
-				checkList: [], //官方认证
-				provinveDataList: [], //省
-				cityDataList: [], //市区
-				bjtypeobj: {
-					id: "1",
-					name: "头条"
-				},
-				areaList: [{
-					id: 1,
-					name: "北京"
-				}, {
-					id: 8,
-					name: "上海"
-				}, {
-					id: 205,
-					name: "广州"
-				}, {
-					id: 207,
-					name: "深圳"
-				}, {
-					id: 237,
-					name: "成都"
-				}, {
-					id: 87,
-					name: "杭州"
-				}, {
-					id: 175,
-					name: "武汉"
-				}],
-				dataList: [],
-				multipleSelection: []
-			}
-		},
-		async mounted() {
-			let self = this
-			self.SLS();
-			self.increment(1)
-			self.addRecordType();
-			await self.addProvinceAndCity();
-			await self.addWechatList();
-		},
-		computed: {
-			// 使用对象展开运算符将 getters 混入 computed 对象中
-			...mapGetters([
-				'getNavList',
-				"getLoginFlag",
-				'getUserInfo',
-				// ...
-			])
-		},
-		methods: {
-			...mapActions([
-				'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
-				'decrement',
-				'setuserinfo'
-			]),
-			addWechatList() {
-				let self = this;
-				let fansSort = 0,
-					viewSort = 0,
-					priceSort = 0;
-				switch(self.sortIndex) {
-					case 1:
-						fansSort = 1;
-						break;
-					case 3:
-						viewSort = 1;
-						break;
-					case 5:
-						priceSort = 1;
-						break;
-					default:
-						break;
-				}
-				let fansMin = 0,
-					fansMax = 0;
-				switch(self.fansIndex) {
-					case -1:
-						if(self.params.fanss.min + ''.trim() == "")
-							self.params.fanss.min = 0;
-
-						if(self.params.fanss.max + ''.trim() == "")
-							self.params.fanss.max = 0;
-
-						fansMin = self.params.fanss.min;
-						fansMax = self.params.fanss.max;
-						break;
-					case 1:
-						fansMin = 0;
-						fansMax = 10000;
-						break;
-					case 2:
-						fansMin = 10000;
-						fansMax = 50000;
-						break;
-					case 3:
-						fansMin = 50000;
-						fansMax = 100000;
-						break;
-					case 4:
-						fansMin = 100000;
-						fansMax = 200000;
-						break;
-					case 5:
-						fansMin = 200000;
-						fansMax = 500000;
-						break;
-					case 6:
-						fansMin = 500000;
-						fansMax = 1000000;
-						break;
-					case 7:
-						fansMin = 1000000;
-						fansMax = 0;
-						break;
-					default:
-						break;
-				}
-
-				let priceMin = 0,
-					priceMax = 0;
-				switch(self.priceIndex) {
-					case -1:
-						if(self.params.prices.min + ''.trim() == "")
-							self.params.prices.min = 0;
-
-						if(self.params.prices.max + ''.trim() == "")
-							self.params.prices.max = 0;
-
-						priceMin = self.params.prices.min;
-						priceMax = self.params.prices.max;
-						break;
-					case 1:
-						priceMin = 0;
-						priceMax = 1000;
-						break;
-					case 2:
-						priceMin = 1000;
-						priceMax = 3000;
-						break;
-					case 3:
-						priceMin = 3000;
-						priceMax = 5000;
-						break;
-					case 4:
-						priceMin = 5000;
-						priceMax = 10000;
-						break;
-					case 5:
-						priceMin = 10000;
-						priceMax = 0;
-						break;
-					default:
-						break;
-				}
-				if(self.regionIndex == -1) {
-					self.params.regionId = self.cityId;
-				}
-				let str = [];
-				str.push(self.params.categoryId + "/")
-				str.push(fansMin + "-" + fansMax + "/")
-				str.push(self.bjtypeobj.id + "/")
-				str.push(priceMin + "-" + priceMax + "/")
-				str.push(self.params.regionId + "/")
-				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-				str.push(self.params.offical)
-				self.$http.get(self.API.wechatAccountListAPI + str.join(''), {
-					params: {
-						page: self.params.page,
-						limit: 10,
-						query: encodeURIComponent(self.params.keywords)
-					}
-				}).then((response) => { // 响应成功回调
-					if(response.data.status == 0) {
-						self.dataList = response.data.data;
-						self.total = response.data.count;
-					}
-				}, (response) => {});
-			},
-			async addProvinceAndCity() {
-				let self = this;
-				await self.$http.get(self.API.provinceList).then((response) => { // 响应成功回调 
-					if(response.data.status == 0) {
-						self.provinveDataList = response.data.data;
-					}
-				}, (response) => {});
-
-				await self.$http.get(self.API.cityList, {
-					params: {
-						pid: self.provinveDataList[0].id
-					}
-				}).then((response) => { // 响应成功回调
-					if(response.data.status == 0) {
-						self.cityDataList = response.data.data;
-					}
-				}, (response) => {});
-			},
-			currentChange(index) {
-				this.params.page = index;
-				this.addWechatList();
-			},
-			buxianCheck(){
-				this.checkList = [];
-				this.params.offical = 0;
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			setRecord(val, id) {
-				this.recordIndex = val - 0;
-				this.params.categoryId = id;
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			setFans(val) {
-				this.fansIndex = val - 0;
-				this.params.fanss.min = "";
-				this.params.fanss.max = "";
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			searchFans() {
-				this.fansIndex = -1;
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			setPrice(val) {
-				this.priceIndex = val - 0;
-				this.params.prices.min = "";
-				this.params.prices.max = "";
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			searchPrice() {
-				this.priceIndex = -1;
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			setRegion(val, id) {
-				this.regionIndex = val - 0;
-				this.params.regionId = id;
-				this.cityId = "";
-				this.provinveId = "";
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			searchRegion() {
-				this.regionIndex = -1;
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			search() {
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			provinveChange(val) {
-				let self = this;
-				this.cityId = "";
-				this.provinveId = val;
-				self.$http.get(self.API.cityList, {
-					params: {
-						pid: val
-					}
-				}).then((response) => { // 响应成功回调
-					if(response.data.status == 0) {
-						self.cityDataList = response.data.data;
-						self.cityId = self.cityDataList[0].id;
-					}
-				}, (response) => {});
-			},
-			cityChange(val) {
-				this.cityId = val;
-			},
-			officalChange(val) {
-				this.params.offical = val.length === 0 ? 0 : 1;
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			dropdownchanage(val) {
-				this.sortIndex = val - 0;
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			addCar(row) {
-				//加入选号车
-				let self = this;
-				console.log(row)
-				//				if(row.isFl){
-				//					
-				//				}
-			},
-			zhDetail(row) {
-				//账号详情
-				let self = this;
-				console.log(row)
-			},
-			yytoufang(row) {
-				//预约投放
-				let self = this;
-				console.log(row)
-			},
-			bjtype(val) { //				参考报价类型
-				val = val.replace(/'/g, '"');
-				this.bjtypeobj = JSON.parse(val);
-				this.params.page = 1;
-				this.addWechatList();
-			},
-			handleSelectionChange(val) {
-				this.multipleSelection = val;
-			},
-			getMessageInfoList() {
-				let self = this;
-				self.$http.post("pushMessageInfoList").then((response) => { // 响应成功回调 
-					if(response.data.code == 0) {
-						self.msgTotal = response.data.data.total;
-					}
-				}, (response) => {});
-
-			},
-			addRecordType() {
-				let self = this;
-				//				12 微信   13微博  14 小红书
-				self.$http.get(self.API.recordList, {
-					params: {
-						platformId: 1,
-					}
-				}).then((response) => { // 响应成功回调
-					if(response.data.status == 0) {
-						self.recordTypeList = response.data.data
-					}
-				}, (response) => {
-
-				});
-			}
-		}
-	}
+        yytoufang(row) {
+            //预约投放
+            let self = this;
+            console.log(row);
+					  self.toAdmin();
+        },
+        bjtype(val) {
+            //				参考报价类型
+            val = val.replace(/'/g, '"');
+            this.bjtypeobj = JSON.parse(val);
+            this.params.page = 1;
+            this.addWechatList();
+        },
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+        },
+        getMessageInfoList() {
+            let self = this;
+            self.$http.post('pushMessageInfoList').then(
+                response => {
+                    // 响应成功回调
+                    if (response.data.code == 0) {
+                        self.msgTotal = response.data.data.total;
+                    }
+                },
+                response => {}
+            );
+        },
+        addRecordType() {
+            let self = this;
+            //				12 微信   13微博  14 小红书
+            self.$http
+                .get(self.API.recordList, {
+                    params: {
+                        platformId: 1
+                    }
+                })
+                .then(
+                    response => {
+                        // 响应成功回调
+                        if (response.data.status == 0) {
+                            self.recordTypeList = response.data.data;
+                        }
+                    },
+                    response => {}
+                );
+        }
+    }
+};
 </script>
 <style lang="scss" scoped>
-	.addCar {
-		margin-top: 6px;
-		padding-left: 22px;
-		background: url(../../../static/icon/guanggaozhu/buycar.png) no-repeat center left;
-		background-size: 16px;
-		cursor: pointer;
-	}
-	
-	.addCar:hover {
-		color: #DE1A20;
-	}
-	
-	.zhDetail {
-		margin-top: 6px;
-		padding-left: 22px;
-		background: url(../../../static/icon/guanggaozhu/zhxq.png) no-repeat center left;
-		background-size: 12px;
-		cursor: pointer;
-	}
-	
-	.btnred {
-		color: #DE1A20;
-		border-color: #DE1A20;
-	}
-	
-	.btnred:hover {
-		color: #C60009 !important;
-		border-color: #C60009 !important;
-	}
-	
-	.zhDetail:hover {
-		color: #DE1A20;
-	}
-	
-	.tableZh {
-		.right {
-			position: relative;
-			.name {
-				font-size: 14px;
-				color: #333333;
-				display: inline-block;
-				.erweima {
-					position: relative;
-					display: inline-block;
-					.erweimamin {
-						width: 16px;
-						height: 16px;
-						display: inline-block;
-						margin-left: 6px;
-						vertical-align: middle;
-					}
-					.erweimaMax {
-						position: absolute;
-						right: -112px;
-						top: -25px;
-						width: 100px;
-						height: 100px;
-						z-index: 9999;
-						display: none;
-					}
-				}
-				.erweima:hover {
-					.erweimaMax {
-						display: block;
-					}
-				}
-			}
-			.tag {
-				display: table;
-				color: #FFFFFF;
-				background-color: #DE1A20;
-				padding: 0 6px;
-				border-radius: 4px;
-				font-size: 12px;
-			}
-		}
-		.left {
-			width: 44px;
-			position: relative;
-			.userImg {
-				width: 44px;
-				height: 44px;
-				border-radius: 50%;
-				display: block;
-			}
-			.ico {
-				position: absolute;
-				right: 0;
-				bottom: 0;
-				width: 12px;
-				height: auto;
-				display: block;
-			}
-		}
-	}
-	
-	.content {
-		width: 1200px;
-		margin: auto;
-		display: table;
-		.condition {
-			.filter {
-				position: absolute;
-				right: 24px;
-				top: 0;
-				bottom: 0;
-				height: 45px;
-				line-height: 45px;
-				/*border: 1px solid #000000;*/
-				.select {
-					width: 86px;
-					float: left;
-					.el-input {
-						.el-input__inner {
-							border-radius: 2px !important;
-							border: solid 1px #e8e8e8 !important;
-						}
-					}
-				}
-				.xiala {
-					float: left;
-					padding-right: 12px;
-					.type {
-						position: relative;
-						border: solid 1px #e8e8e8;
-						color: #888888;
-						height: 24px;
-						border-radius: 2px;
-						font-size: 12px;
-						padding: 5px 6px 5px 8px;
-					}
-					.type:before {
-						content: '';
-						position: absolute;
-						top: 0;
-						right: 0;
-						bottom: 0;
-						width: 0;
-						background-color: #e8e8e8;
-					}
-				}
-				.xiala:hover {
-					cursor: pointer;
-				}
-				.hengxian {
-					width: 10px;
-					height: 1px;
-					background-color: #aaaaaa;
-					margin-left: 6px;
-					margin-right: 6px;
-					margin-top: 22px;
-					float: left;
-				}
-				.inputwidth {
-					width: 66px;
-					height: 24px;
-					border-radius: 2px;
-					padding: 0;
-					float: left;
-				}
-				.btn {
-					margin-left: 12px;
-				}
-				.canlen {
-					margin-left: 6px;
-				}
-				.canlen:hover {
-					color: #DE1A20;
-					cursor: pointer;
-				}
-			}
-			.right {
-				width: 1100px;
-				/*padding-left: 12px;*/
-				color: #888888;
-				font-size: 12px;
-				float: left;
-				overflow: hidden;
-				.buxian {
-					width: 86px;
-					text-align: center;
-					position: absolute;
-					top: 0;
-					bottom: 0;
-					padding-top: 12px;
-					cursor: pointer;
-					span {
-						padding: 3px 6px 4px;
-					}
-				}
-				.buxian:hover {
-					span {
-						color: #FFFFFF;
-						background-color: #DE1A20;
-						padding: 3px 6px 4px;
-						border-radius: 4px;
-						line-height: 0;
-					}
-				}
-				.cur {
-					span {
-						color: #FFFFFF;
-						background-color: #DE1A20;
-						border-radius: 4px;
-						line-height: 0;
-						padding: 3px 6px 4px;
-					}
-				}
-				.list {
-					float: left;
-					padding-left: 86px;
-					padding-bottom: 12px;
-					padding-right: 148px;
-					.checkList {
-						padding-left: 12px;
-					}
-					div {
-						padding-top: 12px;
-						cursor: pointer;
-						display: inline-block;
-						padding-right: 6px;
-						span {
-							padding: 3px 6px 4px;
-						}
-					}
-					div:hover {
-						span {
-							color: #FFFFFF;
-							background-color: #DE1A20;
-							padding: 3px 6px 4px;
-							border-radius: 4px;
-							line-height: 0;
-						}
-					}
-				}
-			}
-			.item:first-child {
-				border-top: 1px solid #e8e8e8;
-				margin-top: -1px;
-			}
-			.item {
-				position: relative;
-				overflow: hidden;
-				border-bottom: 1px solid #e8e8e8;
-				font-size: 14px;
-				padding-left: 100px;
-				min-height: 45px;
-				.title {
-					width: 100px;
-					background-color: #F2F2F2;
-					padding-bottom: 12px;
-					padding-top: 12px;
-					text-align: center;
-					position: absolute;
-					top: 0;
-					left: 0;
-					bottom: 0;
-				}
-			}
-		}
-		.biaoge {
-			.pagination {
-				padding-top: 32px;
-				padding-bottom: 32px;
-				float: right;
-			}
-		}
-		.sort {
-			margin-top: 19px;
-			height: 48px;
-			background-color: #F2F2F2;
-			padding: 12px;
-			border: 1px solid #e8e8e8;
-			.defult {
-				background-color: #FFFFFF;
-				padding: 0px 16px;
-				border: 1px solid #e8e8e8;
-				border-left: none;
-				color: #333333;
-				font-size: 12px;
-				float: left;
-			}
-			.defultLeftborder {
-				border-left: 1px solid #e8e8e8;
-			}
-			.marginleft {
-				position: absolute;
-				right: 0px;
-				top: 6px;
-				/*margin-left: 6px;*/
-			}
-			.marginleft1 {
-				position: absolute;
-				right: 6px;
-				top: 6px;
-			}
-			.defult:hover {
-				border-color: #DE1A20;
-				color: #FFFFFF;
-				background-color: #DE1A20;
-				cursor: pointer;
-			}
-			.cur {
-				border-color: #DE1A20;
-				color: #FFFFFF;
-				background-color: #DE1A20;
-				cursor: pointer;
-			}
-		}
-		.search {
-			width: auto;
-			margin: 29px auto;
-			display: table;
-			position: relative;
-			.input {
-				width: 420px;
-			}
-			.btn {
-				position: absolute;
-				height: 40px;
-				line-height: 40px;
-				padding: 0 44px;
-				right: 0;
-				border-bottom-left-radius: 0;
-				border-top-left-radius: 0;
-			}
-		}
-	}
+.addCar {
+    margin-top: 6px;
+    padding-left: 22px;
+    background: url(../../../static/icon/guanggaozhu/buycar.png) no-repeat center left;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+.addCar:hover {
+    color: #de1a20;
+}
+
+.zhDetail {
+    margin-top: 6px;
+    padding-left: 22px;
+    background: url(../../../static/icon/guanggaozhu/zhxq.png) no-repeat center left;
+    background-size: 12px;
+    cursor: pointer;
+}
+
+.btnred {
+    color: #de1a20;
+    border-color: #de1a20;
+}
+
+.btnred:hover {
+    color: #c60009 !important;
+    border-color: #c60009 !important;
+}
+
+.zhDetail:hover {
+    color: #de1a20;
+}
+
+.tableZh {
+    .right {
+        position: relative;
+        .name {
+            font-size: 14px;
+            color: #333333;
+            display: inline-block;
+            .erweima {
+                position: relative;
+                display: inline-block;
+                .erweimamin {
+                    width: 16px;
+                    height: 16px;
+                    display: inline-block;
+                    margin-left: 6px;
+                    vertical-align: middle;
+                }
+                .erweimaMax {
+                    position: absolute;
+                    right: -112px;
+                    top: -25px;
+                    width: 100px;
+                    height: 100px;
+                    z-index: 9999;
+                    display: none;
+                }
+            }
+            .erweima:hover {
+                .erweimaMax {
+                    display: block;
+                }
+            }
+        }
+        .tag {
+            display: table;
+            color: #ffffff;
+            background-color: #de1a20;
+            padding: 0 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    }
+    .left {
+        width: 44px;
+        position: relative;
+        .userImg {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: block;
+        }
+        .ico {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 12px;
+            height: auto;
+            display: block;
+        }
+    }
+}
+
+.content {
+    width: 1200px;
+    margin: auto;
+    display: table;
+    .condition {
+        .filter {
+            position: absolute;
+            right: 24px;
+            top: 0;
+            bottom: 0;
+            height: 45px;
+            line-height: 45px;
+            /*border: 1px solid #000000;*/
+            .select {
+                width: 86px;
+                float: left;
+                .el-input {
+                    .el-input__inner {
+                        border-radius: 2px !important;
+                        border: solid 1px #e8e8e8 !important;
+                    }
+                }
+            }
+            .xiala {
+                float: left;
+                padding-right: 12px;
+                .type {
+                    position: relative;
+                    border: solid 1px #e8e8e8;
+                    color: #888888;
+                    height: 24px;
+                    border-radius: 2px;
+                    font-size: 12px;
+                    padding: 5px 6px 5px 8px;
+                }
+                .type:before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    width: 0;
+                    background-color: #e8e8e8;
+                }
+            }
+            .xiala:hover {
+                cursor: pointer;
+            }
+            .hengxian {
+                width: 10px;
+                height: 1px;
+                background-color: #aaaaaa;
+                margin-left: 6px;
+                margin-right: 6px;
+                margin-top: 22px;
+                float: left;
+            }
+            .inputwidth {
+                width: 66px;
+                height: 24px;
+                border-radius: 2px;
+                padding: 0;
+                float: left;
+            }
+            .btn {
+                margin-left: 12px;
+            }
+            .canlen {
+                margin-left: 6px;
+            }
+            .canlen:hover {
+                color: #de1a20;
+                cursor: pointer;
+            }
+        }
+        .right {
+            width: 1100px;
+            /*padding-left: 12px;*/
+            color: #888888;
+            font-size: 12px;
+            float: left;
+            overflow: hidden;
+            .buxian {
+                width: 86px;
+                text-align: center;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                padding-top: 12px;
+                cursor: pointer;
+                span {
+                    padding: 3px 6px 4px;
+                }
+            }
+            .buxian:hover {
+                span {
+                    color: #ffffff;
+                    background-color: #de1a20;
+                    padding: 3px 6px 4px;
+                    border-radius: 4px;
+                    line-height: 0;
+                }
+            }
+            .cur {
+                span {
+                    color: #ffffff;
+                    background-color: #de1a20;
+                    border-radius: 4px;
+                    line-height: 0;
+                    padding: 3px 6px 4px;
+                }
+            }
+            .list {
+                float: left;
+                padding-left: 86px;
+                padding-bottom: 12px;
+                padding-right: 148px;
+                .checkList {
+                    padding-left: 12px;
+                }
+                div {
+                    padding-top: 12px;
+                    cursor: pointer;
+                    display: inline-block;
+                    padding-right: 6px;
+                    span {
+                        padding: 3px 6px 4px;
+                    }
+                }
+                div:hover {
+                    span {
+                        color: #ffffff;
+                        background-color: #de1a20;
+                        padding: 3px 6px 4px;
+                        border-radius: 4px;
+                        line-height: 0;
+                    }
+                }
+            }
+        }
+        .item:first-child {
+            border-top: 1px solid #e8e8e8;
+            margin-top: -1px;
+        }
+        .item {
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #e8e8e8;
+            font-size: 14px;
+            padding-left: 100px;
+            min-height: 45px;
+            .title {
+                width: 100px;
+                background-color: #f2f2f2;
+                padding-bottom: 12px;
+                padding-top: 12px;
+                text-align: center;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+            }
+        }
+    }
+    .biaoge {
+        .pagination {
+            padding-top: 32px;
+            padding-bottom: 32px;
+            float: right;
+        }
+    }
+    .sort {
+        margin-top: 19px;
+        height: 48px;
+        background-color: #f2f2f2;
+        padding: 12px;
+        border: 1px solid #e8e8e8;
+        .defult {
+            background-color: #ffffff;
+            padding: 0px 16px;
+            border: 1px solid #e8e8e8;
+            border-left: none;
+            color: #333333;
+            font-size: 12px;
+            float: left;
+        }
+        .defultLeftborder {
+            border-left: 1px solid #e8e8e8;
+        }
+        .marginleft {
+            position: absolute;
+            right: 0px;
+            top: 6px;
+            /*margin-left: 6px;*/
+        }
+        .marginleft1 {
+            position: absolute;
+            right: 6px;
+            top: 6px;
+        }
+        .defult:hover {
+            border-color: #de1a20;
+            color: #ffffff;
+            background-color: #de1a20;
+            cursor: pointer;
+        }
+        .cur {
+            border-color: #de1a20;
+            color: #ffffff;
+            background-color: #de1a20;
+            cursor: pointer;
+        }
+    }
+    .search {
+        width: auto;
+        margin: 29px auto;
+        display: table;
+        position: relative;
+        .input {
+            width: 420px;
+        }
+        .btn {
+            position: absolute;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 44px;
+            right: 0;
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
+    }
+}
 </style>

@@ -120,10 +120,10 @@
 			<div class="defultLeftborder defult" :class="{'cur' :sortIndex=='0'}" @click="dropdownchanage(0)">默认排序</div>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='1'||sortIndex=='2'}">
-			    按粉丝数
-			    <i v-if="sortIndex=='1'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
-			    <i v-if="sortIndex=='2'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
-			  </span>
+					按粉丝数
+					<i v-if="sortIndex=='1'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='2'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item command="1">粉丝数由高到低</el-dropdown-item>
 					<el-dropdown-item command="2">粉丝数由低到高</el-dropdown-item>
@@ -131,16 +131,27 @@
 			</el-dropdown>
 			<!--<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
-			    按观看次数
-			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
-			    <i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
-			  </span>
+					按观看次数
+						<i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item command="3">观看次数由高到低</el-dropdown-item>
 					<el-dropdown-item command="4">观看次数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>-->
-			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
+			<!-- <div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div> -->
+			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
+				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='5'||sortIndex=='6'}">
+					按报价
+						<i v-if="sortIndex=='5'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='6'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
+				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item command="5">报价由高到低</el-dropdown-item>
+					<el-dropdown-item command="6">报价由低到高</el-dropdown-item>
+				</el-dropdown-menu>
+			</el-dropdown>
 		</div>
 		<!-- end 排序 -->
 		<!-- start 列表 -->
@@ -195,8 +206,8 @@
 						</div>
 					</template>
 				</el-table-column>
-				<!--<el-table-column prop="categoryModel" label="账号分类">
-				</el-table-column>-->
+				<el-table-column prop="categoryModel" label="账号分类">
+				</el-table-column>
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<div>
@@ -516,6 +527,7 @@
 				//账号详情
 				let self = this;
 				console.log(row)
+				window.open(row.url, '_blank')
 			},
 			comfig() {
 				//预约投放

@@ -111,27 +111,28 @@
 			<div class="defultLeftborder defult" :class="{'cur' :sortIndex=='0'}" @click="dropdownchanage(0)">默认排序</div>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
 				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='1'||sortIndex=='2'}">
-			    按粉丝数
-			    <i v-if="sortIndex=='1'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
-			    <i v-if="sortIndex=='2'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
-			  </span>
+					按粉丝数
+					<i v-if="sortIndex=='1'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='2'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item command="1">粉丝数由高到低</el-dropdown-item>
 					<el-dropdown-item command="2">粉丝数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
 			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
-				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'}">
-			    按阅读数
-			      <i v-if="sortIndex=='3'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
-			    <i v-if="sortIndex=='4'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
-			  </span>
+				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='3'||sortIndex=='4'||sortIndex=='5'||sortIndex=='6'}">
+					按报价
+						<i v-if="sortIndex=='3'||sortIndex=='5'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='4'||sortIndex=='6'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
 				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item command="3">阅读数由高到低</el-dropdown-item>
-					<el-dropdown-item command="4">阅读数由低到高</el-dropdown-item>
+					<el-dropdown-item command="3">直发价由高到低</el-dropdown-item>
+					<el-dropdown-item command="4">直发价由低到高</el-dropdown-item>
+					<el-dropdown-item command="5">转发价由高到低</el-dropdown-item>
+					<el-dropdown-item command="6">转发价由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
 		</div>
 		<!-- end 排序 -->
 		<!-- start 列表 -->
@@ -516,7 +517,15 @@
 			zhDetail(row) {
 				//账号详情
 				let self = this;
-				console.log(row)
+// 				const {
+// 					href
+// 				} = this.$router.resolve({
+// 					path: '/details',
+// 					query: {
+// 						pid: row.id
+// 					}
+// 				})
+				window.open(row.url, '_blank')
 			},
 			comfig() {
 				//预约投放
@@ -561,128 +570,134 @@
 				}
 			},
 			addWechatList() {
-				let self = this;
-				let fansSort = 0,
-					viewSort = 0,
-					priceSort = 0;
-				switch(self.sortIndex) {
-					case 1:
-						fansSort = 1;
-						break;
-					case 3:
-						viewSort = 1;
-						break;
-					case 5:
-						priceSort = 1;
-						break;
-					default:
-						break;
-				}
-				let fansMin = 0,
-					fansMax = 0;
-				switch(self.fansIndex) {
-					case -1:
-						if(self.params.fanss.min + ''.trim() == "")
-							self.params.fanss.min = 0;
-
-						if(self.params.fanss.max + ''.trim() == "")
-							self.params.fanss.max = 0;
-
-						fansMin = self.params.fanss.min;
-						fansMax = self.params.fanss.max;
-						break;
-					case 1:
-						fansMin = 0;
-						fansMax = 10000;
-						break;
-					case 2:
-						fansMin = 10000;
-						fansMax = 50000;
-						break;
-					case 3:
-						fansMin = 50000;
-						fansMax = 100000;
-						break;
-					case 4:
-						fansMin = 100000;
-						fansMax = 200000;
-						break;
-					case 5:
-						fansMin = 200000;
-						fansMax = 500000;
-						break;
-					case 6:
-						fansMin = 500000;
-						fansMax = 1000000;
-						break;
-					case 7:
-						fansMin = 1000000;
-						fansMax = 0;
-						break;
-					default:
-						break;
-				}
-
-				let priceMin = 0,
-					priceMax = 0;
-				switch(self.priceIndex) {
-					case -1:
-						if(self.params.prices.min + ''.trim() == "")
-							self.params.prices.min = 0;
-
-						if(self.params.prices.max + ''.trim() == "")
-							self.params.prices.max = 0;
-
-						priceMin = self.params.prices.min;
-						priceMax = self.params.prices.max;
-						break;
-					case 1:
-						priceMin = 0;
-						priceMax = 1000;
-						break;
-					case 2:
-						priceMin = 1000;
-						priceMax = 3000;
-						break;
-					case 3:
-						priceMin = 3000;
-						priceMax = 5000;
-						break;
-					case 4:
-						priceMin = 5000;
-						priceMax = 10000;
-						break;
-					case 5:
-						priceMin = 10000;
-						priceMax = 0;
-						break;
-					default:
-						break;
-				}
-				if(self.regionIndex == -1) {
-					self.params.regionId = self.cityId;
-				}
-				let str = [];
-				str.push(self.params.categoryId + "/")
-				str.push(fansMin + "-" + fansMax + "/")
-				str.push(self.bjtypeobj.id + "/")
-				str.push(priceMin + "-" + priceMax + "/")
-				str.push(self.params.regionId + "/")
-				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-				str.push(self.params.offical.join("-"))
-				self.$http.get(self.API.weiboAccountListAPI + str.join(''), {
-					params: {
-						page: self.params.page,
-						limit: 10,
-						query: encodeURIComponent(self.params.keywords)
-					}
-				}).then((response) => { // 响应成功回调
-					if(response.data.status == 0) {
-						self.dataList = response.data.data;
-						self.total = response.data.count;
-					}
-				}, (response) => {});
-			},
+							let self = this;
+							let fansSort = 0,
+								viewSort = 0,
+								priceSort = 0,
+								sortPriceType = 1;
+							switch(self.sortIndex) {
+								case 1:
+									fansSort = 1;
+									break;
+			// 					case 3:
+			// 						viewSort = 1;
+			// 						break;
+								case 3:
+								case 5:
+									priceSort = 1;
+									break;
+								default:
+									break;
+							}
+							if (self.sortIndex == 5 || self.sortIndex == 6) {
+									sortPriceType = 0;
+							}
+							let fansMin = 0,
+								fansMax = 0;
+							switch(self.fansIndex) {
+								case -1:
+									if(self.params.fanss.min + ''.trim() == "")
+										self.params.fanss.min = 0;
+			
+									if(self.params.fanss.max + ''.trim() == "")
+										self.params.fanss.max = 0;
+			
+									fansMin = this.params.fanss.min * 10000;
+									fansMax = this.params.fanss.max * 10000;
+									break;
+								case 1:
+									fansMin = 0;
+									fansMax = 10000;
+									break;
+								case 2:
+									fansMin = 10000;
+									fansMax = 50000;
+									break;
+								case 3:
+									fansMin = 50000;
+									fansMax = 100000;
+									break;
+								case 4:
+									fansMin = 100000;
+									fansMax = 200000;
+									break;
+								case 5:
+									fansMin = 200000;
+									fansMax = 500000;
+									break;
+								case 6:
+									fansMin = 500000;
+									fansMax = 1000000;
+									break;
+								case 7:
+									fansMin = 1000000;
+									fansMax = 0;
+									break;
+								default:
+									break;
+							}
+			
+							let priceMin = 0,
+								priceMax = 0;
+							switch(self.priceIndex) {
+								case -1:
+									if(self.params.prices.min + ''.trim() == "")
+										self.params.prices.min = 0;
+			
+									if(self.params.prices.max + ''.trim() == "")
+										self.params.prices.max = 0;
+			
+									priceMin = self.params.prices.min;
+									priceMax = self.params.prices.max;
+									break;
+								case 1:
+									priceMin = 0;
+									priceMax = 1000;
+									break;
+								case 2:
+									priceMin = 1000;
+									priceMax = 3000;
+									break;
+								case 3:
+									priceMin = 3000;
+									priceMax = 5000;
+									break;
+								case 4:
+									priceMin = 5000;
+									priceMax = 10000;
+									break;
+								case 5:
+									priceMin = 10000;
+									priceMax = 0;
+									break;
+								default:
+									break;
+							}
+							
+							if(self.regionIndex == -1) {
+								self.params.regionId = self.cityId;
+							}
+							let str = [];
+							str.push(self.params.categoryId + "/")
+							str.push(fansMin + "-" + fansMax + "/")
+							str.push(self.bjtypeobj.id + "/")
+							str.push(priceMin + "-" + priceMax + "/")
+							str.push(self.params.regionId + "/")
+							str.push(fansSort + "-" + sortPriceType + "-" + priceSort + "/")
+							str.push(self.params.offical.join("-"))
+							self.$http.get(self.API.weiboAccountListAPI + str.join(''), {
+								params: {
+									page: self.params.page,
+									limit: 10,
+									query: encodeURIComponent(self.params.keywords)
+								}
+							}).then((response) => { // 响应成功回调
+								if(response.data.status == 0) {
+									self.dataList = response.data.data;
+									self.total = response.data.count;
+								}
+							}, (response) => {});
+						},
 			async addProvinceAndCity() {
 				let self = this;
 				await self.$http.get(self.API.provinceList).then((response) => { // 响应成功回调 

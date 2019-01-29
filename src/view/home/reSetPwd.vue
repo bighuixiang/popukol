@@ -227,9 +227,12 @@ export default {
     },
     postFromFn() {
       let self = this;
+			const param = Object.assign({}, self.form);
+			param.pwd = self.$encrypt(param.pwd);
+			param.confirmPwd = self.$encrypt(param.confirmPwd);
       self.$http
         .post(self.API.reSetApi, {
-          ...self.form
+          ...param
         })
         .then(
           response => {

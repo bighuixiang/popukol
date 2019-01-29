@@ -6,7 +6,7 @@
             <el-aside width="260px">
                 
                 <div class="avater-box">   
-                    <img :src="getUserInfo.avater" class="avater-img" alt="">
+                    <img :src="getUserInfo.headImg" class="avater-img" alt="">
                     <span class="avater-phone">{{getUserInfo.username}}</span>
                     <span class="avater-adds">广告主</span>
                     <el-button class="avater-btn" type="primary" @click="">账号管理</el-button>

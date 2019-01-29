@@ -35,7 +35,10 @@
 		font-weight: normal;
 		font-style: normal;
 	}
-	
+	.el-checkbox__label{
+		    color: #888888;
+			font-size: 12px;
+	}
 	.el-table .cell,
 	.el-table th div {
 		overflow: visible !important;

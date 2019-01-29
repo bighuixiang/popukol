@@ -206,6 +206,8 @@
 			addProductPageList() {
 				//产品行业分类
 				let self = this;
+				self.dataList = [];
+				self.total = 0;
 				let params = {
 					page: self.params.page,
 					limit: 10,

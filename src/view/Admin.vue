@@ -23,7 +23,7 @@
 							消息
 							<span v-if="getIsShowRed"></span>
 						</div>
-						<router-link class="helper" to="/helper">帮助中心</router-link>
+						<router-link class="helper" to="/adminhelper">帮助中心</router-link>
 					</div>
 					<!-- 右侧  end-->
 				</div>
@@ -32,10 +32,10 @@
 
 			<!-- start 顶部logo信息 -->
 			<div class="logoinfo">
-				<div class="leftLogo">
+				<div class="leftLogo" @click="goToUrl({url:'/'})">
 					<img src="../../static/icon/topandbottomlogo/toplogo.png" />
 					<div class="line"></div>
-					<div class="duanshiping">创意短视频营销平台</div>
+					<div class="duanshiping">精准投放 精准营销</div>
 				</div>
 				<div class="rightTel">
 					<!--<img class="leftTel" src="../../static/icon/topandbottomlogo/tel.png" />
@@ -105,7 +105,7 @@
 				<div class="footerinner">
 					<div class="left">
 						<img class="bottomlogo" src="../../static/icon/topandbottomlogo/bottomlogo.png" />
-						<p class="duli">popukol倾力打造网红资源管理、调度平台。</p>
+						<p class="duli">精准投放 精准营销</p>
 						<div class="kuai">
 							©POPUKOL, powered by POPUKOL THX.法律声明转载内容 版权归作者及来源网站所有，本站原创内容转载请注明来源，商业 媒体及纸媒请先联系: xiaojiejie@popukol.com
 						</div>
@@ -115,9 +115,9 @@
 							联系
 						</h1>
 						<div class="info">
-							<p>电话：400-123-0111</p>
-							<p>邮箱：xiaojiejie@popukol.com</p>
-							<p>地址：广东省深圳市福田下梅林</p>
+							<p>电话：+852 9690 4939</p>
+							<p>邮箱：allen@fnewmedia.com</p>
+							<p>地址：九龙湾临兴街 26 号富洋工业中心 301 室</p>
 						</div>
 					</div>
 					<div class="right">
@@ -632,6 +632,7 @@
 					-webkit-transition: all 0.5s;
 					-ms-transition: all 0.5s;
 					-moz-transition: all 0.5s;
+					width: 118px;
 				}
 				.erweima:hover {
 					cursor: pointer;

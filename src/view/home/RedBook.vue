@@ -129,7 +129,18 @@
 					<el-dropdown-item command="4">获赞与收藏数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
+			<!-- <div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div> -->
+			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
+				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='5'||sortIndex=='6'}">
+					按报价
+						<i v-if="sortIndex=='5'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='6'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
+				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item command="5">报价由高到低</el-dropdown-item>
+					<el-dropdown-item command="6">报价由低到高</el-dropdown-item>
+				</el-dropdown-menu>
+			</el-dropdown>
 		</div>
 		<!-- end 排序 -->
 		<!-- start 列表 -->
@@ -154,7 +165,9 @@
 											<img class="erweimaMax" :src="scope.row.headImg" />
 										</div>-->
 									</div>
-									<span class="tag">原创</span>
+									<div>
+										<span style="display: inline-block;margin-right: 3px;" v-for="(item,index) in scope.row.tags" v-if="index<=1" class="tag">{{item.tagName}}</span>
+									</div>
 								</div>
 							</el-col>
 						</el-row>
@@ -162,11 +175,13 @@
 				</el-table-column>
 				<el-table-column prop="fans" label="粉丝数">
 				</el-table-column>
-				<el-table-column label="阅读数">
+				<el-table-column label="获赞与收藏数">
 					<template slot-scope="scope">
 						<div>
-							<p>头条:{{ scope.row.extra.viewCount }}+</p>
-							<p>次条:{{ scope.row.extra.subViewCount}}+</p>
+							{{ scope.row.extra.collectionCount ||0 }}
+							
+							<!-- <p>头条:{{ scope.row.extra.viewCount ||0 }}</p>
+							<p>次条:{{ scope.row.extra.subViewCount||0 }}</p> -->
 						</div>
 					</template>
 				</el-table-column>
@@ -178,7 +193,7 @@
 								<p>次条:￥{{scope.row.subPrice}}</p>
 							</div>
 							<div v-else>
-								登录广告主账号可查看更多报价
+								<a href="#/login">登录广告主账号可查看更多报价</a>
 							</div>
 						</div>
 					</template>
@@ -304,128 +319,128 @@
 				'setuserinfo'
 			]),
 			addWechatList() {
-				let self = this;
-				let fansSort = 0,
-					viewSort = 0,
-					priceSort = 0;
-				switch(self.sortIndex) {
-					case 1:
-						fansSort = 1;
-						break;
-					case 3:
-						viewSort = 1;
-						break;
-					case 5:
-						priceSort = 1;
-						break;
-					default:
-						break;
-				}
-				let fansMin = 0,
-					fansMax = 0;
-				switch(self.fansIndex) {
-					case -1:
-						if(self.params.fanss.min + ''.trim() == "")
-							self.params.fanss.min = 0;
-
-						if(self.params.fanss.max + ''.trim() == "")
-							self.params.fanss.max = 0;
-
-						fansMin = self.params.fanss.min;
-						fansMax = self.params.fanss.max;
-						break;
-					case 1:
-						fansMin = 0;
-						fansMax = 10000;
-						break;
-					case 2:
-						fansMin = 10000;
-						fansMax = 50000;
-						break;
-					case 3:
-						fansMin = 50000;
-						fansMax = 100000;
-						break;
-					case 4:
-						fansMin = 100000;
-						fansMax = 200000;
-						break;
-					case 5:
-						fansMin = 200000;
-						fansMax = 500000;
-						break;
-					case 6:
-						fansMin = 500000;
-						fansMax = 1000000;
-						break;
-					case 7:
-						fansMin = 1000000;
-						fansMax = 0;
-						break;
-					default:
-						break;
-				}
-
-				let priceMin = 0,
-					priceMax = 0;
-				switch(self.priceIndex) {
-					case -1:
-						if(self.params.prices.min + ''.trim() == "")
-							self.params.prices.min = 0;
-
-						if(self.params.prices.max + ''.trim() == "")
-							self.params.prices.max = 0;
-
-						priceMin = self.params.prices.min;
-						priceMax = self.params.prices.max;
-						break;
-					case 1:
-						priceMin = 0;
-						priceMax = 1000;
-						break;
-					case 2:
-						priceMin = 1000;
-						priceMax = 3000;
-						break;
-					case 3:
-						priceMin = 3000;
-						priceMax = 5000;
-						break;
-					case 4:
-						priceMin = 5000;
-						priceMax = 10000;
-						break;
-					case 5:
-						priceMin = 10000;
-						priceMax = 0;
-						break;
-					default:
-						break;
-				}
-				if(self.regionIndex == -1) {
-					self.params.regionId = self.cityId;
-				}
-				let str = [];
-				str.push(self.params.categoryId + "/")
-				str.push(fansMin + "-" + fansMax + "/")
-				//				str.push(self.bjtypeobj.id + "/")
-				str.push(priceMin + "-" + priceMax + "/")
-				str.push(self.params.regionId + "/")
-				str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
-				//				str.push(self.params.offical)
-				self.$http.get(self.API.xhsListAPI + str.join(''), {
-					params: {
-						page: self.params.page,
-						limit: 10,
-						query: encodeURIComponent(self.params.keywords)
-					}
-				}).then((response) => { // 响应成功回调
-					if(response.data.status == 0) {
-						self.dataList = response.data.data;
-						self.total = response.data.count;
-					}
-				}, (response) => {});
-			},
+							let self = this;
+							let fansSort = 0,
+								viewSort = 0,
+								priceSort = 0;
+							switch(self.sortIndex) {
+								case 1:
+									fansSort = 1;
+									break;
+								case 3:
+									viewSort = 1;
+									break;
+								case 5:
+									priceSort = 1;
+									break;
+								default:
+									break;
+							}
+							let fansMin = 0,
+								fansMax = 0;
+							switch(self.fansIndex) {
+								case -1:
+									if(self.params.fanss.min + ''.trim() == "")
+										self.params.fanss.min = 0;
+			
+									if(self.params.fanss.max + ''.trim() == "")
+										self.params.fanss.max = 0;
+			
+									fansMin = self.params.fanss.min;
+									fansMax = self.params.fanss.max;
+									break;
+								case 1:
+									fansMin = 0;
+									fansMax = 10000;
+									break;
+								case 2:
+									fansMin = 10000;
+									fansMax = 50000;
+									break;
+								case 3:
+									fansMin = 50000;
+									fansMax = 100000;
+									break;
+								case 4:
+									fansMin = 100000;
+									fansMax = 200000;
+									break;
+								case 5:
+									fansMin = 200000;
+									fansMax = 500000;
+									break;
+								case 6:
+									fansMin = 500000;
+									fansMax = 1000000;
+									break;
+								case 7:
+									fansMin = 1000000;
+									fansMax = 0;
+									break;
+								default:
+									break;
+							}
+			
+							let priceMin = 0,
+								priceMax = 0;
+							switch(self.priceIndex) {
+								case -1:
+									if(self.params.prices.min + ''.trim() == "")
+										self.params.prices.min = 0;
+			
+									if(self.params.prices.max + ''.trim() == "")
+										self.params.prices.max = 0;
+			
+									priceMin = self.params.prices.min;
+									priceMax = self.params.prices.max;
+									break;
+								case 1:
+									priceMin = 0;
+									priceMax = 1000;
+									break;
+								case 2:
+									priceMin = 1000;
+									priceMax = 3000;
+									break;
+								case 3:
+									priceMin = 3000;
+									priceMax = 5000;
+									break;
+								case 4:
+									priceMin = 5000;
+									priceMax = 10000;
+									break;
+								case 5:
+									priceMin = 10000;
+									priceMax = 0;
+									break;
+								default:
+									break;
+							}
+							if(self.regionIndex == -1) {
+								self.params.regionId = self.cityId;
+							}
+							let str = [];
+							str.push(self.params.categoryId + "/")
+							str.push(fansMin + "-" + fansMax + "/")
+							//				str.push(self.bjtypeobj.id + "/")
+							str.push(priceMin + "-" + priceMax + "/")
+							str.push(self.params.regionId + "/")
+							str.push(fansSort + "-" + viewSort + "-" + priceSort + "/")
+							//				str.push(self.params.offical)
+							self.$http.get(self.API.xhsListAPI + str.join(''), {
+								params: {
+									page: self.params.page,
+									limit: 10,
+									query: encodeURIComponent(self.params.keywords)
+								}
+							}).then((response) => { // 响应成功回调
+								if(response.data.status == 0) {
+									self.dataList = response.data.data;
+									self.total = response.data.count;
+								}
+							}, (response) => {});
+						},
 			async addProvinceAndCity() {
 				let self = this;
 				await self.$http.get(self.API.provinceList).then((response) => { // 响应成功回调 
@@ -530,22 +545,37 @@
 				this.addWechatList();
 			},
 			addCar(row) {
-				//加入选号车
-				let self = this;
-				console.log(row)
-				//				if(row.isFl){
-				//					
-				//				}
+					//加入选号车
+					let self = this;
+					console.log(row);
+					self.toAdmin();
+					//				if(row.isFl){
+					//
+					//				}
 			},
 			zhDetail(row) {
-				//账号详情
+					//账号详情
+					let self = this;
+					console.log(row);
+					self.toAdmin();
+			},
+			toAdmin(){
 				let self = this;
-				console.log(row)
+				if(self.getLoginFlag){
+					//已登录调到后台
+					self.$router.push({
+							path: '/redbookxhtg'
+					});
+				}else{
+					// 提示登录
+					self.$message.error("登录后享受更多功能！");
+				}
 			},
 			yytoufang(row) {
-				//预约投放
-				let self = this;
-				console.log(row)
+					//预约投放
+					let self = this;
+					console.log(row);
+					self.toAdmin();
 			},
 			bjtype(val) { //				参考报价类型
 				val = val.replace(/'/g, '"');

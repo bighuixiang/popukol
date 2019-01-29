@@ -129,7 +129,17 @@
 					<el-dropdown-item command="4">获赞与收藏数由低到高</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>-->
-			<div class="defult" :class="{'cur' :sortIndex=='5'}" @click="dropdownchanage(5)">按报价</div>
+			<el-dropdown trigger="click" style="float: left;" @command="dropdownchanage">
+				<span class="el-dropdown-link defult" :class="{'cur' :sortIndex=='5'||sortIndex=='6'}">
+					按报价
+						<i v-if="sortIndex=='5'" class="el-icon-arrow-down el-icon-sort-down marginleft"></i>
+					<i v-if="sortIndex=='6'" class="el-icon-arrow-down el-icon-sort-up marginleft1"></i>
+				</span>
+				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item command="5">报价由高到低</el-dropdown-item>
+					<el-dropdown-item command="6">报价由低到高</el-dropdown-item>
+				</el-dropdown-menu>
+			</el-dropdown>
 		</div>
 		<!-- end 排序 -->
 		<!-- start 列表 -->
@@ -183,8 +193,8 @@
 						</div>
 					</template>
 				</el-table-column>
-				<!--<el-table-column prop="categoryModel" label="账号分类">
-				</el-table-column>-->
+				<el-table-column prop="categoryModel" label="账号分类">
+				</el-table-column>
 				<el-table-column label="操作" width="220">
 					<template slot-scope="scope">
 						<div>
@@ -505,6 +515,7 @@
 				//账号详情
 				let self = this;
 				console.log(row)
+				window.open(row.url, '_blank')
 			},
 			comfig() {
 				//预约投放

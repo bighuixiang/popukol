@@ -4,7 +4,7 @@
       投放平台：{{getReleaseObj.platformName}}
     </div> -->
   <div class="send-title">
-    "<span>双十一品牌推广活动</span>"投放需求，已选账号
+    "<span>{{xuqiuInfo.topic}}</span>"投放需求，已选账号
   </div>
   <div class=" w-1120-auto">
     <div class="tabal-box">
